@@ -180,6 +180,15 @@ namespace IssueTracker
 
                 _ticketsBindingSource.DataSource = filteredTickets;
             }
+
+            UpdateTicketCount();
+        }
+        private void btnClearFilter_Click(object sender, EventArgs e)
+        {
+            // Reload all tickets without any filters
+            var allTickets = _ticketService.GetAllTickets();
+            _ticketsBindingSource.DataSource = allTickets;
+            UpdateTicketCount();
         }
 
         private void MainForm_Load(object sender, EventArgs e)

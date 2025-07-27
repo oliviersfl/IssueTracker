@@ -129,11 +129,31 @@
             this.btnFilter.UseVisualStyleBackColor = false;
             this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
             // 
+            // btnClearFilter
+            //
+            this.btnClearFilter = new System.Windows.Forms.Button();
+            this.btnClearFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClearFilter.BackColor = System.Drawing.Color.White;
+            this.btnClearFilter.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue;
+            this.btnClearFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClearFilter.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnClearFilter.ForeColor = System.Drawing.Color.SteelBlue;
+            this.btnClearFilter.Image = ((System.Drawing.Image)(resources.GetObject("btnFilter.Image"))); // You might want a different icon
+            this.btnClearFilter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnClearFilter.Location = new System.Drawing.Point(396, 12); // Adjust position as needed
+            this.btnClearFilter.Name = "btnClearFilter";
+            this.btnClearFilter.Size = new System.Drawing.Size(188, 36);
+            this.btnClearFilter.TabIndex = 4;
+            this.btnClearFilter.Text = "Clear Filters";
+            this.btnClearFilter.UseVisualStyleBackColor = false;
+            this.btnClearFilter.Click += new System.EventHandler(this.btnClearFilter_Click);
+            // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
             this.panel1.Controls.Add(this.lblTitle);
             this.panel1.Controls.Add(this.btnFilter);
+            this.panel1.Controls.Add(this.btnClearFilter);
             this.panel1.Controls.Add(this.btnCreateTicket);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
@@ -212,6 +232,7 @@
         private DataGridView dgvTickets;
         private Button btnCreateTicket;
         private Button btnFilter;
+        private Button btnClearFilter;
         private Panel panel1;
         private Label lblTitle;
         private Panel panel2;
