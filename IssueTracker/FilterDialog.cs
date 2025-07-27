@@ -59,7 +59,7 @@ namespace IssueTracker
 
             FromDate = chkFromDate.Checked ? dtpFromDate.Value : (DateTime?)null;
             ToDate = chkToDate.Checked ? dtpToDate.Value : (DateTime?)null;
-            SelectedType = cmbType.SelectedIndex == 0 ? null : cmbType.SelectedValue.ToString();
+            SelectedType = cmbType.SelectedIndex == 0 ? null : cmbType.SelectedItem.ToString();
 
             DialogResult = DialogResult.OK;
             Close();
