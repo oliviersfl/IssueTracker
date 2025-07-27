@@ -34,7 +34,7 @@ namespace IssueTracker
             {
                 // Bind existing ticket data
                 txtTitle.Text = _currentTicket.Title;
-                txtDescription.Text = _currentTicket.Description;
+                txtDescription.Text = _currentTicket.Description.Replace("\n", Environment.NewLine);
                 cmbCategory.SelectedItem = _currentTicket.Category;
                 cmbPriority.SelectedItem = _currentTicket.Priority;
                 cmbType.SelectedItem = _currentTicket.Type;

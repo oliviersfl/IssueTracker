@@ -331,6 +331,7 @@
             // 
             this.txtDescription.Location = new System.Drawing.Point(20, 80);
             this.txtDescription.Multiline = true;
+            this.txtDescription.AcceptsReturn = true;
             this.txtDescription.Name = "txtDescription";
             this.txtDescription.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.txtDescription.Size = new System.Drawing.Size(300, 80);

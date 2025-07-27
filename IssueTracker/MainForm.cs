@@ -117,7 +117,7 @@ namespace IssueTracker
                 {
                     Id = 1,
                     Title = "Some bug",
-                    Description = "Can't read file",
+                    Description = "Can't read file\nCan you please help",
                     Category = Models.Enums.TicketCategory.Bug,
                     Priority = Models.Enums.Priority.Medium,
                     Type = "Data Bridge",
