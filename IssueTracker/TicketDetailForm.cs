@@ -1,0 +1,283 @@
+﻿using IssueTracker.Models;
+using IssueTracker.Models.Enums;
+using IssueTracker.Services;
+
+namespace IssueTracker
+{
+    public partial class TicketDetailForm : Form
+    {
+        private readonly ITicketService _ticketService;
+        private Ticket _currentTicket;
+        private bool _isEditMode;
+
+        public TicketDetailForm(ITicketService ticketService, Ticket ticket = null)
+        {
+            _ticketService = ticketService;
+            _currentTicket = ticket;
+            _isEditMode = ticket != null;
+
+            InitializeComponent();
+            InitializeForm();
+        }
+
+        private void InitializeForm()
+        {
+            // Populate dropdowns with enum values
+            cmbCategory.DataSource = Enum.GetValues(typeof(TicketCategory));
+            cmbPriority.DataSource = Enum.GetValues(typeof(Priority));
+            cmbStatus.DataSource = Enum.GetValues(typeof(Status));
+
+            // Hardcoded types (would normally come from appsettings.json)
+            cmbType.DataSource = new List<string> { "API", "Interface", "Data Bridge", "Database", "Service" };
+
+            if (_isEditMode)
+            {
+                // Bind existing ticket data
+                txtTitle.Text = _currentTicket.Title;
+                txtDescription.Text = _currentTicket.Description;
+                cmbCategory.SelectedItem = _currentTicket.Category;
+                cmbPriority.SelectedItem = _currentTicket.Priority;
+                cmbType.SelectedItem = _currentTicket.Type;
+                cmbStatus.SelectedItem = _currentTicket.Status;
+
+                // Handle dates
+                lblCreated.Text = _currentTicket.CreatedDate.ToString("g");
+                lblModified.Text = _currentTicket.ModifiedDate.ToString("g");
+
+                if (_currentTicket.DueDate.HasValue)
+                {
+                    chkDueDate.Checked = true;
+                    dtpDueDate.Value = _currentTicket.DueDate.Value;
+                }
+
+                // Load subtasks
+                _currentTicket.SubTasks = _currentTicket.SubTasks ?? new List<SubTask>();
+                // TEST
+                _currentTicket.SubTasks = new List<SubTask>()
+                {
+                    new SubTask()
+                    {
+                        Id = _currentTicket.Id,
+                        Title = "Complete code",
+                        IsCompleted = false
+                    }
+                };
+                foreach (var subTask in _currentTicket.SubTasks)
+                {
+                    var item = new ListViewItem(subTask.Title);
+                    item.SubItems.Add(subTask.IsCompleted ? "Yes" : "No");
+                    lvSubtasks.Items.Add(item);
+                }
+
+                // Load comments
+                _currentTicket.Comments = _currentTicket.Comments ?? new List<Comment>();
+                foreach (var comment in _currentTicket.Comments)
+                {
+                    var item = new ListViewItem(comment.Author);
+                    item.SubItems.Add(comment.Text);
+                    item.SubItems.Add(comment.CreatedDate.ToString("g"));
+                    lvComments.Items.Add(item);
+                }
+            }
+            else
+            {
+                // Set up a new ticket with default values
+                lblTitle.Text = "Create New Ticket";
+                lblCreated.Text = DateTime.Now.ToString("g");
+                lblModified.Text = DateTime.Now.ToString("g");
+
+                // Set default values for dropdowns
+                cmbCategory.SelectedItem = TicketCategory.Bug;
+                cmbPriority.SelectedItem = Priority.Medium;
+                cmbType.SelectedItem = "API";
+                cmbStatus.SelectedItem = Status.ToDo;
+
+                // Add some example subtasks for demo
+                lvSubtasks.Items.Add(new ListViewItem(new[] { "Implement core functionality", "No" }));
+                lvSubtasks.Items.Add(new ListViewItem(new[] { "Write unit tests", "No" }));
+
+                // Add some example comments for demo
+                lvComments.Items.Add(new ListViewItem(new[] { "System", "Initial creation", DateTime.Now.ToString("g") }));
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            if (ValidateForm())
+            {
+                var ticket = _isEditMode ? _currentTicket : new Ticket();
+
+                // Map form fields to ticket properties
+                ticket.Title = txtTitle.Text;
+                ticket.Description = txtDescription.Text;
+                ticket.Category = (TicketCategory)cmbCategory.SelectedValue;
+                ticket.Priority = (Priority)cmbPriority.SelectedValue;
+                ticket.Type = cmbType.SelectedValue.ToString();
+                ticket.DueDate = chkDueDate.Checked ? dtpDueDate.Value : (DateTime?)null;
+                ticket.Status = (Status)cmbStatus.SelectedValue;
+
+                // Update subtasks
+                ticket.SubTasks = new List<SubTask>();
+                foreach (ListViewItem item in lvSubtasks.Items)
+                {
+                    ticket.SubTasks.Add(new SubTask
+                    {
+                        Title = item.Text,
+                        IsCompleted = item.SubItems[1].Text == "Yes"
+                    });
+                }
+
+                // Update comments
+                ticket.Comments = new List<Comment>();
+                foreach (ListViewItem item in lvComments.Items)
+                {
+                    ticket.Comments.Add(new Comment
+                    {
+                        Author = item.Text,
+                        Text = item.SubItems[1].Text,
+                        CreatedDate = DateTime.Parse(item.SubItems[2].Text)
+                    });
+                }
+
+                if (_isEditMode)
+                {
+                    ticket.ModifiedDate = DateTime.Now;
+                    // _ticketService.UpdateTicket(ticket); // Uncomment when service is ready
+                }
+                else
+                {
+                    ticket.CreatedDate = DateTime.Now;
+                    ticket.ModifiedDate = DateTime.Now;
+                    // _ticketService.AddTicket(ticket); // Uncomment when service is ready
+                }
+
+                DialogResult = DialogResult.OK;
+                Close();
+            }
+        }
+
+        private bool ValidateForm()
+        {
+            if (string.IsNullOrWhiteSpace(txtTitle.Text))
+            {
+                MessageBox.Show("Title is required", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(txtDescription.Text))
+            {
+                MessageBox.Show("Description is required", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+
+            return true;
+        }
+
+        private void btnAddSubTask_Click(object sender, EventArgs e)
+        {
+            var subTaskForm = new SimpleInputForm("Add Subtask", "Subtask title:");
+            if (subTaskForm.ShowDialog() == DialogResult.OK)
+            {
+                var item = new ListViewItem(subTaskForm.InputText);
+                item.SubItems.Add("No");
+                lvSubtasks.Items.Add(item);
+            }
+        }
+
+        private void btnAddComment_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtComment.Text))
+            {
+                MessageBox.Show("Please enter a comment", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            var item = new ListViewItem("Current User"); // Would normally get current user
+            item.SubItems.Add(txtComment.Text);
+            item.SubItems.Add(DateTime.Now.ToString("g"));
+            lvComments.Items.Add(item);
+
+            txtComment.Clear();
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.Cancel;
+            Close();
+        }
+
+        private void chkDueDate_CheckedChanged(object sender, EventArgs e)
+        {
+            dtpDueDate.Enabled = chkDueDate.Checked;
+        }
+
+        private void btnToggleComplete_Click(object sender, EventArgs e)
+        {
+            if (lvSubtasks.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Please select a subtask to toggle", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            var selectedItem = lvSubtasks.SelectedItems[0];
+            selectedItem.SubItems[1].Text = selectedItem.SubItems[1].Text == "Yes" ? "No" : "Yes";
+        }
+
+        private void btnDeleteSubTask_Click(object sender, EventArgs e)
+        {
+            if (lvSubtasks.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Please select a subtask to delete", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (MessageBox.Show("Are you sure you want to delete this subtask?", "Confirm Delete",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                lvSubtasks.SelectedItems[0].Remove();
+            }
+        }
+        private void btnEditComment_Click(object sender, EventArgs e)
+        {
+            if (lvComments.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Please select a comment to edit", "No Selection",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            var selectedItem = lvComments.SelectedItems[0];
+            var editForm = new SimpleInputForm("Edit Comment", "Comment text:", selectedItem.SubItems[1].Text);
+
+            if (editForm.ShowDialog() == DialogResult.OK)
+            {
+                selectedItem.SubItems[1].Text = editForm.InputText;
+                selectedItem.SubItems[2].Text = DateTime.Now.ToString("g"); // Update modified time
+            }
+        }
+
+        private void btnDeleteComment_Click(object sender, EventArgs e)
+        {
+            if (lvComments.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Please select a comment to delete", "No Selection",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (MessageBox.Show("Are you sure you want to delete this comment?", "Confirm Delete",
+                MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                lvComments.SelectedItems[0].Remove();
+            }
+        }
+        private void TxtComment_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.SuppressKeyPress = true; // Prevent the ding sound
+                btnAddComment.PerformClick(); // Trigger the add comment button click
+            }
+        }
+    }
+}
