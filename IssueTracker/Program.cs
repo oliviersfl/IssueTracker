@@ -1,4 +1,5 @@
 using IssueTracker.Services;
+using IssueTracker.Services.Database;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,7 +10,7 @@ namespace IssueTracker
         private static IServiceProvider ServiceProvider { get; set; }
 
         [STAThread]
-        static void Main()
+        static async Task Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -19,21 +20,27 @@ namespace IssueTracker
                 .Build();
 
             var services = new ServiceCollection();
-            ConfigureServices(services, configuration);
+            await ConfigureServices(services, configuration);
 
             ServiceProvider = services.BuildServiceProvider();
+
+            var initializer = ServiceProvider.GetRequiredService<IDatabaseInitializer>();
+            await initializer.InitializeAsync();
 
             var mainForm = ServiceProvider.GetRequiredService<MainForm>();
             Application.Run(mainForm);
         }
 
-        private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+        private async static Task ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
             var appSettings = configuration.Get<AppSettings>() ??
                 throw new InvalidOperationException("Failed to bind AppSettings from configuration");
             services.AddSingleton(appSettings);
             services.AddSingleton<ITicketService, TicketService>();
             services.AddSingleton<MainForm>();
+
+            services.AddSingleton<IDatabaseService, SqliteDatabaseService>();
+            services.AddTransient<IDatabaseInitializer, SqliteDatabaseInitializer>();
         }
     }
 }

@@ -115,7 +115,8 @@ namespace IssueTracker
                 column.SortMode = DataGridViewColumnSortMode.Automatic;
             }
 
-            dgvTickets.ColumnHeaderMouseClick += (sender, e) => {
+            dgvTickets.ColumnHeaderMouseClick += (sender, e) =>
+            {
                 DataGridViewColumn column = dgvTickets.Columns[e.ColumnIndex];
 
                 if (_ticketsBindingSource.DataSource is List<Ticket> tickets)

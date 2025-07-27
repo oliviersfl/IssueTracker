@@ -1,10 +1,29 @@
 ﻿public class ConnectionStrings
 {
-    private string _sQLite;
+    private string _sqlite;
     public string SQLite
     {
-        get => _sQLite;
-        set => _sQLite = value;
+        get => _sqlite;
+        set => _sqlite = value;
+    }
+
+}
+
+
+public class Database
+{
+    private bool _seedSampleData;
+    public bool SeedSampleData
+    {
+        get => _seedSampleData;
+        set => _seedSampleData = value;
+    }
+
+    private string _scriptsFolder;
+    public string ScriptsFolder
+    {
+        get => _scriptsFolder;
+        set => _scriptsFolder = value;
     }
 
 }
@@ -26,4 +45,12 @@ public class AppSettings
         set => _connectionStrings = value;
     }
 
+    private Database _database;
+    public Database Database
+    {
+        get => _database;
+        set => _database = value;
+    }
+
 }
+
