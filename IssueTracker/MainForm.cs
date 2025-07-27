@@ -1,4 +1,5 @@
 using IssueTracker.Models;
+using IssueTracker.Models.Enums;
 using IssueTracker.Services;
 
 namespace IssueTracker
@@ -14,6 +15,7 @@ namespace IssueTracker
             InitializeComponent();
             ConfigureUI();
             LoadTickets();
+            ApplyDefaultFilters();
         }
 
         private void ConfigureUI()
@@ -106,6 +108,38 @@ namespace IssueTracker
 
             // Update ticket count
             UpdateTicketCount();
+
+            #region Sorting
+            foreach (DataGridViewColumn column in dgvTickets.Columns)
+            {
+                column.SortMode = DataGridViewColumnSortMode.Automatic;
+            }
+
+            dgvTickets.ColumnHeaderMouseClick += (sender, e) => {
+                DataGridViewColumn column = dgvTickets.Columns[e.ColumnIndex];
+
+                if (_ticketsBindingSource.DataSource is List<Ticket> tickets)
+                {
+                    var sortedTickets = column.HeaderCell.SortGlyphDirection == SortOrder.Ascending
+                        ? tickets.OrderByDescending(t => GetPropertyValue(t, column.DataPropertyName)).ToList()
+                        : tickets.OrderBy(t => GetPropertyValue(t, column.DataPropertyName)).ToList();
+
+                    _ticketsBindingSource.DataSource = sortedTickets;
+
+                    // Update sort glyph
+                    column.HeaderCell.SortGlyphDirection =
+                        column.HeaderCell.SortGlyphDirection == SortOrder.Ascending
+                            ? SortOrder.Descending
+                            : SortOrder.Ascending;
+
+                    // Clear other sort glyphs
+                    foreach (DataGridViewColumn col in dgvTickets.Columns)
+                    {
+                        if (col != column) col.HeaderCell.SortGlyphDirection = SortOrder.None;
+                    }
+                }
+            };
+            #endregion
         }
 
         private void LoadTickets()
@@ -118,30 +152,72 @@ namespace IssueTracker
                     Id = 1,
                     Title = "Some bug",
                     Description = "Can't read file\nCan you please help",
-                    Category = Models.Enums.TicketCategory.Bug,
-                    Priority = Models.Enums.Priority.Medium,
+                    Category = TicketCategory.Bug,
+                    Priority = Priority.Medium,
                     Type = "Data Bridge",
                     CreatedDate = DateTime.Now.AddHours(-2),
                     ModifiedDate = DateTime.Now.AddMinutes(-30),
                     DueDate = DateTime.Now.AddDays(3),
-                    Status = Models.Enums.Status.InProgress
+                    Status = Status.Done
                 },
                 new Ticket()
                 {
                     Id = 2,
                     Title = "Interface - New Client",
                     Description = "Inbound",
-                    Category = Models.Enums.TicketCategory.Feature,
-                    Priority = Models.Enums.Priority.Low,
+                    Category = TicketCategory.Feature,
+                    Priority = Priority.Low,
                     Type = "Custom Interface",
                     CreatedDate = DateTime.Now.AddDays(-1),
                     ModifiedDate = DateTime.Now.AddHours(-3),
                     DueDate = DateTime.Now.AddDays(7),
-                    Status = Models.Enums.Status.ToDo
-                }
+                    Status = Status.ToDo
+                },
+                new Ticket()
+                {
+                    Id = 3,
+                    Title = "API Activation - Urgent",
+                    Description = "New API for XYZ Company",
+                    Category = TicketCategory.Feature,
+                    Priority = Priority.High,
+                    Type = "API Activation",
+                    CreatedDate = DateTime.Now.AddHours(-2),
+                    ModifiedDate = DateTime.Now.AddMinutes(-30),
+                    DueDate = DateTime.Now.AddDays(3),
+                    Status = Status.WaitingForClient
+                },
+                new Ticket()
+                {
+                    Id = 4,
+                    Title = "Databridge Issue - For ABC Company",
+                    Description = "Identifier not found issue",
+                    Category = TicketCategory.Bug,
+                    Priority = Priority.Medium,
+                    Type = "Databridge",
+                    CreatedDate = DateTime.Now.AddHours(-2),
+                    ModifiedDate = DateTime.Now.AddMinutes(-30),
+                    DueDate = DateTime.Now.AddDays(3),
+                    Status = Status.InProgress
+                },
+                new Ticket()
+                {
+                    Id = 5,
+                    Title = "SFTP Error",
+                    Description = "Unable to connect to SFTP",
+                    Category = TicketCategory.Feature,
+                    Priority = Priority.High,
+                    Type = "Support",
+                    CreatedDate = DateTime.Now.AddHours(-2),
+                    ModifiedDate = DateTime.Now.AddMinutes(-30),
+                    DueDate = DateTime.Now.AddDays(3),
+                    Status = Status.WaitingOnInternalTeam
+                },
             };
-            _ticketService.AddTicket(tickets[0]);
-            _ticketService.AddTicket(tickets[1]);
+
+            foreach (var ticket in tickets)
+            {
+                _ticketService.AddTicket(ticket);
+            }
 
             _ticketsBindingSource.DataSource = tickets;
             UpdateTicketCount();
@@ -208,6 +284,34 @@ namespace IssueTracker
                     LoadTickets(); // Refresh the list
                 }
             }
+        }
+        public void ApplyDefaultFilters()
+        {
+            var statusesToInclude = new List<Status>() { Status.ToDo, Status.InProgress, Status.OnHold, Status.Planned, Status.WaitingForClient, Status.WaitingOnInternalTeam, Status.Reassigned };
+
+            List<Ticket> tickets = _ticketService.FilterTickets(statusesToInclude, null, null, null, null);
+
+            _ticketsBindingSource.DataSource = tickets;
+
+            UpdateTicketCount();
+        }
+
+        // Used for sorting
+        private object GetPropertyValue(Ticket ticket, string propertyName)
+        {
+            return propertyName switch
+            {
+                "Id" => ticket.Id,
+                "Title" => ticket.Title,
+                "Category" => ticket.Category,
+                "Type" => ticket.Type,
+                "Priority" => ticket.Priority,
+                "Status" => ticket.Status,
+                "CreatedDate" => ticket.CreatedDate,
+                "ModifiedDate" => ticket.ModifiedDate,
+                "DueDate" => ticket.DueDate,
+                _ => throw new ArgumentException($"Unknown property: {propertyName}")
+            };
         }
     }
 }

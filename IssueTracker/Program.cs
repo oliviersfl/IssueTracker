@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace IssueTracker
 {
-    // Program.cs
     static class Program
     {
         private static IServiceProvider ServiceProvider { get; set; }
@@ -30,7 +29,9 @@ namespace IssueTracker
 
         private static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton(configuration);
+            var appSettings = configuration.Get<AppSettings>() ??
+                throw new InvalidOperationException("Failed to bind AppSettings from configuration");
+            services.AddSingleton(appSettings);
             services.AddSingleton<ITicketService, TicketService>();
             services.AddSingleton<MainForm>();
         }

@@ -1,17 +1,16 @@
 ﻿using IssueTracker.Models;
 using IssueTracker.Models.Enums;
-using Microsoft.Extensions.Configuration;
 
 namespace IssueTracker.Services
 {
     public class TicketService : ITicketService
     {
         private readonly List<Ticket> _tickets = new List<Ticket>();
-        private readonly IConfiguration _configuration;
+        private readonly AppSettings _appSettings;
 
-        public TicketService(IConfiguration configuration)
+        public TicketService(AppSettings appSettings)
         {
-            _configuration = configuration;
+            _appSettings = appSettings;
         }
 
         public List<Ticket> GetAllTickets() => _tickets;
@@ -34,7 +33,7 @@ namespace IssueTracker.Services
         }
 
         public List<string> GetTicketTypes() =>
-            _configuration.GetSection("TicketTypes").Get<List<string>>();
+            _appSettings.TicketTypes;
 
         public List<Ticket> FilterTickets(
             List<Status> statuses,
