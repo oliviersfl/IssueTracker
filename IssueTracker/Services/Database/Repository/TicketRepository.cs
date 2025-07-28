@@ -85,7 +85,31 @@ namespace IssueTracker.Services.Database.Repository
             });
         }
 
-        // (Similar implementations for GetAllPrioritiesAsync and GetAllTypesAsync)
+        public async Task<IEnumerable<TicketPriority>> GetAllPrioritiesAsync()
+        {
+            const string sql = "SELECT * FROM TicketPriority ORDER BY \"order\"";
+            return await _db.QueryAsync(sql, reader => new TicketPriority
+            {
+                Id = reader.GetInt32(0),
+                Description = reader.GetString(1),
+                Order = reader.GetInt32(2),
+                CreatedDate = reader.GetDateTime(3),
+                ModifiedDate = reader.GetDateTime(4)
+            });
+        }
+
+        public async Task<IEnumerable<TicketType>> GetAllTypesAsync()
+        {
+            const string sql = "SELECT * FROM TicketType ORDER BY \"order\"";
+            return await _db.QueryAsync(sql, reader => new TicketType
+            {
+                Id = reader.GetInt32(0),
+                Description = reader.GetString(1),
+                Order = reader.GetInt32(2),
+                CreatedDate = reader.GetDateTime(3),
+                ModifiedDate = reader.GetDateTime(4)
+            });
+        }
 
         // --- Subtask Methods ---
         public async Task<int> AddSubTaskAsync(int ticketId, TicketSubTask subTask)
@@ -114,6 +138,20 @@ namespace IssueTracker.Services.Database.Repository
             }, new SqliteParameter("@TicketId", ticketId));
         }
 
+        public async Task UpdateSubTaskAsync(TicketSubTask subTask)
+        {
+            const string sql = @"
+        UPDATE TicketSubTask SET 
+            title = @Title,
+            isCompleted = @IsCompleted
+        WHERE id = @Id";
+
+            await _db.ExecuteNonQueryAsync(sql,
+                new SqliteParameter("@Title", subTask.Title),
+                new SqliteParameter("@IsCompleted", subTask.IsCompleted),
+                new SqliteParameter("@Id", subTask.Id));
+        }
+
         // --- Comment Methods ---
         public async Task<int> AddCommentAsync(int ticketId, TicketComment comment)
         {
@@ -126,6 +164,19 @@ namespace IssueTracker.Services.Database.Repository
                 new SqliteParameter("@TicketId", ticketId),
                 new SqliteParameter("@Author", comment.Author),
                 new SqliteParameter("@Text", comment.Text));
+        }
+
+        public async Task<IEnumerable<TicketComment>> GetCommentsByTicketIdAsync(int ticketId)
+        {
+            const string sql = "SELECT * FROM TicketComment WHERE ticketid = @TicketId ORDER BY CreatedDate DESC";
+            return await _db.QueryAsync(sql, reader => new TicketComment
+            {
+                Id = reader.GetInt32(0),
+                TicketId = reader.GetInt32(1),
+                Author = reader.GetString(2),
+                Text = reader.GetString(3),
+                CreatedDate = reader.GetDateTime(4)
+            }, new SqliteParameter("@TicketId", ticketId));
         }
 
         // --- Helper Methods ---
@@ -171,59 +222,6 @@ namespace IssueTracker.Services.Database.Repository
                 await _db.RollbackAsync();
                 throw;
             }
-        }
-
-        public async Task<IEnumerable<TicketPriority>> GetAllPrioritiesAsync()
-        {
-            const string sql = "SELECT * FROM TicketPriority ORDER BY \"order\"";
-            return await _db.QueryAsync(sql, reader => new TicketPriority
-            {
-                Id = reader.GetInt32(0),
-                Description = reader.GetString(1),
-                Order = reader.GetInt32(2),
-                CreatedDate = reader.GetDateTime(3),
-                ModifiedDate = reader.GetDateTime(4)
-            });
-        }
-
-        public async Task<IEnumerable<TicketType>> GetAllTypesAsync()
-        {
-            const string sql = "SELECT * FROM TicketType ORDER BY \"order\"";
-            return await _db.QueryAsync(sql, reader => new TicketType
-            {
-                Id = reader.GetInt32(0),
-                Description = reader.GetString(1),
-                Order = reader.GetInt32(2),
-                CreatedDate = reader.GetDateTime(3),
-                ModifiedDate = reader.GetDateTime(4)
-            });
-        }
-
-        public async Task UpdateSubTaskAsync(TicketSubTask subTask)
-        {
-            const string sql = @"
-        UPDATE TicketSubTask SET 
-            title = @Title,
-            isCompleted = @IsCompleted
-        WHERE id = @Id";
-
-            await _db.ExecuteNonQueryAsync(sql,
-                new SqliteParameter("@Title", subTask.Title),
-                new SqliteParameter("@IsCompleted", subTask.IsCompleted),
-                new SqliteParameter("@Id", subTask.Id));
-        }
-
-        public async Task<IEnumerable<TicketComment>> GetCommentsByTicketIdAsync(int ticketId)
-        {
-            const string sql = "SELECT * FROM TicketComment WHERE ticketid = @TicketId ORDER BY CreatedDate DESC";
-            return await _db.QueryAsync(sql, reader => new TicketComment
-            {
-                Id = reader.GetInt32(0),
-                TicketId = reader.GetInt32(1),
-                Author = reader.GetString(2),
-                Text = reader.GetString(3),
-                CreatedDate = reader.GetDateTime(4)
-            }, new SqliteParameter("@TicketId", ticketId));
         }
     }
 }
