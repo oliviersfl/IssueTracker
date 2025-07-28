@@ -1,5 +1,7 @@
 using IssueTracker.Services;
 using IssueTracker.Services.Database;
+using IssueTracker.Services.Database.Repository;
+using IssueTracker.Services.Database.Repository.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -39,8 +41,12 @@ namespace IssueTracker
             services.AddSingleton<ITicketService, TicketService>();
             services.AddSingleton<MainForm>();
 
+
+            // Database
             services.AddSingleton<IDatabaseService, SqliteDatabaseService>();
             services.AddTransient<IDatabaseInitializer, SqliteDatabaseInitializer>();
+
+            services.AddTransient<ITicketRepository, TicketRepository>();
         }
     }
 }

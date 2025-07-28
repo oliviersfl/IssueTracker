@@ -1,6 +1,7 @@
 using IssueTracker.Models;
 using IssueTracker.Models.Enums;
 using IssueTracker.Services;
+using IssueTracker.Services.Database.Repository.Interfaces;
 
 namespace IssueTracker
 {
@@ -9,15 +10,18 @@ namespace IssueTracker
         private readonly ITicketService _ticketService;
         private BindingSource _ticketsBindingSource = new BindingSource();
 
-        public MainForm(ITicketService ticketService)
+        private ITicketRepository _ticketRepo;
+
+        public MainForm(ITicketService ticketService, ITicketRepository ticketRepository)
         {
             _ticketService = ticketService;
+            _ticketRepo = ticketRepository;
+
             InitializeComponent();
             ConfigureUI();
             LoadTickets();
             ApplyDefaultFilters();
         }
-
         private void ConfigureUI()
         {
             // Configure DataGridView

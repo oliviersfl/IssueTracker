@@ -87,7 +87,7 @@ namespace IssueTracker
                 lblModified.Text = DateTime.Now.ToString("g");
 
                 // Set default values for dropdowns
-                cmbCategory.SelectedItem = TicketCategory.Bug;
+                cmbCategory.SelectedItem = cmbCategory;
                 cmbPriority.SelectedItem = Priority.Medium;
                 cmbType.SelectedItem = "API";
                 cmbStatus.SelectedItem = Status.ToDo;
