@@ -25,6 +25,15 @@ CREATE TABLE IF NOT EXISTS TicketType (
     ModifiedDate DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Create TicketType table
+CREATE TABLE IF NOT EXISTS TicketStatus (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    description TEXT NOT NULL,
+    "order" INTEGER NOT NULL,
+    CreatedDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    ModifiedDate DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Create Ticket table
 CREATE TABLE IF NOT EXISTS Ticket (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -39,7 +48,8 @@ CREATE TABLE IF NOT EXISTS Ticket (
     DueDate DATETIME,
     FOREIGN KEY (categoryid) REFERENCES TicketCategory(id),
     FOREIGN KEY (priorityid) REFERENCES TicketPriority(id),
-	FOREIGN KEY (typeid) REFERENCES TicketType(id)
+	FOREIGN KEY (typeid) REFERENCES TicketType(id),
+	FOREIGN KEY (statusid) REFERENCES TicketStatus(id)
 );
 
 -- Create TicketSubTask table
@@ -56,7 +66,7 @@ CREATE TABLE IF NOT EXISTS TicketSubTask (
 CREATE TABLE IF NOT EXISTS TicketComment (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     ticketid INTEGER NOT NULL,
-    author TEXT NOT NULL,
+    author TEXT,
     text TEXT NOT NULL,
     CreatedDate DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (ticketid) REFERENCES Ticket(id)
@@ -66,5 +76,6 @@ CREATE TABLE IF NOT EXISTS TicketComment (
 CREATE INDEX IF NOT EXISTS idx_ticket_category ON Ticket(categoryid);
 CREATE INDEX IF NOT EXISTS idx_ticket_priority ON Ticket(priorityid);
 CREATE INDEX IF NOT EXISTS idx_ticket_type ON Ticket(typeid);
+CREATE INDEX IF NOT EXISTS idx_ticket_status ON Ticket(statusid);
 CREATE INDEX IF NOT EXISTS idx_subtask_ticket ON TicketSubTask(ticketid);
 CREATE INDEX IF NOT EXISTS idx_comment_ticket ON TicketComment(ticketid);
