@@ -158,12 +158,12 @@ namespace IssueTracker
                     Title = "Some bug",
                     Description = "Can't read file\nCan you please help",
                     Category = "Bug",
-                    Priority = Priority.Medium,
+                    Priority = "Medium",
                     Type = "Data Bridge",
                     CreatedDate = DateTime.Now.AddHours(-2),
                     ModifiedDate = DateTime.Now.AddMinutes(-30),
                     DueDate = DateTime.Now.AddDays(3),
-                    Status = Status.Done
+                    Status = "Done"
                 },
                 new Ticket()
                 {
@@ -171,12 +171,12 @@ namespace IssueTracker
                     Title = "Interface - New Client",
                     Description = "Inbound",
                     Category = "Feature",
-                    Priority = Priority.Low,
+                    Priority = "Low",
                     Type = "Custom Interface",
                     CreatedDate = DateTime.Now.AddDays(-1),
                     ModifiedDate = DateTime.Now.AddHours(-3),
                     DueDate = DateTime.Now.AddDays(7),
-                    Status = Status.ToDo
+                    Status = "To Do"
                 },
                 new Ticket()
                 {
@@ -184,12 +184,12 @@ namespace IssueTracker
                     Title = "API Activation - Urgent",
                     Description = "New API for XYZ Company",
                     Category = "Feature",
-                    Priority = Priority.High,
+                    Priority = "High",
                     Type = "API Activation",
                     CreatedDate = DateTime.Now.AddHours(-2),
                     ModifiedDate = DateTime.Now.AddMinutes(-30),
                     DueDate = DateTime.Now.AddDays(3),
-                    Status = Status.WaitingForClient
+                    Status = "Waiting for client"
                 },
                 new Ticket()
                 {
@@ -197,12 +197,12 @@ namespace IssueTracker
                     Title = "Databridge Issue - For ABC Company",
                     Description = "Identifier not found issue",
                     Category = "Bug",
-                    Priority = Priority.Medium,
+                    Priority = "Critical",
                     Type = "Data Bridge",
                     CreatedDate = DateTime.Now.AddHours(-2),
                     ModifiedDate = DateTime.Now.AddMinutes(-30),
                     DueDate = DateTime.Now.AddDays(3),
-                    Status = Status.InProgress
+                    Status = "In Progress"
                 },
                 new Ticket()
                 {
@@ -210,12 +210,12 @@ namespace IssueTracker
                     Title = "SFTP Error",
                     Description = "Unable to connect to SFTP",
                     Category = "Feature",
-                    Priority = Priority.High,
+                    Priority = "High",
                     Type = "Support",
                     CreatedDate = DateTime.Now.AddHours(-2),
                     ModifiedDate = DateTime.Now.AddMinutes(-30),
                     DueDate = DateTime.Now.AddDays(3),
-                    Status = Status.WaitingOnInternalTeam
+                    Status = "Waiting on internal team"
                 },
             };
 
@@ -238,7 +238,7 @@ namespace IssueTracker
         }
         public void ApplyDefaultFilters()
         {
-            var statusesToInclude = new List<Status>() { Status.ToDo, Status.InProgress, Status.OnHold, Status.Planned, Status.WaitingForClient, Status.WaitingOnInternalTeam, Status.Reassigned };
+            var statusesToInclude = new List<string>() { "To Do", "In Progress", "Waiting for client", "Call scheduled", "On Hold", "Done" };
 
             List<Ticket> tickets = _ticketService.FilterTickets(statusesToInclude, null, null, null, null);
 

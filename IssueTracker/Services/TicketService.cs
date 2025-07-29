@@ -36,7 +36,7 @@ namespace IssueTracker.Services
             _appSettings.TicketTypes;
 
         public List<Ticket> FilterTickets(
-            List<Status> statuses,
+            List<string> statuses,
             DateTime? fromDate,
             DateTime? toDate,
             string type,

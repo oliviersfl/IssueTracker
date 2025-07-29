@@ -24,9 +24,12 @@ namespace IssueTracker
         {
             // Populate dropdowns with enum values
             List<string> ticketCategories = ["Bug", "Feature", "Enhancement", "Documentation", "Support", "TicketDetailForm Categories Hardcoded"];
+            List<string> ticketPriorities = ["Critial", "High", "Medium", "Low", "Harcoded priority TicketDetailForm"];
+            List<string> ticketStatuses = ["To Do", "In Progress", "On Hold", "Done", "Waiting on client", "Call Scheduled", "Status FilterDialog Test harcdoded"];
+
             cmbCategory.DataSource = ticketCategories;
-            cmbPriority.DataSource = Enum.GetValues(typeof(Priority));
-            cmbStatus.DataSource = Enum.GetValues(typeof(Status));
+            cmbPriority.DataSource = ticketPriorities;
+            cmbStatus.DataSource = ticketStatuses;
 
             // Hardcoded types (would normally come from appsettings.json)
             cmbType.DataSource = new List<string> { "API", "Interface", "Data Bridge", "Database", "Service" };
@@ -89,9 +92,9 @@ namespace IssueTracker
 
                 // Set default values for dropdowns
                 cmbCategory.SelectedItem = cmbCategory;
-                cmbPriority.SelectedItem = Priority.Medium;
+                cmbPriority.SelectedItem = "Medium";
                 cmbType.SelectedItem = "API";
-                cmbStatus.SelectedItem = Status.ToDo;
+                cmbStatus.SelectedItem = "To Do";
 
                 // Add some example subtasks for demo
                 lvSubtasks.Items.Add(new ListViewItem(new[] { "Implement core functionality", "No" }));
@@ -112,10 +115,10 @@ namespace IssueTracker
                 ticket.Title = txtTitle.Text;
                 ticket.Description = txtDescription.Text;
                 ticket.Category = cmbCategory.SelectedValue.ToString();
-                ticket.Priority = (Priority)cmbPriority.SelectedValue;
+                ticket.Priority = cmbPriority.SelectedValue.ToString();
                 ticket.Type = cmbType.SelectedValue.ToString();
                 ticket.DueDate = chkDueDate.Checked ? dtpDueDate.Value : (DateTime?)null;
-                ticket.Status = (Status)cmbStatus.SelectedValue;
+                ticket.Status = cmbStatus.SelectedValue.ToString();
 
                 // Update subtasks
                 ticket.SubTasks = new List<SubTask>();

@@ -6,7 +6,7 @@ namespace IssueTracker
     public partial class FilterDialog : Form
     {
         private ITicketService _ticketService;
-        public List<Status> SelectedStatuses { get; private set; } = new List<Status>();
+        public List<string> SelectedStatuses { get; private set; } = new List<string>();
         public DateTime? FromDate { get; private set; }
         public DateTime? ToDate { get; private set; }
         public string SelectedType { get; private set; }
@@ -21,7 +21,8 @@ namespace IssueTracker
         private void SetupControls()
         {
             // Initialize status checkboxes
-            foreach (Status status in Enum.GetValues(typeof(Status)))
+            string[] ticketStatuses = ["To Do", "In Progress", "On Hold", "Done", "Waiting on client", "Call Scheduled", "Status FilterDialog Test harcdoded"];
+            foreach (string status in ticketStatuses)
             {
                 clbStatus.Items.Add(status, true); // Default all checked
             }
@@ -49,13 +50,14 @@ namespace IssueTracker
             // Get all checked statuses
             foreach (var item in clbStatus.CheckedItems)
             {
-                SelectedStatuses.Add((Status)item);
+                SelectedStatuses.Add(item.ToString());
             }
 
             // If none selected, treat as all selected
             if (SelectedStatuses.Count == 0)
             {
-                SelectedStatuses.AddRange((Status[])Enum.GetValues(typeof(Status)));
+                string[] ticketStatuses = ["To Do", "In Progress", "On Hold", "Done", "Waiting on client", "Call Scheduled", "Status FilterDialog Test harcdoded"];
+                SelectedStatuses.AddRange(ticketStatuses);
             }
 
             SelectedCategory = cmbCategory.SelectedIndex == 0 ? null : cmbCategory.SelectedItem.ToString();

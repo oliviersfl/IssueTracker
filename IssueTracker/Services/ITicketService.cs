@@ -12,7 +12,7 @@ namespace IssueTracker.Services
         void DeleteTicket(int id);
         List<string> GetTicketTypes();
         List<Ticket> FilterTickets(
-            List<Status> statuses,
+            List<string> statuses,
             DateTime? fromDate,
             DateTime? toDate,
             string type,
