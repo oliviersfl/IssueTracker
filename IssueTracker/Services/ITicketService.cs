@@ -16,7 +16,7 @@ namespace IssueTracker.Services
             DateTime? fromDate,
             DateTime? toDate,
             string type,
-            TicketCategory? category
+            string category
         );
     }
 }

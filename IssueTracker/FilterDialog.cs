@@ -10,7 +10,7 @@ namespace IssueTracker
         public DateTime? FromDate { get; private set; }
         public DateTime? ToDate { get; private set; }
         public string SelectedType { get; private set; }
-        public TicketCategory? SelectedCategory { get; private set; }
+        public string SelectedCategory { get; private set; }
         public FilterDialog(ITicketService ticketService)
         {
             _ticketService = ticketService;
@@ -32,7 +32,10 @@ namespace IssueTracker
             cmbType.SelectedIndex = 0;
 
             cmbCategory.Items.Add("All");
-            foreach (TicketCategory category in Enum.GetValues(typeof(TicketCategory)))
+
+            // TEST:
+            string[] ticketCategories = ["Bug", "Feature", "Enhancement", "Documentation", "Support", "Ticket Categories Test FilterDialog Hardcoded"];
+            foreach (string category in ticketCategories)
             {
                 cmbCategory.Items.Add(category);
             }
@@ -55,7 +58,7 @@ namespace IssueTracker
                 SelectedStatuses.AddRange((Status[])Enum.GetValues(typeof(Status)));
             }
 
-            SelectedCategory = cmbCategory.SelectedIndex == 0 ? null : (TicketCategory)cmbCategory.SelectedItem;
+            SelectedCategory = cmbCategory.SelectedIndex == 0 ? null : cmbCategory.SelectedItem.ToString();
 
             FromDate = chkFromDate.Checked ? dtpFromDate.Value : (DateTime?)null;
             ToDate = chkToDate.Checked ? dtpToDate.Value : (DateTime?)null;

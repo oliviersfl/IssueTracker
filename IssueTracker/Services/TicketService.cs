@@ -40,7 +40,7 @@ namespace IssueTracker.Services
             DateTime? fromDate,
             DateTime? toDate,
             string type,
-            TicketCategory? category
+            string category
         )
         {
             return _tickets
@@ -48,7 +48,7 @@ namespace IssueTracker.Services
                 .Where(t => !fromDate.HasValue || t.CreatedDate >= fromDate.Value)
                 .Where(t => !toDate.HasValue || t.CreatedDate <= toDate.Value)
                 .Where(t => string.IsNullOrEmpty(type) || t.Type == type)
-                .Where(t => !category.HasValue || t.Category == category.Value)
+                .Where(t => string.IsNullOrEmpty(category) || t.Category == category)
                 .ToList();
         }
     }

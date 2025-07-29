@@ -23,7 +23,8 @@ namespace IssueTracker
         private void InitializeForm()
         {
             // Populate dropdowns with enum values
-            cmbCategory.DataSource = Enum.GetValues(typeof(TicketCategory));
+            List<string> ticketCategories = ["Bug", "Feature", "Enhancement", "Documentation", "Support", "TicketDetailForm Categories Hardcoded"];
+            cmbCategory.DataSource = ticketCategories;
             cmbPriority.DataSource = Enum.GetValues(typeof(Priority));
             cmbStatus.DataSource = Enum.GetValues(typeof(Status));
 
@@ -110,7 +111,7 @@ namespace IssueTracker
                 // Map form fields to ticket properties
                 ticket.Title = txtTitle.Text;
                 ticket.Description = txtDescription.Text;
-                ticket.Category = (TicketCategory)cmbCategory.SelectedValue;
+                ticket.Category = cmbCategory.SelectedValue.ToString();
                 ticket.Priority = (Priority)cmbPriority.SelectedValue;
                 ticket.Type = cmbType.SelectedValue.ToString();
                 ticket.DueDate = chkDueDate.Checked ? dtpDueDate.Value : (DateTime?)null;
