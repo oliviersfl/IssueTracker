@@ -22,7 +22,7 @@ INSERT INTO TicketStatus (description, "order") VALUES
 ('Cancelled', 5),
 ('Reassigned', 6),
 ('Planned', 7),
-('Waiting for Client', 8),
+('Waiting on Client', 8),
 ('Waiting on Internal Team', 9);
 
 -- Insert TicketType data (using status values)

@@ -32,6 +32,11 @@ namespace IssueTracker.Services
             // Implementation will go here
         }
 
+        public void ClearTickets()
+        {
+            _tickets.Clear();
+        }
+
         public List<string> GetTicketTypes() =>
             _appSettings.TicketTypes;
 

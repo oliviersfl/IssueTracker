@@ -150,6 +150,7 @@ namespace IssueTracker
         private void LoadTickets()
         {
             // For testing, we'll use the hardcoded list with different timestamps
+            _ticketService.ClearTickets();
             var tickets = new List<Ticket>()
             {
                 new Ticket()
@@ -185,11 +186,11 @@ namespace IssueTracker
                     Description = "New API for XYZ Company",
                     Category = "Feature",
                     Priority = "High",
-                    Type = "API Activation",
+                    Type = "API",
                     CreatedDate = DateTime.Now.AddHours(-2),
                     ModifiedDate = DateTime.Now.AddMinutes(-30),
                     DueDate = DateTime.Now.AddDays(3),
-                    Status = "Waiting for client"
+                    Status = "Waiting on client"
                 },
                 new Ticket()
                 {
@@ -211,7 +212,7 @@ namespace IssueTracker
                     Description = "Unable to connect to SFTP",
                     Category = "Feature",
                     Priority = "High",
-                    Type = "Support",
+                    Type = "SFTP",
                     CreatedDate = DateTime.Now.AddHours(-2),
                     ModifiedDate = DateTime.Now.AddMinutes(-30),
                     DueDate = DateTime.Now.AddDays(3),
@@ -238,7 +239,7 @@ namespace IssueTracker
         }
         public void ApplyDefaultFilters()
         {
-            var statusesToInclude = new List<string>() { "To Do", "In Progress", "Waiting for client", "Call scheduled", "On Hold", "Done" };
+            var statusesToInclude = new List<string>() { "To Do", "In Progress", "Waiting on client", "Call scheduled", "On Hold", "Done", "Waiting on internal team" };
 
             List<Ticket> tickets = _ticketService.FilterTickets(statusesToInclude, null, null, null, null);
 
