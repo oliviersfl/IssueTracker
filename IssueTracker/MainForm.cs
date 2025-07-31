@@ -225,7 +225,7 @@ namespace IssueTracker
                 _ticketService.AddTicket(ticket);
             }
 
-            _ticketsBindingSource.DataSource = tickets;
+            _ticketsBindingSource.DataSource = _ticketService.GetAllTickets().ToList();
             UpdateTicketCount();
 
             // In your final version, you'll use the service:
