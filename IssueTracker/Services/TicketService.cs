@@ -1,42 +1,36 @@
 ﻿using IssueTracker.Models;
-using IssueTracker.Models.Enums;
+using IssueTracker.Services.Database.Repository.Interfaces;
 
 namespace IssueTracker.Services
 {
     public class TicketService : ITicketService
     {
         private readonly List<Ticket> _tickets = new List<Ticket>();
+        private ITicketRepository _ticketRepository;
         private readonly AppSettings _appSettings;
 
-        public TicketService(AppSettings appSettings)
+        public TicketService(AppSettings appSettings, ITicketRepository ticketRepository)
         {
+            _ticketRepository = ticketRepository;
             _appSettings = appSettings;
         }
-
+        #region Get Methods
         public List<Ticket> GetAllTickets() => _tickets;
-
         public Ticket GetTicketById(int id) => _tickets.FirstOrDefault(t => t.Id == id);
-
-        public void AddTicket(Ticket ticket)
+        public async Task<List<TicketCategory>> GetTicketCategories()
         {
-            _tickets.Add(ticket);
-        }
+            var categories = await _ticketRepository.GetAllCategoriesAsync();
 
-        public void UpdateTicket(Ticket ticket)
-        {
-            // Implementation will go here
+            return categories.Select(c => new TicketCategory
+            {
+                Id = c.Id,
+                Description = c.Description,
+                Order = c.Order,
+                IsDefault = c.IsDefault,
+                CreatedDate = c.CreatedDate,
+                ModifiedDate = c.ModifiedDate
+            }).ToList();
         }
-
-        public void DeleteTicket(int id)
-        {
-            // Implementation will go here
-        }
-
-        public void ClearTickets()
-        {
-            _tickets.Clear();
-        }
-
         public List<string> GetTicketTypes() =>
             _appSettings.TicketTypes;
 
@@ -56,5 +50,24 @@ namespace IssueTracker.Services
                 .Where(t => string.IsNullOrEmpty(category) || t.Category == category)
                 .ToList();
         }
+        #endregion
+        #region Add/Update/Delete
+        public void AddTicket(Ticket ticket)
+        {
+            _tickets.Add(ticket);
+        }
+        public void UpdateTicket(Ticket ticket)
+        {
+            // Implementation will go here
+        }
+        public void DeleteTicket(int id)
+        {
+            // Implementation will go here
+        }
+        public void ClearTickets()
+        {
+            _tickets.Clear();
+        }
+        #endregion
     }
 }

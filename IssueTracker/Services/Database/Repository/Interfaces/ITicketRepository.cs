@@ -1,7 +1,6 @@
 ﻿using IssueTracker.Services.Database.Models;
 using Ticket = IssueTracker.Services.Database.Models.Ticket;
 using TicketCategory = IssueTracker.Services.Database.Models.TicketCategory;
-
 namespace IssueTracker.Services.Database.Repository.Interfaces
 {
     public interface ITicketRepository

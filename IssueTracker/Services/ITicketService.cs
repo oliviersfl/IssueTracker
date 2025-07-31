@@ -7,6 +7,7 @@ namespace IssueTracker.Services
     {
         List<Ticket> GetAllTickets();
         Ticket GetTicketById(int id);
+        Task<List<TicketCategory>> GetTicketCategories();
         void AddTicket(Ticket ticket);
         void UpdateTicket(Ticket ticket);
         void DeleteTicket(int id);

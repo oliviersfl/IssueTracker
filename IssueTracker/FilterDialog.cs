@@ -1,4 +1,5 @@
-﻿using IssueTracker.Models.Enums;
+﻿using IssueTracker.Models;
+using IssueTracker.Models.Enums;
 using IssueTracker.Services;
 
 namespace IssueTracker
@@ -18,7 +19,7 @@ namespace IssueTracker
             SetupControls();
         }
 
-        private void SetupControls()
+        private async void SetupControls()
         {
             // Initialize status checkboxes
             string[] ticketStatuses = ["To Do", "In Progress", "On Hold", "Done", "Waiting on client", "Call Scheduled", "Status FilterDialog Test harcdoded"];
@@ -34,13 +35,27 @@ namespace IssueTracker
 
             cmbCategory.Items.Add("All");
 
-            // TEST:
-            string[] ticketCategories = ["Bug", "Feature", "Enhancement", "Documentation", "Support", "Ticket Categories Test FilterDialog Hardcoded"];
-            foreach (string category in ticketCategories)
+            // Populate Ticket Categories Combo
+            List<TicketCategory> tickCat = await _ticketService.GetTicketCategories();
+            int defaultIndex = 0; // Initialize with first item as fallback
+
+            cmbCategory.Items.Clear();
+
+            for (int i = 0; i < tickCat.Count; i++)
             {
-                cmbCategory.Items.Add(category);
+                cmbCategory.Items.Add(tickCat[i].Description);
+
+                if (tickCat[i].IsDefault)
+                {
+                    defaultIndex = i;
+                }
             }
-            cmbCategory.SelectedIndex = 0;
+
+            // Set the selected index
+            if (cmbCategory.Items.Count > 0)
+            {
+                cmbCategory.SelectedIndex = defaultIndex;
+            }
         }
 
         private void btnApply_Click(object sender, EventArgs e)
