@@ -1,17 +1,24 @@
 -- Insert TicketCategory data
-INSERT INTO TicketCategory (description, "order") VALUES
-('Bug', 1),
-('Feature', 2),
-('Enhancement', 3),
-('Documentation', 4),
-('Support', 5);
+INSERT INTO TicketCategory (description, "order", isDefault) VALUES
+('Bug', 1, 0),
+('Feature', 2, 0),
+('Enhancement', 3, 0),
+('Documentation', 4, 0),
+('Support', 5, 1);
 
 -- Insert TicketPriority data
-INSERT INTO TicketPriority (description, "order") VALUES
-('Low', 1),
-('Medium', 2),
-('High', 3),
-('Critical', 4);
+INSERT INTO TicketPriority (description, "order", isDefault) VALUES
+('Low', 1, 0),
+('Medium', 2, 1),
+('High', 3, 0),
+('Critical', 4, 0);
+
+-- Insert TicketType data (using status values)
+INSERT INTO TicketType (description, "order", isDefault) VALUES
+('API', 1, 0),
+('Data Bridge', 2, 1),
+('Custom Interface', 3, 0),
+('SFTP', 4, 0);
 
 -- Insert TicketStatus data (using status values)
 INSERT INTO TicketStatus (description, "order") VALUES
@@ -24,13 +31,6 @@ INSERT INTO TicketStatus (description, "order") VALUES
 ('Planned', 7),
 ('Waiting on Client', 8),
 ('Waiting on Internal Team', 9);
-
--- Insert TicketType data (using status values)
-INSERT INTO TicketType (description, "order") VALUES
-('API', 1),
-('Data Bridge', 2),
-('Custom Interface', 3),
-('SFTP', 4);
 
 INSERT INTO Ticket
 (title, description, categoryid, priorityid, typeid, statusid) VALUES
