@@ -1,10 +1,11 @@
 -- Insert TicketCategory data
 INSERT INTO TicketCategory (description, "order", isDefault) VALUES
 ('Bug', 1, 0),
-('Feature', 2, 0),
-('Enhancement', 3, 0),
+('Change Request', 2, 0),
+('New Project', 3, 0),
 ('Documentation', 4, 0),
 ('Support', 5, 1);
+('Training', 6, 0);
 
 -- Insert TicketPriority data
 INSERT INTO TicketPriority (description, "order", isDefault) VALUES
