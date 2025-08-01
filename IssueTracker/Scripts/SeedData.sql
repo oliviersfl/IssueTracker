@@ -4,7 +4,7 @@ INSERT INTO TicketCategory (description, "order", isDefault) VALUES
 ('Change Request', 2, 0),
 ('New Project', 3, 0),
 ('Documentation', 4, 0),
-('Support', 5, 1);
+('Support', 5, 1),
 ('Training', 6, 0);
 
 -- Insert TicketPriority data
