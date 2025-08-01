@@ -7,14 +7,19 @@ namespace IssueTracker
     public partial class FilterDialog : Form
     {
         private ITicketService _ticketService;
+        private string _currentCategory;
         public List<string> SelectedStatuses { get; private set; } = new List<string>();
-        public DateTime? FromDate { get; private set; }
-        public DateTime? ToDate { get; private set; }
         public string SelectedType { get; private set; }
         public string SelectedCategory { get; private set; }
-        public FilterDialog(ITicketService ticketService)
+        public DateTime? FromDate { get; private set; }
+        public DateTime? ToDate { get; private set; }
+        public FilterDialog(
+            ITicketService ticketService,
+            string currentCategory
+        )
         {
             _ticketService = ticketService;
+            _currentCategory = currentCategory;
             InitializeComponent();
             SetupControls();
         }
@@ -33,29 +38,30 @@ namespace IssueTracker
             cmbType.Items.AddRange(_ticketService.GetTicketTypes().ToArray());
             cmbType.SelectedIndex = 0;
 
+            // Initialize category combo
+            cmbCategory.Items.Clear();
             cmbCategory.Items.Add("All");
 
-            // Populate Ticket Categories Combo
             List<TicketCategory> tickCat = await _ticketService.GetTicketCategories();
-            int defaultIndex = 0; // Initialize with first item as fallback
-
-            cmbCategory.Items.Clear();
+            int defaultIndex = 0; // Default to "All"
 
             for (int i = 0; i < tickCat.Count; i++)
             {
                 cmbCategory.Items.Add(tickCat[i].Description);
 
-                if (tickCat[i].IsDefault)
+                // If a stored category matches, select it
+                if (_currentCategory != null && tickCat[i].Description == _currentCategory)
                 {
-                    defaultIndex = i;
+                    defaultIndex = i + 1; // +1 because "All" is index 0
+                }
+                // Otherwise, fall back to default category if specified
+                else if (tickCat[i].IsDefault && _currentCategory == null)
+                {
+                    defaultIndex = i + 1;
                 }
             }
 
-            // Set the selected index
-            if (cmbCategory.Items.Count > 0)
-            {
-                cmbCategory.SelectedIndex = defaultIndex;
-            }
+            cmbCategory.SelectedIndex = defaultIndex; // Apply selection
         }
 
         private void btnApply_Click(object sender, EventArgs e)
