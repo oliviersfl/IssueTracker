@@ -6,6 +6,7 @@ namespace IssueTracker
     public partial class FilterDialog : Form
     {
         private ITicketService _ticketService;
+        // To keep track of past filter selected
         private string _currentCategory;
         public List<string> SelectedStatuses { get; private set; } = new List<string>();
         public string SelectedType { get; private set; }
