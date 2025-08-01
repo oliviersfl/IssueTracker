@@ -1,6 +1,4 @@
-﻿using IssueTracker.Models.Enums;
-
-namespace IssueTracker.Models
+﻿namespace IssueTracker.Models
 {
     public class Ticket
     {

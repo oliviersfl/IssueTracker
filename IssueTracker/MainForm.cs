@@ -1,5 +1,4 @@
 using IssueTracker.Models;
-using IssueTracker.Models.Enums;
 using IssueTracker.Services;
 using IssueTracker.Services.Database.Repository.Interfaces;
 

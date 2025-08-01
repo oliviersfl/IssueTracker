@@ -1,5 +1,4 @@
 ﻿using IssueTracker.Models;
-using IssueTracker.Models.Enums;
 
 namespace IssueTracker.Services
 {
