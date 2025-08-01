@@ -64,8 +64,9 @@ namespace IssueTracker.Services.Database.Repository
                 Id = reader.GetInt32(0),
                 Description = reader.GetString(1),
                 Order = reader.GetInt32(2),
-                CreatedDate = reader.GetDateTime(3),
-                ModifiedDate = reader.GetDateTime(4)
+                IsDefault = reader.GetBoolean(3),
+                CreatedDate = reader.GetDateTime(4),
+                ModifiedDate = reader.GetDateTime(5)
             });
         }
         // Subtask

@@ -31,8 +31,20 @@ namespace IssueTracker.Services
                 ModifiedDate = c.ModifiedDate
             }).ToList();
         }
-        public List<string> GetTicketTypes() =>
-            _appSettings.TicketTypes;
+        public async Task<List<TicketType>> GetTicketTypes()
+        {
+            var types = await _ticketRepository.GetAllTypesAsync();
+
+            return types.Select(t => new TicketType
+            {
+                Id = t.Id,
+                Description = t.Description,
+                Order = t.Order,
+                IsDefault = t.IsDefault,
+                CreatedDate = t.CreatedDate,
+                ModifiedDate = t.ModifiedDate
+            }).ToList();
+        }
 
         public List<Ticket> FilterTickets(
             List<string> statuses,

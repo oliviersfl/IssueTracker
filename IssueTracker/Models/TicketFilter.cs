@@ -3,6 +3,7 @@
     public class TicketFilter
     {
         public string Category { get; set; }
+        public string Type { get; set; }
 
         // (We'll add other filter properties later as needed)
         // public List<string> Statuses { get; set; }
@@ -12,6 +13,7 @@
         public TicketFilter()
         {
             Category = null; // Default to "All"
+            Type = null;
         }
     }
 }

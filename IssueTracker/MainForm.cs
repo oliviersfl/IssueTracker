@@ -284,12 +284,13 @@ namespace IssueTracker
             {
                 // Update the stored category
                 _currentFilter.Category = filterDialog.ResultFilter.Category;
+                _currentFilter.Type = filterDialog.ResultFilter.Type;
 
                 var filteredTickets = _ticketService.FilterTickets(
                     filterDialog.SelectedStatuses,
                     filterDialog.FromDate,
                     filterDialog.ToDate,
-                    filterDialog.SelectedType,
+                    _currentFilter.Type,
                     _currentFilter.Category // Use the updated value
                 );
 

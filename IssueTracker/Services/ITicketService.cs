@@ -7,11 +7,11 @@ namespace IssueTracker.Services
         List<Ticket> GetAllTickets();
         Ticket GetTicketById(int id);
         Task<List<TicketCategory>> GetTicketCategories();
+        Task<List<TicketType>> GetTicketTypes();
         void AddTicket(Ticket ticket);
         void UpdateTicket(Ticket ticket);
         void DeleteTicket(int id);
         void ClearTickets();
-        List<string> GetTicketTypes();
         List<Ticket> FilterTickets(
             List<string> statuses,
             DateTime? fromDate,
