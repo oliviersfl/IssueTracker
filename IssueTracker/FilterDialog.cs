@@ -7,7 +7,8 @@ namespace IssueTracker
     {
         private ITicketService _ticketService;
         // To keep track of past filter selected
-        private string _currentCategory;
+        private readonly TicketFilter _currentFilter;
+        public TicketFilter ResultFilter { get; private set; }
         public List<string> SelectedStatuses { get; private set; } = new List<string>();
         public string SelectedType { get; private set; }
         public string SelectedCategory { get; private set; }
@@ -15,11 +16,11 @@ namespace IssueTracker
         public DateTime? ToDate { get; private set; }
         public FilterDialog(
             ITicketService ticketService,
-            string currentCategory
+            TicketFilter currentFilter = null
         )
         {
             _ticketService = ticketService;
-            _currentCategory = currentCategory;
+            _currentFilter = currentFilter ?? new TicketFilter();
             InitializeComponent();
             SetupControls();
         }
@@ -38,34 +39,41 @@ namespace IssueTracker
             cmbType.Items.AddRange(_ticketService.GetTicketTypes().ToArray());
             cmbType.SelectedIndex = 0;
 
-            // Initialize category combo
+            // Category initialization
             cmbCategory.Items.Clear();
             cmbCategory.Items.Add("All");
 
-            List<TicketCategory> tickCat = await _ticketService.GetTicketCategories();
-            int defaultIndex = 0; // Default to "All"
+            var categories = await _ticketService.GetTicketCategories();
+            int selectedIndex = 0; // Default to "All"
 
-            for (int i = 0; i < tickCat.Count; i++)
+            for (int i = 0; i < categories.Count; i++)
             {
-                cmbCategory.Items.Add(tickCat[i].Description);
+                cmbCategory.Items.Add(categories[i].Description);
 
-                // If a stored category matches, select it
-                if (_currentCategory != null && tickCat[i].Description == _currentCategory)
+                if (categories[i].Description == _currentFilter.Category)
                 {
-                    defaultIndex = i + 1; // +1 because "All" is index 0
+                    selectedIndex = i + 1; // because "All" is index 0
                 }
-                // Otherwise, fall back to default category if specified
-                else if (tickCat[i].IsDefault && _currentCategory == null)
+                else if (categories[i].IsDefault && _currentFilter.Category == null)
                 {
-                    defaultIndex = i + 1;
+                    selectedIndex = i + 1;
+                }
+                else if (_currentFilter.Category == null)
+                {
+                    selectedIndex = 0;
                 }
             }
 
-            cmbCategory.SelectedIndex = defaultIndex; // Apply selection
+            cmbCategory.SelectedIndex = selectedIndex;
         }
 
         private void btnApply_Click(object sender, EventArgs e)
         {
+            ResultFilter = new TicketFilter
+            {
+                Category = cmbCategory.SelectedIndex == 0 ? null : cmbCategory.SelectedItem.ToString()
+            };
+
             SelectedStatuses.Clear();
 
             // Get all checked statuses

@@ -7,7 +7,7 @@ namespace IssueTracker
     public partial class MainForm : Form
     {
         private readonly ITicketService _ticketService;
-        private string _currentCategory;
+        private readonly TicketFilter _currentFilter = new TicketFilter();
         private BindingSource _ticketsBindingSource = new BindingSource();
 
         private ITicketRepository _ticketRepo;
@@ -278,19 +278,19 @@ namespace IssueTracker
         private void btnFilter_Click(object sender, EventArgs e)
         {
             // Pass the current category when opening the dialog
-            var filterDialog = new FilterDialog(_ticketService, _currentCategory);
+            var filterDialog = new FilterDialog(_ticketService, _currentFilter);
 
             if (filterDialog.ShowDialog() == DialogResult.OK)
             {
                 // Update the stored category
-                _currentCategory = filterDialog.SelectedCategory;
+                _currentFilter.Category = filterDialog.ResultFilter.Category;
 
                 var filteredTickets = _ticketService.FilterTickets(
                     filterDialog.SelectedStatuses,
                     filterDialog.FromDate,
                     filterDialog.ToDate,
                     filterDialog.SelectedType,
-                    _currentCategory // Use the updated value
+                    _currentFilter.Category // Use the updated value
                 );
 
                 _ticketsBindingSource.DataSource = filteredTickets;
