@@ -38,8 +38,6 @@ namespace IssueTracker
             }
 
             // Initialize other controls
-            cmbType.Items.Add("All");
-            cmbType.SelectedIndex = 0;
 
             await InitializeCategories();
             await InitializeTypes();
