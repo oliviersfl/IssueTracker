@@ -5,6 +5,7 @@ namespace IssueTracker
 {
     public partial class FilterDialog : Form
     {
+        #region Properties
         private ITicketService _ticketService;
         // To keep track of past filter selected
         private readonly TicketFilter _currentFilter;
@@ -12,6 +13,7 @@ namespace IssueTracker
         public List<string> SelectedStatuses { get; private set; } = new List<string>();
         public DateTime? FromDate { get; private set; }
         public DateTime? ToDate { get; private set; }
+        #endregion
         public FilterDialog(
             ITicketService ticketService,
             TicketFilter currentFilter = null
