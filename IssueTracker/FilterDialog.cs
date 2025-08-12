@@ -1,5 +1,6 @@
 ﻿using IssueTracker.Models;
 using IssueTracker.Services;
+using System.Windows.Forms;
 
 namespace IssueTracker
 {
@@ -10,7 +11,6 @@ namespace IssueTracker
         // To keep track of past filter selected
         private readonly TicketFilter _currentFilter;
         public TicketFilter ResultFilter { get; private set; }
-        public List<string> SelectedStatuses { get; private set; } = new List<string>();
         public DateTime? FromDate { get; private set; }
         public DateTime? ToDate { get; private set; }
         #endregion
@@ -43,8 +43,10 @@ namespace IssueTracker
 
             await InitializeCategories();
             await InitializeTypes();
+            await InitializeStatuses();
 
             #region Local Methods
+            // Ticket Categories
             async Task InitializeCategories()
             {
                 cmbCategory.Items.Clear();
@@ -72,6 +74,7 @@ namespace IssueTracker
                 }
                 cmbCategory.SelectedIndex = selectedIndex;
             }
+            // Ticket Type
             async Task InitializeTypes()
             {
                 cmbType.Items.Clear();
@@ -99,6 +102,43 @@ namespace IssueTracker
                 }
                 cmbType.SelectedIndex = selectedIndex;
             }
+            // Ticket Statuses
+            async Task InitializeStatuses()
+            {
+                clbStatus.Items.Clear();
+
+                var statuses = await _ticketService.GetTicketStatuses();
+
+                for (int i = 0; i < statuses.Count; i++)
+                {
+                    clbStatus.Items.Add(statuses[i].Description);
+
+                    // Set checked state based on current filter
+                    bool shouldCheck = true; // Default to checked
+
+                    if (_currentFilter.Status != null)
+                    {
+                        // If filter has specific statuses, check if this status is in the filter
+                        shouldCheck = _currentFilter.Status.Contains(statuses[i].Description);
+                    }
+                    else
+                    {
+                        // If no filter, check all by default (except when there's a default status logic)
+                        shouldCheck = true;
+                    }
+
+                    clbStatus.SetItemChecked(i, shouldCheck);
+                }
+
+                // If no statuses in filter and no items are checked, check all as fallback
+                if (_currentFilter.Status == null && clbStatus.CheckedItems.Count == 0 && clbStatus.Items.Count > 0)
+                {
+                    for (int i = 0; i < clbStatus.Items.Count; i++)
+                    {
+                        clbStatus.SetItemChecked(i, true);
+                    }
+                }
+            }
             #endregion
         }
 
@@ -108,22 +148,20 @@ namespace IssueTracker
             ResultFilter = new TicketFilter
             {
                 Category = cmbCategory.SelectedIndex == 0 ? null : cmbCategory.SelectedItem.ToString(),
-                Type = cmbType.SelectedIndex == 0 ? null : cmbType.SelectedItem.ToString()
+                Type = cmbType.SelectedIndex == 0 ? null : cmbType.SelectedItem.ToString(),
+                Status = new List<string>()
             };
-
-            SelectedStatuses.Clear();
 
             // Get all checked statuses
             foreach (var item in clbStatus.CheckedItems)
             {
-                SelectedStatuses.Add(item.ToString());
+                ResultFilter.Status.Add(item.ToString());
             }
 
-            // If none selected, treat as all selected
-            if (SelectedStatuses.Count == 0)
+            // If none selected, treat as all selected (Status = null)
+            if (ResultFilter.Status.Count == 0)
             {
-                string[] ticketStatuses = ["To Do", "In Progress", "On Hold", "Done", "Waiting on client", "Call Scheduled", "Status FilterDialog Test harcdoded"];
-                SelectedStatuses.AddRange(ticketStatuses);
+                ResultFilter.Status = null; // This matches the pattern in InitializeStatuses
             }
 
             FromDate = chkFromDate.Checked ? dtpFromDate.Value : (DateTime?)null;

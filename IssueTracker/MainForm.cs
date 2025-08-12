@@ -190,7 +190,7 @@ namespace IssueTracker
                     CreatedDate = DateTime.Now.AddHours(-2),
                     ModifiedDate = DateTime.Now.AddMinutes(-30),
                     DueDate = DateTime.Now.AddDays(3),
-                    Status = "Waiting on client"
+                    Status = "Waiting on Client"
                 },
                 new Ticket()
                 {
@@ -216,7 +216,7 @@ namespace IssueTracker
                     CreatedDate = DateTime.Now.AddHours(-2),
                     ModifiedDate = DateTime.Now.AddMinutes(-30),
                     DueDate = DateTime.Now.AddDays(3),
-                    Status = "Waiting on internal team"
+                    Status = "Waiting on Internal Team"
                 },
             };
 
@@ -239,7 +239,7 @@ namespace IssueTracker
         }
         public void ApplyDefaultFilters()
         {
-            var statusesToInclude = new List<string>() { "To Do", "In Progress", "Waiting on client", "Call scheduled", "On Hold", "Done", "Waiting on internal team" };
+            var statusesToInclude = new List<string>() { "To Do", "In Progress", "Waiting on Client", "Call scheduled", "On Hold", "Done", "Waiting on Internal Team" };
 
             List<Ticket> tickets = _ticketService.FilterTickets(statusesToInclude, null, null, null, null);
 
@@ -285,9 +285,10 @@ namespace IssueTracker
                 // Update the stored category
                 _currentFilter.Category = filterDialog.ResultFilter.Category;
                 _currentFilter.Type = filterDialog.ResultFilter.Type;
+                _currentFilter.Status = filterDialog.ResultFilter.Status;
 
                 var filteredTickets = _ticketService.FilterTickets(
-                    filterDialog.SelectedStatuses,
+                    _currentFilter.Status,
                     filterDialog.FromDate,
                     filterDialog.ToDate,
                     _currentFilter.Type,

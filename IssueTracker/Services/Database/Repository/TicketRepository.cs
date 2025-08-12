@@ -69,6 +69,18 @@ namespace IssueTracker.Services.Database.Repository
                 ModifiedDate = reader.GetDateTime(5)
             });
         }
+        public async Task<IEnumerable<TicketStatus>> GetAllStatusesAsync()
+        {
+            const string sql = "SELECT * FROM TicketStatus ORDER BY \"order\"";
+            return await _db.QueryAsync(sql, reader => new TicketStatus
+            {
+                Id = reader.GetInt32(0),
+                Description = reader.GetString(1),
+                Order = reader.GetInt32(2),
+                CreatedDate = reader.GetDateTime(3),
+                ModifiedDate = reader.GetDateTime(4)
+            });
+        }
         // Subtask
         public async Task<IEnumerable<TicketSubTask>> GetSubTasksByTicketIdAsync(int ticketId)
         {

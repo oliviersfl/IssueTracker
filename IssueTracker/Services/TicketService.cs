@@ -46,6 +46,20 @@ namespace IssueTracker.Services
             }).ToList();
         }
 
+        public async Task<List<TicketStatus>> GetTicketStatuses()
+        {
+            var types = await _ticketRepository.GetAllStatusesAsync();
+
+            return types.Select(t => new TicketStatus
+            {
+                Id = t.Id,
+                Description = t.Description,
+                Order = t.Order,
+                CreatedDate = t.CreatedDate,
+                ModifiedDate = t.ModifiedDate
+            }).ToList();
+        }
+
         public List<Ticket> FilterTickets(
             List<string> statuses,
             DateTime? fromDate,

@@ -4,6 +4,7 @@
     {
         public string Category { get; set; }
         public string Type { get; set; }
+        public List<string> Status { get; set; }
 
         // (We'll add other filter properties later as needed)
         // public List<string> Statuses { get; set; }
@@ -14,6 +15,7 @@
         {
             Category = null; // Default to "All"
             Type = null;
+            Status = null;
         }
     }
 }

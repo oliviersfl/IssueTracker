@@ -16,6 +16,7 @@ namespace IssueTracker.Services.Database.Repository.Interfaces
         Task<IEnumerable<TicketCategory>> GetAllCategoriesAsync();
         Task<IEnumerable<TicketPriority>> GetAllPrioritiesAsync();
         Task<IEnumerable<TicketType>> GetAllTypesAsync();
+        Task<IEnumerable<TicketStatus>> GetAllStatusesAsync();
 
         // Subtask operations
         Task<int> AddSubTaskAsync(int ticketId, TicketSubTask subTask);
