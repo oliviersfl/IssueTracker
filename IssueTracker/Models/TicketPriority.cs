@@ -1,4 +1,4 @@
-﻿namespace IssueTracker.Services.Database.Models
+﻿namespace IssueTracker.Models
 {
     public class TicketPriority
     {

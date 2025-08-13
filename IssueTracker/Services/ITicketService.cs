@@ -9,6 +9,7 @@ namespace IssueTracker.Services
         Task<List<TicketCategory>> GetTicketCategories();
         Task<List<TicketType>> GetTicketTypes();
         Task<List<TicketStatus>> GetTicketStatuses();
+        Task<List<TicketPriority>> GetTicketPriorities();
         void AddTicket(Ticket ticket);
         void UpdateTicket(Ticket ticket);
         void DeleteTicket(int id);

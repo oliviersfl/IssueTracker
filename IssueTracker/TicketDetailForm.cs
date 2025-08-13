@@ -19,15 +19,15 @@ namespace IssueTracker
             InitializeForm();
         }
 
-        private void InitializeForm()
+        private async void InitializeForm()
         {
+            List<TicketPriority> ticketPriorities = await _ticketService.GetTicketPriorities();
             // Populate dropdowns with enum values
             List<string> ticketCategories = ["Bug", "Feature", "Enhancement", "Documentation", "Support", "TicketDetailForm Categories Hardcoded"];
-            List<string> ticketPriorities = ["Critial", "High", "Medium", "Low", "Harcoded priority TicketDetailForm"];
             List<string> ticketStatuses = ["To Do", "In Progress", "On Hold", "Done", "Waiting on client", "Call Scheduled", "Status FilterDialog Test harcdoded"];
 
             cmbCategory.DataSource = ticketCategories;
-            cmbPriority.DataSource = ticketPriorities;
+            cmbPriority.DataSource = ticketPriorities.Select(x => x.Description).ToList();
             cmbStatus.DataSource = ticketStatuses;
 
             // Hardcoded types (would normally come from appsettings.json)
@@ -91,7 +91,7 @@ namespace IssueTracker
 
                 // Set default values for dropdowns
                 cmbCategory.SelectedItem = cmbCategory;
-                cmbPriority.SelectedItem = "Medium";
+                cmbPriority.SelectedItem = ticketPriorities.Where(x => x.IsDefault == true).Select(x => x.Description).FirstOrDefault();
                 cmbType.SelectedItem = "API";
                 cmbStatus.SelectedItem = "To Do";
 

@@ -60,6 +60,21 @@ namespace IssueTracker.Services
             }).ToList();
         }
 
+        public async Task<List<TicketPriority>> GetTicketPriorities()
+        {
+            var types = await _ticketRepository.GetAllPrioritiesAsync();
+
+            return types.Select(t => new TicketPriority
+            {
+                Id = t.Id,
+                Description = t.Description,
+                Order = t.Order,
+                IsDefault = t.IsDefault,
+                CreatedDate = t.CreatedDate,
+                ModifiedDate = t.ModifiedDate
+            }).ToList();
+        }
+
         public List<Ticket> FilterTickets(
             List<string> statuses,
             DateTime? fromDate,
