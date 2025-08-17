@@ -17,8 +17,8 @@ INSERT INTO TicketPriority (description, "order", isDefault) VALUES
 -- Insert TicketType data (using status values)
 INSERT INTO TicketType (description, "order", isDefault) VALUES
 ('API', 1, 0),
-('Data Bridge', 2, 1),
-('Custom Interface', 3, 0),
+('Data Bridge', 2, 0),
+('Custom Interface', 3, 1),
 ('SFTP', 4, 0);
 
 -- Insert TicketStatus data (using status values)
