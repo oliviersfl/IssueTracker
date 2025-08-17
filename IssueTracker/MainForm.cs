@@ -147,90 +147,14 @@ namespace IssueTracker
             #endregion
         }
 
-        private void LoadTickets()
+        public async Task LoadTickets()
         {
             // For testing, we'll use the hardcoded list with different timestamps
             _ticketService.ClearTickets();
-            var tickets = new List<Ticket>()
-            {
-                new Ticket()
-                {
-                    Id = 1,
-                    Title = "Some bug",
-                    Description = "Can't read file\nCan you please help",
-                    Category = "Bug",
-                    Priority = "Medium",
-                    Type = "Data Bridge",
-                    CreatedDate = DateTime.Now.AddHours(-2),
-                    ModifiedDate = DateTime.Now.AddMinutes(-30),
-                    DueDate = DateTime.Now.AddDays(3),
-                    Status = "Done"
-                },
-                new Ticket()
-                {
-                    Id = 2,
-                    Title = "Interface - New Client",
-                    Description = "Inbound",
-                    Category = "Feature",
-                    Priority = "Low",
-                    Type = "Custom Interface",
-                    CreatedDate = DateTime.Now.AddDays(-1),
-                    ModifiedDate = DateTime.Now.AddHours(-3),
-                    DueDate = DateTime.Now.AddDays(7),
-                    Status = "To Do"
-                },
-                new Ticket()
-                {
-                    Id = 3,
-                    Title = "API Activation - Urgent",
-                    Description = "New API for XYZ Company",
-                    Category = "Feature",
-                    Priority = "High",
-                    Type = "API",
-                    CreatedDate = DateTime.Now.AddHours(-2),
-                    ModifiedDate = DateTime.Now.AddMinutes(-30),
-                    DueDate = DateTime.Now.AddDays(3),
-                    Status = "Waiting on Client"
-                },
-                new Ticket()
-                {
-                    Id = 4,
-                    Title = "Databridge Issue - For ABC Company",
-                    Description = "Identifier not found issue",
-                    Category = "Bug",
-                    Priority = "Critical",
-                    Type = "Data Bridge",
-                    CreatedDate = DateTime.Now.AddHours(-2),
-                    ModifiedDate = DateTime.Now.AddMinutes(-30),
-                    DueDate = DateTime.Now.AddDays(3),
-                    Status = "In Progress"
-                },
-                new Ticket()
-                {
-                    Id = 5,
-                    Title = "SFTP Error",
-                    Description = "Unable to connect to SFTP",
-                    Category = "Feature",
-                    Priority = "High",
-                    Type = "SFTP",
-                    CreatedDate = DateTime.Now.AddHours(-2),
-                    ModifiedDate = DateTime.Now.AddMinutes(-30),
-                    DueDate = DateTime.Now.AddDays(3),
-                    Status = "Waiting on Internal Team"
-                },
-            };
 
-            foreach (var ticket in tickets)
-            {
-                _ticketService.AddTicket(ticket);
-            }
-
-            _ticketsBindingSource.DataSource = _ticketService.GetAllTickets().ToList();
+            var test = await _ticketService.GetAllTickets();
+            _ticketsBindingSource.DataSource = await _ticketService.GetAllTickets();
             UpdateTicketCount();
-
-            // In your final version, you'll use the service:
-            // var tickets = _ticketService.GetAllTickets();
-            // _ticketsBindingSource.DataSource = tickets;
         }
 
         private void UpdateTicketCount()

@@ -4,7 +4,7 @@ namespace IssueTracker.Services
 {
     public interface ITicketService
     {
-        List<Ticket> GetAllTickets();
+        Task<List<Ticket>> GetAllTickets();
         Ticket GetTicketById(int id);
         Task<List<TicketCategory>> GetTicketCategories();
         Task<List<TicketType>> GetTicketTypes();

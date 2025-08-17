@@ -1,5 +1,6 @@
 ﻿using IssueTracker.Models;
 using IssueTracker.Services.Database.Repository.Interfaces;
+using System.Threading.Tasks;
 
 namespace IssueTracker.Services
 {
@@ -15,7 +16,41 @@ namespace IssueTracker.Services
             _appSettings = appSettings;
         }
         #region Get Methods
-        public List<Ticket> GetAllTickets() => _tickets;
+        public async Task<List<Ticket>> GetAllTickets()
+        {
+            // Get all database tickets
+            var dbTickets = await _ticketRepository.GetAllTicketsAsync();
+
+            // Get reference data for mapping
+            var categories = await GetTicketCategories();
+            var types = await GetTicketTypes();
+            var priorities = await _ticketRepository.GetAllPrioritiesAsync();
+            var statuses = await _ticketRepository.GetAllStatusesAsync();
+
+            // Map database tickets to service model tickets
+            var tickets = dbTickets.Select(dbTicket => new Models.Ticket
+            {
+                Id = dbTicket.Id,
+                Title = dbTicket.Title,
+                Description = dbTicket.Description,
+                Category = categories.FirstOrDefault(c => c.Id == dbTicket.CategoryId)?.Description ?? "Unknown",
+                Priority = priorities.FirstOrDefault(p => p.Id == dbTicket.PriorityId)?.Description ?? "Unknown",
+                Type = types.FirstOrDefault(t => t.Id == dbTicket.TypeId)?.Description ?? "Unknown",
+                Status = statuses.FirstOrDefault(s => s.Id == dbTicket.StatusId)?.Description ?? "Unknown",
+                CreatedDate = dbTicket.CreatedDate,
+                ModifiedDate = dbTicket.ModifiedDate,
+                DueDate = dbTicket.DueDate,
+                // TODO
+                // SubTasks and Comments would need to be loaded separately if needed
+                SubTasks = new List<SubTask>(),
+                Comments = new List<Comment>()
+            }).ToList();
+
+            _tickets.Clear();
+            _tickets.AddRange(tickets);
+
+            return tickets;
+        }
         public Ticket GetTicketById(int id) => _tickets.FirstOrDefault(t => t.Id == id);
         public async Task<List<TicketCategory>> GetTicketCategories()
         {
