@@ -22,6 +22,8 @@ namespace IssueTracker
         private async void InitializeForm()
         {
             List<TicketPriority> ticketPriorities = await _ticketService.GetTicketPriorities();
+            List<TicketType> ticketTypes = await _ticketService.GetTicketTypes();
+
             // Populate dropdowns with enum values
             List<string> ticketCategories = ["Bug", "Feature", "Enhancement", "Documentation", "Support", "TicketDetailForm Categories Hardcoded"];
             List<string> ticketStatuses = ["To Do", "In Progress", "On Hold", "Done", "Waiting on client", "Call Scheduled", "Status FilterDialog Test harcdoded"];
@@ -29,9 +31,7 @@ namespace IssueTracker
             cmbCategory.DataSource = ticketCategories;
             cmbPriority.DataSource = ticketPriorities.Select(x => x.Description).ToList();
             cmbStatus.DataSource = ticketStatuses;
-
-            // Hardcoded types (would normally come from appsettings.json)
-            cmbType.DataSource = new List<string> { "API", "Interface", "Data Bridge", "Database", "Service" };
+            cmbType.DataSource = ticketTypes.Select(x => x.Description).ToList();
 
             if (_isEditMode)
             {
