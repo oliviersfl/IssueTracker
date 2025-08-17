@@ -23,14 +23,12 @@ namespace IssueTracker
         {
             List<TicketPriority> ticketPriorities = await _ticketService.GetTicketPriorities();
             List<TicketType> ticketTypes = await _ticketService.GetTicketTypes();
+            List<TicketCategory> ticketCategories = await _ticketService.GetTicketCategories();
+            List<TicketStatus> ticketStatuses = await _ticketService.GetTicketStatuses();
 
-            // Populate dropdowns with enum values
-            List<string> ticketCategories = ["Bug", "Feature", "Enhancement", "Documentation", "Support", "TicketDetailForm Categories Hardcoded"];
-            List<string> ticketStatuses = ["To Do", "In Progress", "On Hold", "Done", "Waiting on client", "Call Scheduled", "Status FilterDialog Test harcdoded"];
-
-            cmbCategory.DataSource = ticketCategories;
+            cmbCategory.DataSource = ticketCategories.Select(x => x.Description).ToList();
             cmbPriority.DataSource = ticketPriorities.Select(x => x.Description).ToList();
-            cmbStatus.DataSource = ticketStatuses;
+            cmbStatus.DataSource = ticketStatuses.Select(x => x.Description).ToList();
             cmbType.DataSource = ticketTypes.Select(x => x.Description).ToList();
 
             if (_isEditMode)
@@ -90,10 +88,9 @@ namespace IssueTracker
                 lblModified.Text = DateTime.Now.ToString("g");
 
                 // Set default values for dropdowns
-                cmbCategory.SelectedItem = cmbCategory;
+                cmbCategory.SelectedItem = ticketCategories.Where(x => x.IsDefault == true).Select(x => x.Description).FirstOrDefault();
                 cmbPriority.SelectedItem = ticketPriorities.Where(x => x.IsDefault == true).Select(x => x.Description).FirstOrDefault();
-                cmbType.SelectedItem = "API";
-                cmbStatus.SelectedItem = "To Do";
+                cmbType.SelectedItem = ticketTypes.Where(x => x.IsDefault == true).Select(x => x.Description).FirstOrDefault();
 
                 // Add some example subtasks for demo
                 lvSubtasks.Items.Add(new ListViewItem(new[] { "Implement core functionality", "No" }));
