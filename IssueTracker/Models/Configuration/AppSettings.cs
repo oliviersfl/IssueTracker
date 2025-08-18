@@ -9,7 +9,6 @@
 
 }
 
-
 public class Database
 {
     private bool _seedSampleData;
@@ -28,16 +27,8 @@ public class Database
 
 }
 
-
 public class AppSettings
 {
-    private List<string> _ticketTypes;
-    public List<string> TicketTypes
-    {
-        get => _ticketTypes;
-        set => _ticketTypes = value;
-    }
-
     private ConnectionStrings _connectionStrings;
     public ConnectionStrings ConnectionStrings
     {
