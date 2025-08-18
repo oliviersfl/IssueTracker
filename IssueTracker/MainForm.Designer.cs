@@ -64,6 +64,7 @@
             dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvTickets.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvTickets.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvTickets.ShowCellToolTips = true;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
             dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);

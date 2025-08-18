@@ -588,6 +588,7 @@
             // 
             // lvComments
             // 
+            lvComments.ShowItemToolTips = true;
             lvComments.Columns.AddRange(new ColumnHeader[] { columnHeader3, columnHeader4, columnHeader5 });
             lvComments.Dock = DockStyle.Fill;
             lvComments.FullRowSelect = true;
