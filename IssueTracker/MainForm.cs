@@ -223,10 +223,10 @@ namespace IssueTracker
             }
             UpdateTicketCount();
         }
-        private void btnClearFilter_Click(object sender, EventArgs e)
+        private async void btnClearFilter_Click(object sender, EventArgs e)
         {
             // Reload all tickets without any filters
-            var allTickets = _ticketService.GetAllTickets();
+            var allTickets = await _ticketService.GetAllTickets();
             _ticketsBindingSource.DataSource = allTickets;
             UpdateTicketCount();
         }
