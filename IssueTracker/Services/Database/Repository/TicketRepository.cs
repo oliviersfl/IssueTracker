@@ -177,6 +177,16 @@ namespace IssueTracker.Services.Database.Repository
                 new SqliteParameter("@IsCompleted", subTask.IsCompleted),
                 new SqliteParameter("@Id", subTask.Id));
         }
+        public async Task<int> DeleteSubTaskAsync(int subTaskId)
+        {
+            const string sql = @"
+            DELETE FROM TicketSubTask 
+            WHERE id = @SubTaskId;
+            SELECT changes();";  // Returns number of rows deleted
+
+            return await _db.ExecuteScalarAsync<int>(sql,
+                new SqliteParameter("@SubTaskId", subTaskId));
+        }
         // --- Comment Methods ---
         public async Task<int> AddCommentAsync(int ticketId, TicketComment comment)
         {

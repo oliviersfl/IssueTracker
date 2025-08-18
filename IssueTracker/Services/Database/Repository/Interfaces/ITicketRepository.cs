@@ -20,6 +20,7 @@ namespace IssueTracker.Services.Database.Repository.Interfaces
 
         // Subtask operations
         Task<int> AddSubTaskAsync(int ticketId, TicketSubTask subTask);
+        Task<int> DeleteSubTaskAsync(int subtaskId);
         Task<IEnumerable<TicketSubTask>> GetSubTasksByTicketIdAsync(int ticketId);
         Task UpdateSubTaskAsync(TicketSubTask subTask);
 

@@ -248,13 +248,27 @@ namespace IssueTracker.Services
                 await _ticketRepository.AddCommentAsync(newId, dbComment);
             }
 
+            // Add all subtasks to the new ticket
+            foreach (var subTask in ticket.SubTasks)
+            {
+                var dbSubTask = new Database.Models.TicketSubTask
+                {
+                    TicketId = newId,
+                    Title = subTask.Title,
+                    IsCompleted = subTask.IsCompleted,
+                    CreatedDate = DateTime.Now
+                };
+                await _ticketRepository.AddSubTaskAsync(newId, dbSubTask);
+            }
+
             // Update the ticket with the new ID and add to local collection
             ticket.Id = newId;
             ticket.CreatedDate = dbTicket.CreatedDate;
             ticket.ModifiedDate = dbTicket.ModifiedDate;
 
-            // Load fresh comments from database to ensure consistency
+            // Load fresh data from database to ensure consistency
             ticket.Comments = await GetTicketCommentsByTicketId(newId);
+            ticket.SubTasks = await GetTicketSubTasksByTicketId(newId);
 
             _tickets.Add(ticket);
         }
@@ -289,6 +303,9 @@ namespace IssueTracker.Services
             // Update comments in database
             await UpdateComments(ticket.Id, ticket.Comments);
 
+            // Update subtasks in database
+            await UpdateSubTasks(ticket.Id, ticket.SubTasks);
+
             // Update local ticket collection
             var existingTicket = _tickets.FirstOrDefault(t => t.Id == ticket.Id);
             if (existingTicket != null)
@@ -302,6 +319,53 @@ namespace IssueTracker.Services
                 existingTicket.DueDate = ticket.DueDate;
                 existingTicket.ModifiedDate = dbTicket.ModifiedDate;
                 existingTicket.Comments = ticket.Comments;
+                existingTicket.SubTasks = ticket.SubTasks;
+            }
+        }
+
+        private async Task UpdateSubTasks(int ticketId, List<SubTask> subTasks)
+        {
+            // Get existing subtasks from database
+            var existingDbSubTasks = await _ticketRepository.GetSubTasksByTicketIdAsync(ticketId);
+
+            // Identify subtasks to add, update, or delete
+            var subTasksToAdd = subTasks.Where(st => st.Id == 0).ToList();
+            var subTasksToUpdate = subTasks.Where(st => st.Id > 0).ToList();
+            var subTaskIdsToDelete = existingDbSubTasks
+                .Where(dbSt => !subTasks.Any(st => st.Id == dbSt.Id))
+                .Select(dbSt => dbSt.Id)
+                .ToList();
+
+            // Add new subtasks
+            foreach (var subTask in subTasksToAdd)
+            {
+                var dbSubTask = new Database.Models.TicketSubTask
+                {
+                    TicketId = ticketId,
+                    Title = subTask.Title,
+                    IsCompleted = subTask.IsCompleted,
+                    CreatedDate = DateTime.Now
+                };
+                await _ticketRepository.AddSubTaskAsync(ticketId, dbSubTask);
+            }
+
+            // Update existing subtasks
+            foreach (var subTask in subTasksToUpdate)
+            {
+                var dbSubTask = new Database.Models.TicketSubTask
+                {
+                    Id = subTask.Id,
+                    TicketId = ticketId,
+                    Title = subTask.Title,
+                    IsCompleted = subTask.IsCompleted
+                };
+                await _ticketRepository.UpdateSubTaskAsync(dbSubTask);
+            }
+
+            // Delete removed subtasks
+            foreach (var subTaskId in subTaskIdsToDelete)
+            {
+                await _ticketRepository.DeleteSubTaskAsync(subTaskId);
             }
         }
 
