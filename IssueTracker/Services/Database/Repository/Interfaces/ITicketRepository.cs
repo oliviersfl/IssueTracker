@@ -25,6 +25,8 @@ namespace IssueTracker.Services.Database.Repository.Interfaces
 
         // Comment operations
         Task<int> AddCommentAsync(int ticketId, TicketComment comment);
+        Task<int> UpdateCommentAsync(int ticketId, TicketComment comment);
+        Task<int> DeleteCommentAsync(int ticketId, int commentId);
         Task<IEnumerable<TicketComment>> GetCommentsByTicketIdAsync(int ticketId);
     }
 }

@@ -167,10 +167,10 @@ namespace IssueTracker.Services.Database.Repository
         public async Task UpdateSubTaskAsync(TicketSubTask subTask)
         {
             const string sql = @"
-        UPDATE TicketSubTask SET 
-            title = @Title,
-            isCompleted = @IsCompleted
-        WHERE id = @Id";
+            UPDATE TicketSubTask SET 
+                title = @Title,
+                isCompleted = @IsCompleted
+            WHERE id = @Id";
 
             await _db.ExecuteNonQueryAsync(sql,
                 new SqliteParameter("@Title", subTask.Title),
@@ -189,6 +189,34 @@ namespace IssueTracker.Services.Database.Repository
                 new SqliteParameter("@TicketId", ticketId),
                 new SqliteParameter("@Author", comment.Author),
                 new SqliteParameter("@Text", comment.Text));
+        }
+        public async Task<int> UpdateCommentAsync(int ticketId, TicketComment comment)
+        {
+            const string sql = @"
+            UPDATE TicketComment SET 
+                author = @Author,
+                text = @Text,
+                createddate = @CreatedDate
+            WHERE id = @Id AND ticketid = @TicketId;
+            SELECT changes();";  // Returns number of rows affected
+
+            return await _db.ExecuteScalarAsync<int>(sql,
+                new SqliteParameter("@Id", comment.Id),
+                new SqliteParameter("@TicketId", ticketId),
+                new SqliteParameter("@Author", comment.Author),
+                new SqliteParameter("@Text", comment.Text),
+                new SqliteParameter("@CreatedDate", comment.CreatedDate));
+        }
+        public async Task<int> DeleteCommentAsync(int ticketId, int commentId)
+        {
+            const string sql = @"
+            DELETE FROM TicketComment 
+            WHERE id = @CommentId AND ticketid = @TicketId;
+            SELECT changes();";  // Returns number of rows deleted
+
+            return await _db.ExecuteScalarAsync<int>(sql,
+                new SqliteParameter("@CommentId", commentId),
+                new SqliteParameter("@TicketId", ticketId));
         }
         public async Task DeleteTicketAsync(int id)
         {

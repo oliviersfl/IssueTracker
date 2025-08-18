@@ -143,6 +143,53 @@ namespace IssueTracker.Services
             return comments;
         }
 
+        private async Task UpdateComments(int ticketId, List<Comment> comments)
+        {
+            // Get existing comments from database
+            var existingDbComments = await _ticketRepository.GetCommentsByTicketIdAsync(ticketId);
+
+            // Identify comments to add, update, or delete
+            var commentsToAdd = comments.Where(c => c.Id == 0).ToList();
+            var commentsToUpdate = comments.Where(c => c.Id > 0).ToList();
+            var commentIdsToDelete = existingDbComments
+                .Where(dbC => !comments.Any(c => c.Id == dbC.Id))
+                .Select(dbC => dbC.Id)
+                .ToList();
+
+            // Add new comments
+            foreach (var comment in commentsToAdd)
+            {
+                var dbComment = new Database.Models.TicketComment
+                {
+                    TicketId = ticketId,
+                    Author = comment.Author,
+                    Text = comment.Text,
+                    CreatedDate = comment.CreatedDate
+                };
+                await _ticketRepository.AddCommentAsync(ticketId, dbComment);
+            }
+
+            // Update existing comments
+            foreach (var comment in commentsToUpdate)
+            {
+                var dbComment = new Database.Models.TicketComment
+                {
+                    Id = comment.Id,
+                    TicketId = ticketId,
+                    Author = comment.Author,
+                    Text = comment.Text,
+                    CreatedDate = comment.CreatedDate
+                };
+                await _ticketRepository.UpdateCommentAsync(ticketId, dbComment);
+            }
+
+            // Delete removed comments
+            foreach (var commentId in commentIdsToDelete)
+            {
+                await _ticketRepository.DeleteCommentAsync(ticketId, commentId);
+            }
+        }
+
         public List<Ticket> FilterTickets(
             List<string> statuses,
             DateTime? fromDate,
@@ -188,10 +235,27 @@ namespace IssueTracker.Services
             // Create ticket in database
             var newId = await _ticketRepository.CreateTicketAsync(dbTicket);
 
+            // Add all comments to the new ticket
+            foreach (var comment in ticket.Comments)
+            {
+                var dbComment = new Database.Models.TicketComment
+                {
+                    TicketId = newId,
+                    Author = comment.Author,
+                    Text = comment.Text,
+                    CreatedDate = comment.CreatedDate
+                };
+                await _ticketRepository.AddCommentAsync(newId, dbComment);
+            }
+
             // Update the ticket with the new ID and add to local collection
             ticket.Id = newId;
             ticket.CreatedDate = dbTicket.CreatedDate;
             ticket.ModifiedDate = dbTicket.ModifiedDate;
+
+            // Load fresh comments from database to ensure consistency
+            ticket.Comments = await GetTicketCommentsByTicketId(newId);
+
             _tickets.Add(ticket);
         }
 
@@ -222,6 +286,9 @@ namespace IssueTracker.Services
             // Update ticket in database
             await _ticketRepository.UpdateTicketAsync(dbTicket);
 
+            // Update comments in database
+            await UpdateComments(ticket.Id, ticket.Comments);
+
             // Update local ticket collection
             var existingTicket = _tickets.FirstOrDefault(t => t.Id == ticket.Id);
             if (existingTicket != null)
@@ -234,6 +301,7 @@ namespace IssueTracker.Services
                 existingTicket.Status = ticket.Status;
                 existingTicket.DueDate = ticket.DueDate;
                 existingTicket.ModifiedDate = dbTicket.ModifiedDate;
+                existingTicket.Comments = ticket.Comments;
             }
         }
 
