@@ -32,12 +32,6 @@ namespace IssueTracker
             dgvTickets.Columns.Clear();
 
             // Add columns
-            dgvTickets.Columns.Add(new DataGridViewTextBoxColumn()
-            {
-                DataPropertyName = "Id",
-                HeaderText = "ID",
-                Width = 50
-            });
 
             dgvTickets.Columns.Add(new DataGridViewTextBoxColumn()
             {
@@ -161,9 +155,11 @@ namespace IssueTracker
         {
             lblTicketCount.Text = _ticketsBindingSource.Count.ToString();
         }
-        public void ApplyDefaultFilters()
+        public async Task ApplyDefaultFilters()
         {
-            var statusesToInclude = new List<string>() { "To Do", "In Progress", "Waiting on Client", "Call scheduled", "On Hold", "Done", "Waiting on Internal Team" };
+            var filters = await _ticketRepo.GetAllStatusesAsync();
+
+            var statusesToInclude = filters.Where(s => s.IsDefault == true).Select(s => s.Description).ToList();
 
             List<Ticket> tickets = _ticketService.FilterTickets(statusesToInclude, null, null, null, null);
 

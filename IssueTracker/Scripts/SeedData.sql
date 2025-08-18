@@ -22,16 +22,16 @@ INSERT INTO TicketType (description, "order", isDefault) VALUES
 ('SFTP', 4, 0);
 
 -- Insert TicketStatus data (using status values)
-INSERT INTO TicketStatus (description, "order") VALUES
-('To Do', 1),
-('In Progress', 2),
-('On Hold', 3),
-('Done', 4),
-('Cancelled', 5),
-('Reassigned', 6),
-('Planned', 7),
-('Waiting on Client', 8),
-('Waiting on Internal Team', 9);
+INSERT INTO TicketStatus (description, "order", isDefault) VALUES
+('To Do', 1, 1),
+('In Progress', 2, 1),
+('On Hold', 3, 1),
+('Done', 4, 0),
+('Cancelled', 5, 0),
+('Reassigned', 6, 1),
+('Planned', 7, 1),
+('Waiting on Client', 8, 1),
+('Waiting on Internal Team', 9, 1);
 
 INSERT INTO Ticket
 (title, description, categoryid, priorityid, typeid, statusid) VALUES

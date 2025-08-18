@@ -90,6 +90,7 @@ namespace IssueTracker.Services
                 Id = t.Id,
                 Description = t.Description,
                 Order = t.Order,
+                IsDefault = t.IsDefault,
                 CreatedDate = t.CreatedDate,
                 ModifiedDate = t.ModifiedDate
             }).ToList();
