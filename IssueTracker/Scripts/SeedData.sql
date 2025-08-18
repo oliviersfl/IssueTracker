@@ -20,7 +20,8 @@ INSERT INTO TicketType (description, "order", isDefault) VALUES
 ('Data Bridge', 2, 0),
 ('Custom Interface', 3, 1),
 ('Sandbox', 4, 0),
-('SFTP', 5, 0);
+('SFTP', 5, 0),
+('Others', 6, 0);
 
 -- Insert TicketStatus data (using status values)
 INSERT INTO TicketStatus (description, "order", isDefault) VALUES
