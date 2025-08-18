@@ -114,8 +114,8 @@ namespace IssueTracker.Services.Database.Repository
         public async Task<int> CreateTicketAsync(Ticket ticket)
         {
             const string sql = @"
-            INSERT INTO Ticket (title, description, categoryid, priorityid, typeid, DueDate)
-            VALUES (@Title, @Description, @CategoryId, @PriorityId, @TypeId, @DueDate);
+            INSERT INTO Ticket (title, description, categoryid, priorityid, typeid, statusid, DueDate)
+            VALUES (@Title, @Description, @CategoryId, @PriorityId, @TypeId, @StatusId, @DueDate);
             SELECT last_insert_rowid();";
 
             return await _db.ExecuteScalarAsync<int>(sql,
@@ -124,6 +124,7 @@ namespace IssueTracker.Services.Database.Repository
                 new SqliteParameter("@CategoryId", ticket.CategoryId),
                 new SqliteParameter("@PriorityId", ticket.PriorityId),
                 new SqliteParameter("@TypeId", ticket.TypeId),
+                new SqliteParameter("@StatusId", ticket.StatusId),
                 new SqliteParameter("@DueDate", ticket.DueDate ?? (object)DBNull.Value));
         }
         public async Task UpdateTicketAsync(Ticket ticket)

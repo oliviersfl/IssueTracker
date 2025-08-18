@@ -110,6 +110,39 @@ namespace IssueTracker.Services
             }).ToList();
         }
 
+        public async Task<List<SubTask>> GetTicketSubTasksByTicketId(int ticketId)
+        {
+            // Get all subtasks for the given ticket from the repository
+            var dbSubTasks = await _ticketRepository.GetSubTasksByTicketIdAsync(ticketId);
+
+            // Map database subtasks to service model subtasks
+            var subTasks = dbSubTasks.Select(dbSubTask => new SubTask
+            {
+                Id = dbSubTask.Id,
+                Title = dbSubTask.Title,
+                IsCompleted = dbSubTask.IsCompleted
+            }).ToList();
+
+            return subTasks;
+        }
+
+        public async Task<List<Comment>> GetTicketCommentsByTicketId(int ticketId)
+        {
+            // Get all comments for the given ticket from the repository
+            var dbComments = await _ticketRepository.GetCommentsByTicketIdAsync(ticketId);
+
+            // Map database comments to service model comments
+            var comments = dbComments.Select(dbComment => new Comment
+            {
+                Id = dbComment.Id,
+                Author = dbComment.Author,
+                Text = dbComment.Text,
+                CreatedDate = dbComment.CreatedDate
+            }).ToList();
+
+            return comments;
+        }
+
         public List<Ticket> FilterTickets(
             List<string> statuses,
             DateTime? fromDate,
@@ -128,17 +161,93 @@ namespace IssueTracker.Services
         }
         #endregion
         #region Add/Update/Delete
-        public void AddTicket(Ticket ticket)
+        public async Task AddTicket(Ticket ticket)
         {
+            // Get reference data for mapping
+            var dbCategories = await _ticketRepository.GetAllCategoriesAsync();
+            var dbTypes = await _ticketRepository.GetAllTypesAsync();
+            var dbPriorities = await _ticketRepository.GetAllPrioritiesAsync();
+            var dbStatuses = await _ticketRepository.GetAllStatusesAsync();
+
+            // Map service model to database model with proper status handling
+            var dbTicket = new Services.Database.Models.Ticket
+            {
+                Title = ticket.Title,
+                Description = ticket.Description,
+                CategoryId = dbCategories.FirstOrDefault(c => c.Description == ticket.Category)?.Id ?? 0,
+                PriorityId = dbPriorities.FirstOrDefault(p => p.Description == ticket.Priority)?.Id ?? 0,
+                TypeId = dbTypes.FirstOrDefault(t => t.Description == ticket.Type)?.Id ?? 0,
+                StatusId = !string.IsNullOrEmpty(ticket.Status)
+                    ? dbStatuses.FirstOrDefault(s => s.Description == ticket.Status)?.Id
+                    : (int?)null,
+                DueDate = ticket.DueDate,
+                CreatedDate = DateTime.Now,
+                ModifiedDate = DateTime.Now
+            };
+
+            // Create ticket in database
+            var newId = await _ticketRepository.CreateTicketAsync(dbTicket);
+
+            // Update the ticket with the new ID and add to local collection
+            ticket.Id = newId;
+            ticket.CreatedDate = dbTicket.CreatedDate;
+            ticket.ModifiedDate = dbTicket.ModifiedDate;
             _tickets.Add(ticket);
         }
-        public void UpdateTicket(Ticket ticket)
+
+        public async Task UpdateTicket(Ticket ticket)
         {
-            // Implementation will go here
+            // Get reference data for mapping
+            var dbCategories = await _ticketRepository.GetAllCategoriesAsync();
+            var dbTypes = await _ticketRepository.GetAllTypesAsync();
+            var dbPriorities = await _ticketRepository.GetAllPrioritiesAsync();
+            var dbStatuses = await _ticketRepository.GetAllStatusesAsync();
+
+            // Map service model to database model with proper status handling
+            var dbTicket = new Services.Database.Models.Ticket
+            {
+                Id = ticket.Id,
+                Title = ticket.Title,
+                Description = ticket.Description,
+                CategoryId = dbCategories.FirstOrDefault(c => c.Description == ticket.Category)?.Id ?? 0,
+                PriorityId = dbPriorities.FirstOrDefault(p => p.Description == ticket.Priority)?.Id ?? 0,
+                TypeId = dbTypes.FirstOrDefault(t => t.Description == ticket.Type)?.Id ?? 0,
+                StatusId = !string.IsNullOrEmpty(ticket.Status)
+                    ? dbStatuses.FirstOrDefault(s => s.Description == ticket.Status)?.Id
+                    : (int?)null,
+                DueDate = ticket.DueDate,
+                ModifiedDate = DateTime.Now
+            };
+
+            // Update ticket in database
+            await _ticketRepository.UpdateTicketAsync(dbTicket);
+
+            // Update local ticket collection
+            var existingTicket = _tickets.FirstOrDefault(t => t.Id == ticket.Id);
+            if (existingTicket != null)
+            {
+                existingTicket.Title = ticket.Title;
+                existingTicket.Description = ticket.Description;
+                existingTicket.Category = ticket.Category;
+                existingTicket.Priority = ticket.Priority;
+                existingTicket.Type = ticket.Type;
+                existingTicket.Status = ticket.Status;
+                existingTicket.DueDate = ticket.DueDate;
+                existingTicket.ModifiedDate = dbTicket.ModifiedDate;
+            }
         }
-        public void DeleteTicket(int id)
+
+        public async Task DeleteTicket(int id)
         {
-            // Implementation will go here
+            // Delete from database
+            await _ticketRepository.DeleteTicketAsync(id);
+
+            // Remove from local collection
+            var ticket = _tickets.FirstOrDefault(t => t.Id == id);
+            if (ticket != null)
+            {
+                _tickets.Remove(ticket);
+            }
         }
         public void ClearTickets()
         {

@@ -31,8 +31,14 @@ namespace IssueTracker
             cmbStatus.DataSource = ticketStatuses.Select(x => x.Description).ToList();
             cmbType.DataSource = ticketTypes.Select(x => x.Description).ToList();
 
+            // Show delete button only for existing tickets
+            btnDelete.Visible = _isEditMode;
+
             if (_isEditMode)
             {
+                List<SubTask> subTasks = await _ticketService.GetTicketSubTasksByTicketId(_currentTicket.Id);
+                List<Comment> comments = await _ticketService.GetTicketCommentsByTicketId(_currentTicket.Id);
+
                 // Bind existing ticket data
                 txtTitle.Text = _currentTicket.Title;
                 txtDescription.Text = _currentTicket.Description.Replace("\n", Environment.NewLine);
@@ -52,17 +58,7 @@ namespace IssueTracker
                 }
 
                 // Load subtasks
-                _currentTicket.SubTasks = _currentTicket.SubTasks ?? new List<SubTask>();
-                // TEST
-                _currentTicket.SubTasks = new List<SubTask>()
-                {
-                    new SubTask()
-                    {
-                        Id = _currentTicket.Id,
-                        Title = "Complete code",
-                        IsCompleted = false
-                    }
-                };
+                _currentTicket.SubTasks = subTasks;
                 foreach (var subTask in _currentTicket.SubTasks)
                 {
                     var item = new ListViewItem(subTask.Title);
@@ -71,7 +67,7 @@ namespace IssueTracker
                 }
 
                 // Load comments
-                _currentTicket.Comments = _currentTicket.Comments ?? new List<Comment>();
+                _currentTicket.Comments = comments;
                 foreach (var comment in _currentTicket.Comments)
                 {
                     var item = new ListViewItem(comment.Author);
@@ -91,13 +87,6 @@ namespace IssueTracker
                 cmbCategory.SelectedItem = ticketCategories.Where(x => x.IsDefault == true).Select(x => x.Description).FirstOrDefault();
                 cmbPriority.SelectedItem = ticketPriorities.Where(x => x.IsDefault == true).Select(x => x.Description).FirstOrDefault();
                 cmbType.SelectedItem = ticketTypes.Where(x => x.IsDefault == true).Select(x => x.Description).FirstOrDefault();
-
-                // Add some example subtasks for demo
-                lvSubtasks.Items.Add(new ListViewItem(new[] { "Implement core functionality", "No" }));
-                lvSubtasks.Items.Add(new ListViewItem(new[] { "Write unit tests", "No" }));
-
-                // Add some example comments for demo
-                lvComments.Items.Add(new ListViewItem(new[] { "System", "Initial creation", DateTime.Now.ToString("g") }));
             }
         }
 
@@ -142,17 +131,43 @@ namespace IssueTracker
                 if (_isEditMode)
                 {
                     ticket.ModifiedDate = DateTime.Now;
-                    // _ticketService.UpdateTicket(ticket); // Uncomment when service is ready
+                    _ticketService.UpdateTicket(ticket); // Uncomment when service is ready
                 }
                 else
                 {
                     ticket.CreatedDate = DateTime.Now;
                     ticket.ModifiedDate = DateTime.Now;
-                    // _ticketService.AddTicket(ticket); // Uncomment when service is ready
+                    _ticketService.AddTicket(ticket); // Uncomment when service is ready
                 }
 
                 DialogResult = DialogResult.OK;
                 Close();
+            }
+        }
+        private async void btnDelete_Click(object sender, EventArgs e)
+        {
+            if (_currentTicket != null && _currentTicket.Id > 0)
+            {
+                var result = MessageBox.Show(
+                    "Are you sure you want to delete this ticket? This action cannot be undone.",
+                    "Confirm Delete",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (result == DialogResult.Yes)
+                {
+                    try
+                    {
+                        await _ticketService.DeleteTicket(_currentTicket.Id);
+                        this.DialogResult = DialogResult.Abort; // Special result to indicate delete
+                        this.Close();
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error deleting ticket: {ex.Message}", "Error",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
             }
         }
 

@@ -243,9 +243,19 @@ namespace IssueTracker
             {
                 var selectedTicket = (Ticket)_ticketsBindingSource[e.RowIndex];
                 var detailForm = new TicketDetailForm(_ticketService, selectedTicket);
-                if (detailForm.ShowDialog() == DialogResult.OK)
+
+                var result = detailForm.ShowDialog();
+
+                // Refresh if the ticket was saved (OK) or deleted (Abort)
+                if (result == DialogResult.OK || result == DialogResult.Abort)
                 {
                     LoadTickets(); // Refresh the list
+
+                    // If the ticket was deleted, clear the selection
+                    if (result == DialogResult.Abort)
+                    {
+                        dgvTickets.ClearSelection();
+                    }
                 }
             }
         }
