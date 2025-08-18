@@ -143,11 +143,19 @@ namespace IssueTracker
 
         public async Task LoadTickets()
         {
-            // For testing, we'll use the hardcoded list with different timestamps
             _ticketService.ClearTickets();
 
-            var test = await _ticketService.GetAllTickets();
-            _ticketsBindingSource.DataSource = await _ticketService.GetAllTickets();
+            await _ticketService.GetAllTickets();
+
+            var filteredTickets = _ticketService.FilterTickets(
+                    _currentFilter.Status,
+                    _currentFilter.CreatedFromDate,
+                    _currentFilter.CreatedToDate,
+                    _currentFilter.Type,
+                    _currentFilter.Category // Use the updated value
+                );
+
+            _ticketsBindingSource.DataSource = filteredTickets;
             UpdateTicketCount();
         }
 
