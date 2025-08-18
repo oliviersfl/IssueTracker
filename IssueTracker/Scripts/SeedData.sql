@@ -2,7 +2,7 @@
 INSERT INTO TicketCategory (description, "order", isDefault) VALUES
 ('Bug', 1, 0),
 ('Change Request', 2, 0),
-('New Project', 3, 0),
+('Integration', 3, 0),
 ('Documentation', 4, 0),
 ('Support', 5, 1),
 ('Training', 6, 0);
@@ -31,8 +31,9 @@ INSERT INTO TicketStatus (description, "order", isDefault) VALUES
 ('Cancelled', 5, 0),
 ('Reassigned', 6, 1),
 ('Planned', 7, 1),
-('Waiting on Client', 8, 1),
-('Waiting on Internal Team', 9, 1);
+('Call Scheduled', 8, 1),
+('Waiting on Client', 9, 1),
+('Waiting on Internal Team', 10, 1);
 
 INSERT INTO Ticket
 (title, description, categoryid, priorityid, typeid, statusid) VALUES

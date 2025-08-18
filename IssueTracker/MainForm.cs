@@ -186,12 +186,13 @@ namespace IssueTracker
             };
         }
 
-        private void btnCreateTicket_Click(object sender, EventArgs e)
+        private async void btnCreateTicket_Click(object sender, EventArgs e)
         {
             var detailForm = new TicketDetailForm(_ticketService);
             if (detailForm.ShowDialog() == DialogResult.OK)
             {
-                LoadTickets(); // Refresh the list
+                await LoadTickets(); // Refresh the list
+                await ApplyDefaultFilters();
             }
         }
 
