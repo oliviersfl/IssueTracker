@@ -244,10 +244,10 @@
         private System.Windows.Forms.GroupBox gbStatus;
         private System.Windows.Forms.CheckedListBox clbStatus;
         private System.Windows.Forms.GroupBox gbDateRange;
+        private System.Windows.Forms.DateTimePicker dtpFromDate;
         private System.Windows.Forms.DateTimePicker dtpToDate;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox chkToDate;
-        private System.Windows.Forms.DateTimePicker dtpFromDate;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox chkFromDate;
         private System.Windows.Forms.GroupBox gbType;

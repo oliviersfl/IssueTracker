@@ -11,8 +11,6 @@ namespace IssueTracker
         // To keep track of past filter selected
         private readonly TicketFilter _currentFilter;
         public TicketFilter ResultFilter { get; private set; }
-        public DateTime? FromDate { get; private set; }
-        public DateTime? ToDate { get; private set; }
         #endregion
         public FilterDialog(
             ITicketService ticketService,
@@ -32,18 +30,12 @@ namespace IssueTracker
 
         private async Task SetupControls()
         {
-            // Initialize status checkboxes
-            string[] ticketStatuses = ["To Do", "In Progress", "On Hold", "Done", "Waiting on client", "Call Scheduled", "Status FilterDialog Test harcdoded"];
-            foreach (string status in ticketStatuses)
-            {
-                clbStatus.Items.Add(status, true); // Default all checked
-            }
-
             // Initialize other controls
 
             await InitializeCategories();
             await InitializeTypes();
             await InitializeStatuses();
+            InitializeCreatedDates();
 
             #region Local Methods
             // Ticket Categories
@@ -139,6 +131,32 @@ namespace IssueTracker
                     }
                 }
             }
+            // Ticket Created Date Range
+            void InitializeCreatedDates()
+            {
+                // From
+                if (_currentFilter.CreatedFromDate.HasValue)
+                {
+                    chkFromDate.Checked = true;
+                    dtpFromDate.Value = _currentFilter.CreatedFromDate.Value;
+                }
+                else
+                {
+                    chkFromDate.Checked = false;
+                    dtpFromDate.Value = DateTime.Now;
+                }
+                // To
+                if (_currentFilter.CreatedToDate.HasValue)
+                {
+                    chkToDate.Checked = true;
+                    dtpToDate.Value = _currentFilter.CreatedToDate.Value;
+                }
+                else
+                {
+                    chkToDate.Checked = false;
+                    dtpToDate.Value = DateTime.Now;
+                }
+            }
             #endregion
         }
 
@@ -149,7 +167,9 @@ namespace IssueTracker
             {
                 Category = cmbCategory.SelectedIndex == 0 ? null : cmbCategory.SelectedItem.ToString(),
                 Type = cmbType.SelectedIndex == 0 ? null : cmbType.SelectedItem.ToString(),
-                Status = new List<string>()
+                Status = new List<string>(),
+                CreatedFromDate = chkFromDate.Checked ? dtpFromDate.Value : null,
+                CreatedToDate = chkToDate.Checked ? dtpToDate.Value : null
             };
 
             // Get all checked statuses
@@ -163,9 +183,6 @@ namespace IssueTracker
             {
                 ResultFilter.Status = null; // This matches the pattern in InitializeStatuses
             }
-
-            FromDate = chkFromDate.Checked ? dtpFromDate.Value : (DateTime?)null;
-            ToDate = chkToDate.Checked ? dtpToDate.Value : (DateTime?)null;
 
             DialogResult = DialogResult.OK;
             Close();

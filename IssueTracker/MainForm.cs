@@ -186,13 +186,12 @@ namespace IssueTracker
             };
         }
 
-        private async void btnCreateTicket_Click(object sender, EventArgs e)
+        private void btnCreateTicket_Click(object sender, EventArgs e)
         {
             var detailForm = new TicketDetailForm(_ticketService);
             if (detailForm.ShowDialog() == DialogResult.OK)
             {
-                await LoadTickets(); // Refresh the list
-                await ApplyDefaultFilters();
+                LoadTickets(); // Refresh the list
             }
         }
 
@@ -207,11 +206,13 @@ namespace IssueTracker
                 _currentFilter.Category = filterDialog.ResultFilter.Category;
                 _currentFilter.Type = filterDialog.ResultFilter.Type;
                 _currentFilter.Status = filterDialog.ResultFilter.Status;
+                _currentFilter.CreatedFromDate = filterDialog.ResultFilter.CreatedFromDate;
+                _currentFilter.CreatedToDate = filterDialog.ResultFilter.CreatedToDate;
 
                 var filteredTickets = _ticketService.FilterTickets(
                     _currentFilter.Status,
-                    filterDialog.FromDate,
-                    filterDialog.ToDate,
+                    _currentFilter.CreatedFromDate,
+                    _currentFilter.CreatedToDate,
                     _currentFilter.Type,
                     _currentFilter.Category // Use the updated value
                 );
