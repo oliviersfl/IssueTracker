@@ -121,10 +121,10 @@ namespace IssueTracker
                         // If filter has specific statuses, check if this status is in the filter
                         shouldCheck = _currentFilter.Status.Contains(statuses[i].Description);
                     }
-                    else
+                    else if (!statuses[i].IsDefault)
                     {
                         // If no filter, check all by default (except when there's a default status logic)
-                        shouldCheck = true;
+                        shouldCheck = false;
                     }
 
                     clbStatus.SetItemChecked(i, shouldCheck);
