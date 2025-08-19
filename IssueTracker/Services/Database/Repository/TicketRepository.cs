@@ -271,9 +271,9 @@ namespace IssueTracker.Services.Database.Repository
             PriorityId = reader.GetInt32(4),
             TypeId = reader.GetInt32(5),
             StatusId = reader.GetInt32(6),
-            CreatedDate = reader.GetDateTime(7),
-            ModifiedDate = reader.GetDateTime(8),
-            DueDate = reader.IsDBNull(9) ? null : reader.GetDateTime(9)
+            CreatedDate = TimeZoneInfo.ConvertTimeFromUtc(reader.GetDateTime(7), TimeZoneInfo.Local),
+            ModifiedDate = TimeZoneInfo.ConvertTimeFromUtc(reader.GetDateTime(8), TimeZoneInfo.Local),
+            DueDate = reader.IsDBNull(9) ? (DateTime?)null : TimeZoneInfo.ConvertTimeFromUtc(reader.GetDateTime(9), TimeZoneInfo.Local)
         };
         #endregion
     }
