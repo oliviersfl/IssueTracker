@@ -40,8 +40,6 @@ namespace IssueTracker.Services
                 CreatedDate = dbTicket.CreatedDate,
                 ModifiedDate = dbTicket.ModifiedDate,
                 DueDate = dbTicket.DueDate,
-                // TODO
-                // SubTasks and Comments would need to be loaded separately if needed
                 SubTasks = new List<SubTask>(),
                 Comments = new List<Comment>()
             }).ToList();

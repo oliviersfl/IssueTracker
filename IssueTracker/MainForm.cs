@@ -19,8 +19,8 @@ namespace IssueTracker
 
             InitializeComponent();
             ConfigureUI();
-            LoadTickets();
-            ApplyDefaultFilters();
+            LoadTickets().Wait();
+            ApplyDefaultFilters().Wait();
         }
         private void ConfigureUI()
         {
@@ -268,7 +268,6 @@ namespace IssueTracker
                 }
             }
         }
-        #endregion
         private void dgvTickets_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
@@ -321,5 +320,6 @@ namespace IssueTracker
                 }
             }
         }
+        #endregion
     }
 }
