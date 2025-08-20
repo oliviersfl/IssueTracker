@@ -171,6 +171,7 @@ namespace IssueTracker
             var filters = await _ticketRepo.GetAllStatusesAsync();
 
             var statusesToInclude = filters.Where(s => s.IsDefault == true).Select(s => s.Description).ToList();
+            _currentFilter.Status = statusesToInclude;
 
             List<Ticket> tickets = _ticketService.FilterTickets(statusesToInclude, null, null, null, null);
 
