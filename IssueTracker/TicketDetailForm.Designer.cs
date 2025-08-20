@@ -212,7 +212,7 @@
             gbDates.Controls.Add(label3);
             gbDates.Controls.Add(dtpDueDate);
             gbDates.Controls.Add(chkDueDate);
-            gbDates.Location = new Point(400, 320);
+            gbDates.Location = new Point(400, 413);
             gbDates.Margin = new Padding(3, 4, 3, 4);
             gbDates.Name = "gbDates";
             gbDates.Padding = new Padding(3, 4, 3, 4);
@@ -282,7 +282,7 @@
             // gbStatus
             // 
             gbStatus.Controls.Add(cmbStatus);
-            gbStatus.Location = new Point(400, 227);
+            gbStatus.Location = new Point(400, 320);
             gbStatus.Margin = new Padding(3, 4, 3, 4);
             gbStatus.Name = "gbStatus";
             gbStatus.Padding = new Padding(3, 4, 3, 4);
@@ -348,7 +348,7 @@
             // gbCategory
             // 
             gbCategory.Controls.Add(cmbCategory);
-            gbCategory.Location = new Point(23, 227);
+            gbCategory.Location = new Point(23, 320);  // Changed from 227 to 320
             gbCategory.Margin = new Padding(3, 4, 3, 4);
             gbCategory.Name = "gbCategory";
             gbCategory.Padding = new Padding(3, 4, 3, 4);
@@ -369,13 +369,12 @@
             // 
             // txtDescription
             // 
-            txtDescription.AcceptsReturn = true;
             txtDescription.Location = new Point(23, 107);
             txtDescription.Margin = new Padding(3, 4, 3, 4);
             txtDescription.Multiline = true;
             txtDescription.Name = "txtDescription";
             txtDescription.ScrollBars = ScrollBars.Vertical;
-            txtDescription.Size = new Size(342, 105);
+            txtDescription.Size = new Size(342, 200);
             txtDescription.TabIndex = 3;
             // 
             // label2
@@ -620,7 +619,7 @@
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(782, 748);
+            ClientSize = new Size(782, 850);
             Controls.Add(tabControl1);
             Controls.Add(panel2);
             Controls.Add(panel1);
