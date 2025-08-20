@@ -27,6 +27,7 @@ namespace IssueTracker
             // Configure DataGridView
             dgvTickets.AutoGenerateColumns = false;
             dgvTickets.DataSource = _ticketsBindingSource;
+            dgvTickets.CellFormatting += dgvTickets_CellFormatting;
 
             // Clear existing columns if any
             dgvTickets.Columns.Clear();
@@ -157,6 +158,8 @@ namespace IssueTracker
 
             _ticketsBindingSource.DataSource = filteredTickets;
             UpdateTicketCount();
+
+            dgvTickets.Refresh();
         }
 
         private void UpdateTicketCount()
@@ -193,13 +196,13 @@ namespace IssueTracker
                 _ => throw new ArgumentException($"Unknown property: {propertyName}")
             };
         }
-
-        private void btnCreateTicket_Click(object sender, EventArgs e)
+        #region Events
+        private async void btnCreateTicket_Click(object sender, EventArgs e)
         {
             var detailForm = new TicketDetailForm(_ticketService);
             if (detailForm.ShowDialog() == DialogResult.OK)
             {
-                LoadTickets(); // Refresh the list
+                await LoadTickets(); // Refresh the list
             }
         }
 
@@ -243,7 +246,7 @@ namespace IssueTracker
         }
 
         // Double-click event for ticket selection
-        private void dgvTickets_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        private async void dgvTickets_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
@@ -255,13 +258,66 @@ namespace IssueTracker
                 // Refresh if the ticket was saved (OK) or deleted (Abort)
                 if (result == DialogResult.OK || result == DialogResult.Abort)
                 {
-                    LoadTickets(); // Refresh the list
+                    await LoadTickets(); // Refresh the list
 
                     // If the ticket was deleted, clear the selection
                     if (result == DialogResult.Abort)
                     {
                         dgvTickets.ClearSelection();
                     }
+                }
+            }
+        }
+        #endregion
+        private void dgvTickets_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.RowIndex < 0 || e.ColumnIndex < 0) return;
+
+            var ticket = (Ticket)_ticketsBindingSource[e.RowIndex];
+            string columnPropertyName = dgvTickets.Columns[e.ColumnIndex].DataPropertyName;
+
+            // Check if this is the DueDate column
+            if (columnPropertyName == "DueDate")
+            {
+                // Only proceed if DueDate has a value
+                if (ticket.DueDate.HasValue)
+                {
+                    DateTime dueDate = ticket.DueDate.Value;
+                    DateTime currentDate = DateTime.Now;
+
+                    // Calculate the difference in days
+                    double daysDifference = (dueDate - currentDate).TotalDays;
+
+                    // Apply formatting if due date is within 4 days (including past due)
+                    if (daysDifference <= 4 && daysDifference >= 0)
+                    {
+                        // Due within 4 days - light purple
+                        e.CellStyle.BackColor = Color.SkyBlue;
+                        e.CellStyle.SelectionBackColor = Color.LightBlue;
+                        e.CellStyle.SelectionForeColor = Color.Black;
+                    }
+                    else if (daysDifference < 0)
+                    {
+                        // Past due - light red
+                        e.CellStyle.BackColor = Color.LightCoral;
+                        e.CellStyle.SelectionBackColor = Color.IndianRed;
+                    }
+                }
+            }
+            // Check if this is the ModifiedDate column
+            else if (columnPropertyName == "ModifiedDate")
+            {
+                DateTime modifiedDate = ticket.ModifiedDate;
+                DateTime currentDate = DateTime.Now;
+
+                // Calculate the difference in days
+                double daysDifference = (currentDate - modifiedDate).TotalDays;
+
+                // If modified date is 14 days or older, make text grey
+                if (daysDifference >= 14)
+                {
+                    e.CellStyle.ForeColor = Color.Red;
+                    e.CellStyle.SelectionForeColor = Color.Orange;
                 }
             }
         }
