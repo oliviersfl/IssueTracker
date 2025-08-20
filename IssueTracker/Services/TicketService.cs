@@ -199,12 +199,20 @@ namespace IssueTracker.Services
             string category
         )
         {
+            // Handle null _tickets collection
+            if (_tickets == null)
+                return new List<Ticket>();
+
             return _tickets
-                .Where(t => statuses.Contains(t.Status))
+                .Where(t => t != null) // Handle null tickets in the collection
+                .Where(t => statuses == null || statuses.Count == 0 ||
+                           (t.Status != null && statuses.Contains(t.Status)))
                 .Where(t => !fromDate.HasValue || t.CreatedDate >= fromDate.Value)
                 .Where(t => !toDate.HasValue || t.CreatedDate <= toDate.Value)
-                .Where(t => string.IsNullOrEmpty(type) || t.Type == type)
-                .Where(t => string.IsNullOrEmpty(category) || t.Category == category)
+                .Where(t => string.IsNullOrEmpty(type) ||
+                           (!string.IsNullOrEmpty(t.Type) && t.Type.Equals(type, StringComparison.OrdinalIgnoreCase)))
+                .Where(t => string.IsNullOrEmpty(category) ||
+                           (!string.IsNullOrEmpty(t.Category) && t.Category.Equals(category, StringComparison.OrdinalIgnoreCase)))
                 .ToList();
         }
         #endregion
