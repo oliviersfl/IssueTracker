@@ -93,7 +93,7 @@ namespace IssueTracker.Services.Database.Repository
                 TicketId = reader.GetInt32(1),
                 Title = reader.GetString(2),
                 IsCompleted = reader.GetBoolean(3),
-                CreatedDate = reader.GetDateTime(4)
+                CreatedDate = TimeZoneInfo.ConvertTimeFromUtc(reader.GetDateTime(4), TimeZoneInfo.Local)
             }, new SqliteParameter("@TicketId", ticketId));
         }
         // Comments
@@ -106,7 +106,7 @@ namespace IssueTracker.Services.Database.Repository
                 TicketId = reader.GetInt32(1),
                 Author = reader.GetString(2),
                 Text = reader.GetString(3),
-                CreatedDate = reader.GetDateTime(4)
+                CreatedDate = TimeZoneInfo.ConvertTimeFromUtc(reader.GetDateTime(4), TimeZoneInfo.Local)
             }, new SqliteParameter("@TicketId", ticketId));
         }
         #endregion
@@ -206,8 +206,7 @@ namespace IssueTracker.Services.Database.Repository
             const string sql = @"
             UPDATE TicketComment SET 
                 author = @Author,
-                text = @Text,
-                createddate = @CreatedDate
+                text = @Text
             WHERE id = @Id AND ticketid = @TicketId;
             SELECT changes();";  // Returns number of rows affected
 
@@ -215,8 +214,7 @@ namespace IssueTracker.Services.Database.Repository
                 new SqliteParameter("@Id", comment.Id),
                 new SqliteParameter("@TicketId", ticketId),
                 new SqliteParameter("@Author", comment.Author),
-                new SqliteParameter("@Text", comment.Text),
-                new SqliteParameter("@CreatedDate", comment.CreatedDate));
+                new SqliteParameter("@Text", comment.Text));
         }
         public async Task<int> DeleteCommentAsync(int ticketId, int commentId)
         {
