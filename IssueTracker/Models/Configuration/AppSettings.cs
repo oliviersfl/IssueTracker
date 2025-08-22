@@ -73,5 +73,18 @@ public class AppSettings
         set => _database = value;
     }
 
+    private string _exportPath;
+    public string ExportPath
+    {
+        get => _exportPath;
+        set => _exportPath = value;
+    }
+
+    private string _exportFileName;
+    public string ExportFileName
+    {
+        get => _exportFileName + $"-{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.xlsx";
+        set => _exportFileName = value;
+    }
 }
 

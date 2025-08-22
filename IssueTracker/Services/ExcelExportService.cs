@@ -63,6 +63,15 @@ namespace IssueTracker.Services
 
         public void ExportTicketsToFile(List<Ticket> tickets, string filePath)
         {
+            // Get the directory path from the file path
+            string directoryPath = Path.GetDirectoryName(filePath);
+
+            // Check if directory exists and create it if it doesn't
+            if (!string.IsNullOrEmpty(directoryPath) && !Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
             var excelData = ExportTicketsToExcel(tickets);
             File.WriteAllBytes(filePath, excelData);
         }

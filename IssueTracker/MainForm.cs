@@ -268,7 +268,10 @@ namespace IssueTracker
                     _currentFilter.Type,
                     _currentFilter.Category
                 );
-            _excelExportService.ExportTicketsToFile(filteredTickets, "Tracker.xlsx");
+            _excelExportService.ExportTicketsToFile(
+                filteredTickets,
+                Path.Combine(_appSettings.ExportPath, _appSettings.ExportFileName)
+            );
         }
 
         private void MainForm_Load(object sender, EventArgs e)
