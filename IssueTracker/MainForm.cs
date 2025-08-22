@@ -7,15 +7,26 @@ namespace IssueTracker
     public partial class MainForm : Form
     {
         private readonly ITicketService _ticketService;
+        private readonly AppSettings _appSettings;
+        private readonly IDatabaseBackupService _databaseBackupService;
         private readonly TicketFilter _currentFilter = new TicketFilter();
         private BindingSource _ticketsBindingSource = new BindingSource();
 
         private ITicketRepository _ticketRepo;
 
-        public MainForm(ITicketService ticketService, ITicketRepository ticketRepository)
+        public MainForm(AppSettings appSettings, IDatabaseBackupService databaseBackupService, ITicketService ticketService, ITicketRepository ticketRepository)
         {
+            _appSettings = appSettings;
+            _databaseBackupService = databaseBackupService;
             _ticketService = ticketService;
             _ticketRepo = ticketRepository;
+
+            // Create regular backups
+            _databaseBackupService.CreateBackup(
+                dbPath: _appSettings.Database.DbPath,
+                destinationPath: _appSettings.Database.BackupDirectory,
+                backupCount: _appSettings.Database.BackupCount
+            );
 
             InitializeComponent();
             ConfigureUI();

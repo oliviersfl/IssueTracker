@@ -45,6 +45,9 @@ namespace IssueTracker
             // Database
             services.AddSingleton<IDatabaseService, SqliteDatabaseService>();
             services.AddTransient<IDatabaseInitializer, SqliteDatabaseInitializer>();
+            services.AddTransient<IDatabaseBackupService>(provider =>
+                new DatabaseBackupService(TimeSpan.FromHours(appSettings.Database.BackupHoursInterval))
+            );
 
             services.AddTransient<ITicketRepository, TicketRepository>();
         }

@@ -1,16 +1,24 @@
 ﻿public class ConnectionStrings
 {
-    private string _sqlite;
+    private string _sQLite;
     public string SQLite
     {
-        get => _sqlite;
-        set => _sqlite = value;
+        get => _sQLite;
+        set => _sQLite = value;
     }
 
 }
 
+
 public class Database
 {
+    private string _dbPath;
+    public string DbPath
+    {
+        get => _dbPath;
+        set => _dbPath = value;
+    }
+
     private bool _seedSampleData;
     public bool SeedSampleData
     {
@@ -25,7 +33,29 @@ public class Database
         set => _scriptsFolder = value;
     }
 
+    private string _backupDirectory;
+    public string BackupDirectory
+    {
+        get => _backupDirectory;
+        set => _backupDirectory = value;
+    }
+
+    private int _backupCount;
+    public int BackupCount
+    {
+        get => _backupCount;
+        set => _backupCount = value;
+    }
+
+    private int _backupHoursInterval;
+    public int BackupHoursInterval
+    {
+        get => _backupHoursInterval;
+        set => _backupHoursInterval = value;
+    }
+
 }
+
 
 public class AppSettings
 {
