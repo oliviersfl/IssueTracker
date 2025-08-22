@@ -99,7 +99,7 @@ namespace IssueTracker.Services.Database.Repository
         // Comments
         public async Task<IEnumerable<TicketComment>> GetCommentsByTicketIdAsync(int ticketId)
         {
-            const string sql = "SELECT * FROM TicketComment WHERE ticketid = @TicketId ORDER BY CreatedDate DESC";
+            const string sql = "SELECT * FROM TicketComment WHERE ticketid = @TicketId ORDER BY CreatedDate";
             return await _db.QueryAsync(sql, reader => new TicketComment
             {
                 Id = reader.GetInt32(0),
