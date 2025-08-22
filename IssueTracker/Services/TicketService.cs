@@ -1,8 +1,6 @@
 ﻿using IssueTracker.Models;
 using IssueTracker.Services.Database.Repository.Interfaces;
 using IssueTracker.Services.Interfaces;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 
 namespace IssueTracker.Services
 {
@@ -392,7 +390,7 @@ namespace IssueTracker.Services
             var subTasksToUpdate = subTasks
             .Where(st => st.Id > 0 &&
                 existingDbSubTasks.Any(
-                    db => db.Id == st.Id && 
+                    db => db.Id == st.Id &&
                     (
                         db.Title != st.Title ||
                         st.IsCompleted != db.IsCompleted)
