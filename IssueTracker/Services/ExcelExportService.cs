@@ -18,12 +18,31 @@ namespace IssueTracker.Services
                 headerRow.Style.Font.Bold = true;
 
                 string[] headers = { "Title", "Description", "Category", "Priority", "Type",
-                               "Created Date", "Modified Date", "Status", "Comment Text" };
+                           "Created Date", "Modified Date", "Status", "Comment Text" };
 
                 for (int i = 0; i < headers.Length; i++)
                 {
                     worksheet.Cell(1, i + 1).Value = headers[i];
                 }
+
+                // Set column widths and text wrapping for specific columns
+                worksheet.Column(2).Width = 50; // Description column
+                worksheet.Column(9).Width = 50; // Comment Text column
+
+                // Set smaller widths for other columns
+                worksheet.Column(1).Width = 20; // Title
+                worksheet.Column(3).Width = 15; // Category
+                worksheet.Column(4).Width = 12; // Priority
+                worksheet.Column(5).Width = 12; // Type
+                worksheet.Column(6).Width = 18; // Created Date
+                worksheet.Column(7).Width = 18; // Modified Date
+                worksheet.Column(8).Width = 12; // Status
+
+                // Enable text wrapping for all cells
+                worksheet.Columns().Style.Alignment.WrapText = true;
+
+                // Set alignment to top for better appearance with wrapped text
+                worksheet.Columns().Style.Alignment.Vertical = XLAlignmentVerticalValues.Top;
 
                 // Populate data
                 int row = 2;
@@ -43,15 +62,14 @@ namespace IssueTracker.Services
                     worksheet.Cell(row, 8).Value = ticket.Status;
                     worksheet.Cell(row, 9).Value = commentText;
 
-                    // Enable text wrapping
-                    worksheet.Cell(row, 2).Style.Alignment.WrapText = true;
-                    worksheet.Cell(row, 9).Style.Alignment.WrapText = true;
+                    // Set row height to auto-adjust to wrapped text
+                    worksheet.Row(row).Height = -1; // -1 means auto-height
 
                     row++;
                 }
 
-                // Auto-fit columns
-                worksheet.Columns().AdjustToContents();
+                // Optional: Adjust row heights for better visibility
+                worksheet.Rows(2, row - 1).AdjustToContents();
 
                 using (var stream = new MemoryStream())
                 {
