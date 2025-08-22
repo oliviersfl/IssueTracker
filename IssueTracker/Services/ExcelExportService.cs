@@ -53,7 +53,7 @@ namespace IssueTracker.Services
                             $"({c.CreatedDate:yyyy-MM-dd HH:mm}):{Environment.NewLine}{c.Text}"));
 
                     worksheet.Cell(row, 1).Value = ticket.Title;
-                    worksheet.Cell(row, 2).Value = ticket.Description;
+                    worksheet.Cell(row, 2).Value = ticket.Description.Replace("\r", "");
                     worksheet.Cell(row, 3).Value = ticket.Category;
                     worksheet.Cell(row, 4).Value = ticket.Priority;
                     worksheet.Cell(row, 5).Value = ticket.Type;
