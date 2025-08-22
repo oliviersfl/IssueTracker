@@ -1,6 +1,7 @@
 ﻿using IssueTracker.Models;
 using IssueTracker.Services.Database.Repository.Interfaces;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace IssueTracker.Services
 {
@@ -149,7 +150,13 @@ namespace IssueTracker.Services
 
             // Identify comments to add, update, or delete
             var commentsToAdd = comments.Where(c => c.Id == 0).ToList();
-            var commentsToUpdate = comments.Where(c => c.Id > 0).ToList();
+            var commentsToUpdate = comments
+            .Where(c => c.Id > 0 &&
+                existingDbComments.Any(
+                    db => db.Id == c.Id &&
+                    db.Text != c.Text)
+            )
+            .ToList();
             var commentIdsToDelete = existingDbComments
                 .Where(dbC => !comments.Any(c => c.Id == dbC.Id))
                 .Select(dbC => dbC.Id)
@@ -337,7 +344,15 @@ namespace IssueTracker.Services
 
             // Identify subtasks to add, update, or delete
             var subTasksToAdd = subTasks.Where(st => st.Id == 0).ToList();
-            var subTasksToUpdate = subTasks.Where(st => st.Id > 0).ToList();
+            var subTasksToUpdate = subTasks
+            .Where(st => st.Id > 0 &&
+                existingDbSubTasks.Any(
+                    db => db.Id == st.Id && 
+                    (
+                        db.Title != st.Title ||
+                        st.IsCompleted != db.IsCompleted)
+                    )
+            ).ToList();
             var subTaskIdsToDelete = existingDbSubTasks
                 .Where(dbSt => !subTasks.Any(st => st.Id == dbSt.Id))
                 .Select(dbSt => dbSt.Id)

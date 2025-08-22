@@ -63,6 +63,7 @@ namespace IssueTracker
                 {
                     var item = new ListViewItem(subTask.Title);
                     item.SubItems.Add(subTask.IsCompleted ? "Yes" : "No");
+                    item.Tag = subTask;
                     lvSubtasks.Items.Add(item);
                 }
 
@@ -73,6 +74,7 @@ namespace IssueTracker
                     var item = new ListViewItem(comment.Author);
                     item.SubItems.Add(comment.Text);
                     item.SubItems.Add(comment.CreatedDate.ToString("g"));
+                    item.Tag = comment;
                     lvComments.Items.Add(item);
                 }
             }
@@ -111,6 +113,7 @@ namespace IssueTracker
                 {
                     ticket.SubTasks.Add(new SubTask
                     {
+                        Id = item.Tag != null ? ((SubTask)item.Tag).Id : 0,
                         Title = item.Text,
                         IsCompleted = item.SubItems[1].Text == "Yes"
                     });
@@ -122,6 +125,7 @@ namespace IssueTracker
                 {
                     ticket.Comments.Add(new Comment
                     {
+                        Id = item.Tag != null ? ((Comment)item.Tag).Id : 0,
                         Author = item.Text,
                         Text = item.SubItems[1].Text,
                         CreatedDate = DateTime.Parse(item.SubItems[2].Text)
