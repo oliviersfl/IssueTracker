@@ -18,7 +18,7 @@ namespace IssueTracker.Services
                 headerRow.Style.Font.Bold = true;
 
                 string[] headers = { "Title", "Description", "Category", "Priority", "Type",
-                           "Created Date", "Modified Date", "Status", "Comment Text" };
+                           "Created Date", "Modified Date", "Status", "Comments" };
 
                 for (int i = 0; i < headers.Length; i++)
                 {
@@ -30,10 +30,10 @@ namespace IssueTracker.Services
                 worksheet.Column(9).Width = 50; // Comment Text column
 
                 // Set smaller widths for other columns
-                worksheet.Column(1).Width = 20; // Title
+                worksheet.Column(1).Width = 30; // Title
                 worksheet.Column(3).Width = 15; // Category
                 worksheet.Column(4).Width = 12; // Priority
-                worksheet.Column(5).Width = 12; // Type
+                worksheet.Column(5).Width = 20; // Type
                 worksheet.Column(6).Width = 18; // Created Date
                 worksheet.Column(7).Width = 18; // Modified Date
                 worksheet.Column(8).Width = 12; // Status
