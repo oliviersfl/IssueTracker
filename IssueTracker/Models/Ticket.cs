@@ -7,7 +7,7 @@
         public string Description { get; set; }
         public string Category { get; set; }
         public string Priority { get; set; }
-        public string Type { get; set; } // From appsettings.json
+        public string Type { get; set; }
         public DateTime CreatedDate { get; set; }
         public DateTime ModifiedDate { get; set; }
         public DateTime? DueDate { get; set; }
