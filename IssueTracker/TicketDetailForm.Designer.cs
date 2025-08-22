@@ -59,8 +59,8 @@
             btnAddSubTask = new Button();
             panel3 = new Panel();
             lvSubtasks = new ListView();
-            columnHeader1 = new ColumnHeader();
-            columnHeader2 = new ColumnHeader();
+            subTaskHeaderTitle = new ColumnHeader();
+            subTaskHeaderIsComplete = new ColumnHeader();
             btnToggleComplete = new Button();
             btnDeleteSubTask = new Button();
             tabPageComments = new TabPage();
@@ -70,9 +70,9 @@
             txtComment = new TextBox();
             panel4 = new Panel();
             lvComments = new ListView();
-            columnHeader3 = new ColumnHeader();
-            columnHeader4 = new ColumnHeader();
-            columnHeader5 = new ColumnHeader();
+            commentHeaderAuthor = new ColumnHeader();
+            commentHeaderComment = new ColumnHeader();
+            commentHeaderDateCreated = new ColumnHeader();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             tabControl1.SuspendLayout();
@@ -446,7 +446,7 @@
             // 
             // lvSubtasks
             // 
-            lvSubtasks.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2 });
+            lvSubtasks.Columns.AddRange(new ColumnHeader[] { subTaskHeaderTitle, subTaskHeaderIsComplete });
             lvSubtasks.Dock = DockStyle.Fill;
             lvSubtasks.FullRowSelect = true;
             lvSubtasks.GridLines = true;
@@ -460,14 +460,14 @@
             // 
             // columnHeader1
             // 
-            columnHeader1.Text = "Title";
-            columnHeader1.Width = 500;
+            subTaskHeaderTitle.Text = "Title";
+            subTaskHeaderTitle.Width = 500;
             // 
             // columnHeader2
             // 
-            columnHeader2.Text = "Completed";
-            columnHeader2.TextAlign = HorizontalAlignment.Center;
-            columnHeader2.Width = 120;
+            subTaskHeaderIsComplete.Text = "Completed";
+            subTaskHeaderIsComplete.TextAlign = HorizontalAlignment.Center;
+            subTaskHeaderIsComplete.Width = 120;
             // 
             // btnToggleComplete
             // 
@@ -588,7 +588,7 @@
             // lvComments
             // 
             lvComments.ShowItemToolTips = true;
-            lvComments.Columns.AddRange(new ColumnHeader[] { columnHeader3, columnHeader4, columnHeader5 });
+            lvComments.Columns.AddRange(new ColumnHeader[] { commentHeaderAuthor, commentHeaderComment, commentHeaderDateCreated });
             lvComments.Dock = DockStyle.Fill;
             lvComments.FullRowSelect = true;
             lvComments.GridLines = true;
@@ -602,18 +602,18 @@
             // 
             // columnHeader3
             // 
-            columnHeader3.Text = "Author";
-            columnHeader3.Width = 150;
+            commentHeaderAuthor.Text = "Author";
+            commentHeaderAuthor.Width = 150;
             // 
             // columnHeader4
             // 
-            columnHeader4.Text = "Comment";
-            columnHeader4.Width = 350;
+            commentHeaderComment.Text = "Comment";
+            commentHeaderComment.Width = 350;
             // 
             // columnHeader5
             // 
-            columnHeader5.Text = "Date";
-            columnHeader5.Width = 150;
+            commentHeaderDateCreated.Text = "Date Created";
+            commentHeaderDateCreated.Width = 150;
             // 
             // TicketDetailForm
             // 
@@ -681,8 +681,8 @@
         private System.Windows.Forms.Button btnAddSubTask;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.ListView lvSubtasks;
-        private System.Windows.Forms.ColumnHeader columnHeader1;
-        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader subTaskHeaderTitle;
+        private System.Windows.Forms.ColumnHeader subTaskHeaderIsComplete;
         private System.Windows.Forms.TabPage tabPageComments;
         private System.Windows.Forms.Button btnAddComment;
         private System.Windows.Forms.Button btnEditComment;
@@ -690,9 +690,9 @@
         private System.Windows.Forms.TextBox txtComment;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.ListView lvComments;
-        private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.ColumnHeader columnHeader4;
-        private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.ColumnHeader commentHeaderAuthor;
+        private System.Windows.Forms.ColumnHeader commentHeaderComment;
+        private System.Windows.Forms.ColumnHeader commentHeaderDateCreated;
         private System.Windows.Forms.Button btnDeleteSubTask;
         private System.Windows.Forms.Button btnToggleComplete;
     }
