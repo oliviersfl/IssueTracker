@@ -14,5 +14,7 @@
         public string Status { get; set; }
         public List<SubTask> SubTasks { get; set; } = new List<SubTask>();
         public List<Comment> Comments { get; set; } = new List<Comment>();
+
+        public int PendingSubTasksCount => SubTasks.Count(st => !st.IsCompleted);
     }
 }

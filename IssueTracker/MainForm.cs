@@ -29,13 +29,6 @@ namespace IssueTracker
             _ticketService = ticketService;
             _ticketRepo = ticketRepository;
 
-            // Create regular backups
-            _databaseBackupService.CreateBackup(
-                dbPath: _appSettings.Database.DbPath,
-                destinationPath: _appSettings.Database.BackupDirectory,
-                backupCount: _appSettings.Database.BackupCount
-            );
-
             InitializeComponent();
             ConfigureUI();
             LoadTickets().Wait();
@@ -57,7 +50,7 @@ namespace IssueTracker
             {
                 DataPropertyName = "Title",
                 HeaderText = "Title",
-                Width = 200
+                MinimumWidth = 200
             });
 
             dgvTickets.Columns.Add(new DataGridViewTextBoxColumn()
@@ -87,7 +80,17 @@ namespace IssueTracker
                 Width = 100
             });
 
-            // Add the new date columns
+            dgvTickets.Columns.Add(new DataGridViewTextBoxColumn()
+            {
+                DataPropertyName = "PendingSubTasksCount",
+                HeaderText = "Pending Subtasks",
+                DefaultCellStyle = new DataGridViewCellStyle()
+                {
+                    Format = "N0"  // Number format with no decimals
+                },
+                MinimumWidth = 125
+            });
+
             dgvTickets.Columns.Add(new DataGridViewTextBoxColumn()
             {
                 DataPropertyName = "CreatedDate",
@@ -217,6 +220,16 @@ namespace IssueTracker
             };
         }
         #region Events
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+            // Create regular backups
+            _databaseBackupService.CreateBackup(
+                dbPath: _appSettings.Database.DbPath,
+                destinationPath: _appSettings.Database.BackupDirectory,
+                backupCount: _appSettings.Database.BackupCount
+            );
+        }
         private async void btnCreateTicket_Click(object sender, EventArgs e)
         {
             var detailForm = new TicketDetailForm(_ticketService);
@@ -272,11 +285,6 @@ namespace IssueTracker
                 filteredTickets,
                 Path.Combine(_appSettings.ExportPath, _appSettings.ExportFileName)
             );
-        }
-
-        private void MainForm_Load(object sender, EventArgs e)
-        {
-            // Initialization if needed
         }
 
         // Double-click event for ticket selection
