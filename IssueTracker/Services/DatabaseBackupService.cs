@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using IssueTracker.Services.Interfaces;
+using Microsoft.Data.Sqlite;
 
 namespace IssueTracker.Services
 {

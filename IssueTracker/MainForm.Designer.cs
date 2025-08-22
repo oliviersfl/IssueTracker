@@ -36,7 +36,9 @@
             this.btnCreateTicket = new System.Windows.Forms.Button();
             this.btnFilter = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btnExportCsv = new System.Windows.Forms.Button();
             this.lblTitle = new System.Windows.Forms.Label();
+            this.btnClearFilter = new System.Windows.Forms.Button();
             this.panel2 = new System.Windows.Forms.Panel();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -130,37 +132,37 @@
             this.btnFilter.UseVisualStyleBackColor = false;
             this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
             // 
-            // btnClearFilter
-            //
-            this.btnClearFilter = new System.Windows.Forms.Button();
-            this.btnClearFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClearFilter.BackColor = System.Drawing.Color.White;
-            this.btnClearFilter.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue;
-            this.btnClearFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnClearFilter.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.btnClearFilter.ForeColor = System.Drawing.Color.SteelBlue;
-            this.btnClearFilter.Image = ((System.Drawing.Image)(resources.GetObject("btnFilter.Image"))); // You might want a different icon
-            this.btnClearFilter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClearFilter.Location = new System.Drawing.Point(396, 12); // Adjust position as needed
-            this.btnClearFilter.Name = "btnClearFilter";
-            this.btnClearFilter.Size = new System.Drawing.Size(188, 36);
-            this.btnClearFilter.TabIndex = 4;
-            this.btnClearFilter.Text = "Clear Filters";
-            this.btnClearFilter.UseVisualStyleBackColor = false;
-            this.btnClearFilter.Click += new System.EventHandler(this.btnClearFilter_Click);
-            // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.btnExportCsv);
             this.panel1.Controls.Add(this.lblTitle);
-            this.panel1.Controls.Add(this.btnFilter);
             this.panel1.Controls.Add(this.btnClearFilter);
+            this.panel1.Controls.Add(this.btnFilter);
             this.panel1.Controls.Add(this.btnCreateTicket);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(984, 60);
             this.panel1.TabIndex = 3;
+            // 
+            // btnExportCsv
+            // 
+            this.btnExportCsv.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnExportCsv.BackColor = System.Drawing.Color.White;
+            this.btnExportCsv.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue;
+            this.btnExportCsv.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnExportCsv.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnExportCsv.ForeColor = System.Drawing.Color.SteelBlue;
+            this.btnExportCsv.Image = ((System.Drawing.Image)(resources.GetObject("btnExportCsv.Image")));
+            this.btnExportCsv.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnExportCsv.Location = new System.Drawing.Point(396, 12);
+            this.btnExportCsv.Name = "btnExportCsv";
+            this.btnExportCsv.Size = new System.Drawing.Size(188, 36);
+            this.btnExportCsv.TabIndex = 5;
+            this.btnExportCsv.Text = "Export to Excel";
+            this.btnExportCsv.UseVisualStyleBackColor = false;
+            this.btnExportCsv.Click += new System.EventHandler(this.btnExportExcel_Click);
             // 
             // lblTitle
             // 
@@ -171,6 +173,24 @@
             this.lblTitle.Size = new System.Drawing.Size(126, 25);
             this.lblTitle.TabIndex = 3;
             this.lblTitle.Text = "Issue Tracker";
+            // 
+            // btnClearFilter
+            // 
+            this.btnClearFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClearFilter.BackColor = System.Drawing.Color.White;
+            this.btnClearFilter.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue;
+            this.btnClearFilter.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnClearFilter.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.btnClearFilter.ForeColor = System.Drawing.Color.SteelBlue;
+            this.btnClearFilter.Image = ((System.Drawing.Image)(resources.GetObject("btnClearFilter.Image")));
+            this.btnClearFilter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnClearFilter.Location = new System.Drawing.Point(202, 12);
+            this.btnClearFilter.Name = "btnClearFilter";
+            this.btnClearFilter.Size = new System.Drawing.Size(188, 36);
+            this.btnClearFilter.TabIndex = 4;
+            this.btnClearFilter.Text = "Clear Filters";
+            this.btnClearFilter.UseVisualStyleBackColor = false;
+            this.btnClearFilter.Click += new System.EventHandler(this.btnClearFilter_Click);
             // 
             // panel2
             // 
@@ -234,6 +254,7 @@
         private Button btnCreateTicket;
         private Button btnFilter;
         private Button btnClearFilter;
+        private Button btnExportCsv;
         private Panel panel1;
         private Label lblTitle;
         private Panel panel2;

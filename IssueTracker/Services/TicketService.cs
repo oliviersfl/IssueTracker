@@ -1,5 +1,6 @@
 ﻿using IssueTracker.Models;
 using IssueTracker.Services.Database.Repository.Interfaces;
+using IssueTracker.Services.Interfaces;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
@@ -44,6 +45,50 @@ namespace IssueTracker.Services
                 SubTasks = new List<SubTask>(),
                 Comments = new List<Comment>()
             }).ToList();
+
+            // Get all subtasks and comments in batch
+            var ticketIds = tickets.Select(t => t.Id).ToList();
+
+            // Get all subtasks for all tickets
+            var allSubTasks = new List<(int TicketId, SubTask SubTask)>();
+            foreach (var ticketId in ticketIds)
+            {
+                var dbSubTasks = await _ticketRepository.GetSubTasksByTicketIdAsync(ticketId);
+                allSubTasks.AddRange(dbSubTasks.Select(subTask => (ticketId, new SubTask
+                {
+                    Id = subTask.Id,
+                    Title = subTask.Title,
+                    IsCompleted = subTask.IsCompleted
+                })));
+            }
+
+            // Get all comments for all tickets
+            var allComments = new List<(int TicketId, Comment Comment)>();
+            foreach (var ticketId in ticketIds)
+            {
+                var dbComments = await _ticketRepository.GetCommentsByTicketIdAsync(ticketId);
+                allComments.AddRange(dbComments.Select(comment => (ticketId, new Comment
+                {
+                    Id = comment.Id,
+                    Author = comment.Author,
+                    Text = comment.Text,
+                    CreatedDate = comment.CreatedDate
+                })));
+            }
+
+            // Assign subtasks and comments to tickets
+            foreach (var ticket in tickets)
+            {
+                ticket.SubTasks = allSubTasks
+                    .Where(x => x.TicketId == ticket.Id)
+                    .Select(x => x.SubTask)
+                    .ToList();
+
+                ticket.Comments = allComments
+                    .Where(x => x.TicketId == ticket.Id)
+                    .Select(x => x.Comment)
+                    .ToList();
+            }
 
             _tickets.Clear();
             _tickets.AddRange(tickets);

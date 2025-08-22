@@ -2,6 +2,7 @@ using IssueTracker.Services;
 using IssueTracker.Services.Database;
 using IssueTracker.Services.Database.Repository;
 using IssueTracker.Services.Database.Repository.Interfaces;
+using IssueTracker.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -48,6 +49,7 @@ namespace IssueTracker
             services.AddTransient<IDatabaseBackupService>(provider =>
                 new DatabaseBackupService(TimeSpan.FromHours(appSettings.Database.BackupHoursInterval))
             );
+            services.AddScoped<IExcelExportService, ExcelExportService>();
 
             services.AddTransient<ITicketRepository, TicketRepository>();
         }

@@ -1,6 +1,6 @@
 using IssueTracker.Models;
-using IssueTracker.Services;
 using IssueTracker.Services.Database.Repository.Interfaces;
+using IssueTracker.Services.Interfaces;
 
 namespace IssueTracker
 {
@@ -9,15 +9,23 @@ namespace IssueTracker
         private readonly ITicketService _ticketService;
         private readonly AppSettings _appSettings;
         private readonly IDatabaseBackupService _databaseBackupService;
+        private readonly IExcelExportService _excelExportService;
         private readonly TicketFilter _currentFilter = new TicketFilter();
         private BindingSource _ticketsBindingSource = new BindingSource();
 
         private ITicketRepository _ticketRepo;
 
-        public MainForm(AppSettings appSettings, IDatabaseBackupService databaseBackupService, ITicketService ticketService, ITicketRepository ticketRepository)
+        public MainForm(
+            AppSettings appSettings,
+            IDatabaseBackupService databaseBackupService,
+            ITicketService ticketService,
+            ITicketRepository ticketRepository,
+            IExcelExportService excelExportService
+        )
         {
             _appSettings = appSettings;
             _databaseBackupService = databaseBackupService;
+            _excelExportService = excelExportService;
             _ticketService = ticketService;
             _ticketRepo = ticketRepository;
 
@@ -164,7 +172,7 @@ namespace IssueTracker
                     _currentFilter.CreatedFromDate,
                     _currentFilter.CreatedToDate,
                     _currentFilter.Type,
-                    _currentFilter.Category // Use the updated value
+                    _currentFilter.Category
                 );
 
             _ticketsBindingSource.DataSource = filteredTickets;
@@ -250,6 +258,17 @@ namespace IssueTracker
             var allTickets = await _ticketService.GetAllTickets();
             _ticketsBindingSource.DataSource = allTickets;
             UpdateTicketCount();
+        }
+        private void btnExportExcel_Click(object sender, EventArgs e)
+        {
+            var filteredTickets = _ticketService.FilterTickets(
+                    _currentFilter.Status,
+                    _currentFilter.CreatedFromDate,
+                    _currentFilter.CreatedToDate,
+                    _currentFilter.Type,
+                    _currentFilter.Category
+                );
+            _excelExportService.ExportTicketsToFile(filteredTickets, "Tracker.xlsx");
         }
 
         private void MainForm_Load(object sender, EventArgs e)

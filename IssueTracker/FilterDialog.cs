@@ -1,5 +1,5 @@
 ﻿using IssueTracker.Models;
-using IssueTracker.Services;
+using IssueTracker.Services.Interfaces;
 using System.Windows.Forms;
 
 namespace IssueTracker

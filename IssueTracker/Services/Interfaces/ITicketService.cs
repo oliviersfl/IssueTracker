@@ -1,6 +1,6 @@
 ﻿using IssueTracker.Models;
 
-namespace IssueTracker.Services
+namespace IssueTracker.Services.Interfaces
 {
     public interface ITicketService
     {
