@@ -164,9 +164,9 @@
             btnDelete.Location = new Point(23, 13);
             btnDelete.Margin = new Padding(3, 4, 3, 4);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(86, 40);
+            btnDelete.Size = new Size(120, 40);
             btnDelete.TabIndex = 2;
-            btnDelete.Text = "Delete";
+            btnDelete.Text = "Delete Ticket";
             btnDelete.UseVisualStyleBackColor = false;
             btnDelete.Visible = false;
             btnDelete.Click += btnDelete_Click;
