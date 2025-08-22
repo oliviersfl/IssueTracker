@@ -33,6 +33,10 @@ namespace IssueTracker
             ConfigureUI();
             LoadTickets().Wait();
             ApplyDefaultFilters().Wait();
+
+            _searchTimer = new System.Windows.Forms.Timer();
+            _searchTimer.Interval = 300; // 300ms delay
+            _searchTimer.Tick += SearchTimer_Tick;
         }
         private void ConfigureUI()
         {
@@ -361,6 +365,46 @@ namespace IssueTracker
                     e.CellStyle.SelectionForeColor = Color.Orange;
                 }
             }
+        }
+        private void txtSearch_KeyUp(object sender, KeyEventArgs e)
+        {
+            // Restart the timer on each key press
+            _searchTimer.Stop();
+            _searchTimer.Start();
+        }
+
+        private void SearchTimer_Tick(object sender, EventArgs e)
+        {
+            _searchTimer.Stop();
+
+            // Get the search term and trim whitespace
+            string searchTerm = txtSearch.Text.Trim().ToLower();
+
+            // Get the current filtered tickets
+            var currentTickets = _ticketService.FilterTickets(
+                _currentFilter.Status,
+                _currentFilter.CreatedFromDate,
+                _currentFilter.CreatedToDate,
+                _currentFilter.Type,
+                _currentFilter.Category
+            );
+
+            // If search term is empty, show all filtered tickets
+            if (string.IsNullOrEmpty(searchTerm))
+            {
+                _ticketsBindingSource.DataSource = currentTickets;
+            }
+            else
+            {
+                // Filter tickets by title containing the search term
+                var filteredTickets = currentTickets
+                    .Where(t => t.Title.ToLower().Contains(searchTerm))
+                    .ToList();
+
+                _ticketsBindingSource.DataSource = filteredTickets;
+            }
+
+            UpdateTicketCount();
         }
         #endregion
     }

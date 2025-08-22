@@ -13,6 +13,10 @@
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
+            if (disposing)
+            {
+                _searchTimer?.Dispose();
+            }
             if (disposing && (components != null))
             {
                 components.Dispose();
@@ -33,6 +37,7 @@
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.dgvTickets = new System.Windows.Forms.DataGridView();
+            this.txtSearch = new System.Windows.Forms.TextBox();
             this.btnCreateTicket = new System.Windows.Forms.Button();
             this.btnFilter = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -106,9 +111,9 @@
             this.btnCreateTicket.ForeColor = System.Drawing.Color.White;
             this.btnCreateTicket.Image = ((System.Drawing.Image)(resources.GetObject("btnCreateTicket.Image")));
             this.btnCreateTicket.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnCreateTicket.Location = new System.Drawing.Point(784, 12);
+            this.btnCreateTicket.Location = new System.Drawing.Point(774, 12);
             this.btnCreateTicket.Name = "btnCreateTicket";
-            this.btnCreateTicket.Size = new System.Drawing.Size(188, 36);
+            this.btnCreateTicket.Size = new System.Drawing.Size(198, 36);
             this.btnCreateTicket.TabIndex = 1;
             this.btnCreateTicket.Text = "Create New Ticket";
             this.btnCreateTicket.UseVisualStyleBackColor = false;
@@ -124,17 +129,18 @@
             this.btnFilter.ForeColor = System.Drawing.Color.SteelBlue;
             this.btnFilter.Image = ((System.Drawing.Image)(resources.GetObject("btnFilter.Image")));
             this.btnFilter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnFilter.Location = new System.Drawing.Point(590, 12);
+            this.btnFilter.Location = new System.Drawing.Point(648, 12);
             this.btnFilter.Name = "btnFilter";
-            this.btnFilter.Size = new System.Drawing.Size(188, 36);
+            this.btnFilter.Size = new System.Drawing.Size(120, 36);
             this.btnFilter.TabIndex = 2;
-            this.btnFilter.Text = "Filter Tickets";
+            this.btnFilter.Text = "Filter";
             this.btnFilter.UseVisualStyleBackColor = false;
             this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
             // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.White;
+            this.panel1.Controls.Add(this.txtSearch);
             this.panel1.Controls.Add(this.btnExportCsv);
             this.panel1.Controls.Add(this.lblTitle);
             this.panel1.Controls.Add(this.btnClearFilter);
@@ -146,6 +152,18 @@
             this.panel1.Size = new System.Drawing.Size(984, 60);
             this.panel1.TabIndex = 3;
             // 
+            // txtSearch
+            // 
+            this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.txtSearch.Location = new System.Drawing.Point(170, 17); // Move up 2 pixels
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.PlaceholderText = "Search ticket title...";
+            this.txtSearch.Size = new System.Drawing.Size(200, 28); // Increase height
+            this.txtSearch.TabIndex = 6;
+            this.txtSearch.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
+            // 
             // btnExportCsv
             // 
             this.btnExportCsv.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -156,11 +174,11 @@
             this.btnExportCsv.ForeColor = System.Drawing.Color.SteelBlue;
             this.btnExportCsv.Image = ((System.Drawing.Image)(resources.GetObject("btnExportCsv.Image")));
             this.btnExportCsv.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnExportCsv.Location = new System.Drawing.Point(396, 12);
+            this.btnExportCsv.Location = new System.Drawing.Point(522, 12);
             this.btnExportCsv.Name = "btnExportCsv";
-            this.btnExportCsv.Size = new System.Drawing.Size(188, 36);
+            this.btnExportCsv.Size = new System.Drawing.Size(120, 36);
             this.btnExportCsv.TabIndex = 5;
-            this.btnExportCsv.Text = "Export to Excel";
+            this.btnExportCsv.Text = "Export";
             this.btnExportCsv.UseVisualStyleBackColor = false;
             this.btnExportCsv.Click += new System.EventHandler(this.btnExportExcel_Click);
             // 
@@ -184,11 +202,11 @@
             this.btnClearFilter.ForeColor = System.Drawing.Color.SteelBlue;
             this.btnClearFilter.Image = ((System.Drawing.Image)(resources.GetObject("btnClearFilter.Image")));
             this.btnClearFilter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClearFilter.Location = new System.Drawing.Point(202, 12);
+            this.btnClearFilter.Location = new System.Drawing.Point(396, 12);
             this.btnClearFilter.Name = "btnClearFilter";
-            this.btnClearFilter.Size = new System.Drawing.Size(188, 36);
+            this.btnClearFilter.Size = new System.Drawing.Size(120, 36);
             this.btnClearFilter.TabIndex = 4;
-            this.btnClearFilter.Text = "Clear Filters";
+            this.btnClearFilter.Text = "Clear";
             this.btnClearFilter.UseVisualStyleBackColor = false;
             this.btnClearFilter.Click += new System.EventHandler(this.btnClearFilter_Click);
             // 
@@ -261,5 +279,7 @@
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel toolStripStatusLabel1;
         private ToolStripStatusLabel lblTicketCount;
+        private TextBox txtSearch;
+        private System.Windows.Forms.Timer _searchTimer;
     }
 }
