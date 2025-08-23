@@ -300,6 +300,8 @@ namespace IssueTracker
                 filteredTickets,
                 Path.Combine(_appSettings.ExportPath, _appSettings.ExportFileName)
             );
+
+            MessageBox.Show("Excel Export Complete!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         // Double-click event for ticket selection
