@@ -278,13 +278,23 @@ namespace IssueTracker
         }
         private void btnExportExcel_Click(object sender, EventArgs e)
         {
-            var filteredTickets = _ticketService.FilterTickets(
+            // Get the search term and trim whitespace
+            string searchTerm = txtSearch.Text.Trim().ToLower();
+                var filteredTickets = _ticketService.FilterTickets(
                     _currentFilter.Status,
                     _currentFilter.CreatedFromDate,
                     _currentFilter.CreatedToDate,
                     _currentFilter.Type,
                     _currentFilter.Category
                 );
+
+
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                filteredTickets = filteredTickets
+                    .Where(t => t.Title.ToLower().Contains(searchTerm))
+                    .ToList();
+            }
             _excelExportService.ExportTicketsToFile(
                 filteredTickets,
                 Path.Combine(_appSettings.ExportPath, _appSettings.ExportFileName)
