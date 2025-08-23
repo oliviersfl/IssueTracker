@@ -5,7 +5,8 @@ INSERT INTO TicketCategory (description, "order", isDefault) VALUES
 ('Integration', 3, 0),
 ('Documentation', 4, 0),
 ('Support', 5, 1),
-('Training', 6, 0);
+('Training', 6, 0),
+('Other', 7, 0);
 
 -- Insert TicketPriority data
 INSERT INTO TicketPriority (description, "order", isDefault) VALUES
@@ -27,14 +28,15 @@ INSERT INTO TicketType (description, "order", isDefault) VALUES
 INSERT INTO TicketStatus (description, "order", isDefault) VALUES
 ('To Do', 1, 1),
 ('In Progress', 2, 1),
-('On Hold', 3, 1),
-('Done', 4, 0),
-('Cancelled', 5, 0),
-('Reassigned', 6, 1),
-('Planned', 7, 1),
-('Call Scheduled', 8, 1),
-('Waiting on Client', 9, 1),
-('Waiting on Internal Team', 10, 1);
+('Planned', 3, 1),
+('Processing', 4, 1),
+('Call Scheduled', 5, 1),
+('Waiting on Client', 6, 1),
+('Waiting on Internal Team', 7, 1),
+('On Hold', 8, 1),
+('Reassigned', 9, 0),
+('Cancelled', 10, 0),
+('Done', 11, 0);
 
 INSERT INTO Ticket
 (title, description, categoryid, priorityid, typeid, statusid) VALUES
