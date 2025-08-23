@@ -371,7 +371,6 @@ namespace IssueTracker
                 // Calculate the difference in days
                 double daysDifference = (currentDate - modifiedDate).TotalDays;
 
-                // If modified date is 14 days or older, make text grey
                 if (daysDifference >= 14)
                 {
                     e.CellStyle.ForeColor = Color.Red;
