@@ -274,6 +274,7 @@ namespace IssueTracker
             // Reload all tickets without any filters
             var allTickets = await _ticketService.GetAllTickets();
             _ticketsBindingSource.DataSource = allTickets;
+            txtSearch.Text = "";
             UpdateTicketCount();
         }
         private void btnExportExcel_Click(object sender, EventArgs e)
