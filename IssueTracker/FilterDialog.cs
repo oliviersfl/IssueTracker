@@ -47,6 +47,17 @@ namespace IssueTracker
                 for (int i = 0; i < categories.Count; i++)
                 {
                     clbCategory.Items.Add(categories[i].Description);
+
+                    // Set checked state based on current filter
+                    bool shouldCheck = true; // Default to checked
+
+                    if (_currentFilter.Category != null)
+                    {
+                        // If filter has specific categories, check if this category is in the filter
+                        shouldCheck = _currentFilter.Category.Contains(categories[i].Description);
+                    }
+
+                    clbCategory.SetItemChecked(i, shouldCheck);
                 }
 
                 // If no categories in filter and no items are checked, check all as fallback
@@ -69,6 +80,17 @@ namespace IssueTracker
                 for (int i = 0; i < types.Count; i++)
                 {
                     clbType.Items.Add(types[i].Description);
+
+                    // Set checked state based on current filter
+                    bool shouldCheck = true; // Default to checked
+
+                    if (_currentFilter.Type != null)
+                    {
+                        // If filter has specific types, check if this type is in the filter
+                        shouldCheck = _currentFilter.Type.Contains(types[i].Description);
+                    }
+
+                    clbType.SetItemChecked(i, shouldCheck);
                 }
 
                 // If no types in filter and no items are checked, check all as fallback
