@@ -336,14 +336,14 @@ namespace IssueTracker
                     // Apply formatting if due date is within 4 days (including past due)
                     if (daysDifference <= 4 && daysDifference >= 0)
                     {
-                        // Due within 4 days - light purple
+                        // Due within 4 days
                         e.CellStyle.BackColor = Color.SkyBlue;
                         e.CellStyle.SelectionBackColor = Color.LightBlue;
                         e.CellStyle.SelectionForeColor = Color.Black;
                     }
                     else if (daysDifference < 0)
                     {
-                        // Past due - light red
+                        // Past due
                         e.CellStyle.BackColor = Color.LightCoral;
                         e.CellStyle.SelectionBackColor = Color.IndianRed;
                     }
