@@ -57,6 +57,25 @@ public class Database
 }
 
 
+public class CellFormatting
+{
+    private int _dueDateWarningThresholdDays;
+    public int DueDateWarningThresholdDays
+    {
+        get => _dueDateWarningThresholdDays;
+        set => _dueDateWarningThresholdDays = value;
+    }
+
+    private int _modifiedDateStaleThresholdDays;
+    public int ModifiedDateStaleThresholdDays
+    {
+        get => _modifiedDateStaleThresholdDays;
+        set => _modifiedDateStaleThresholdDays = value;
+    }
+
+}
+
+
 public class AppSettings
 {
     private ConnectionStrings _connectionStrings;
@@ -86,5 +105,12 @@ public class AppSettings
         get => _exportFileName + $"-{DateTime.Now:yyyy-MM-dd-HH-mm-ss}.xlsx";
         set => _exportFileName = value;
     }
-}
 
+    private CellFormatting _cellFormatting;
+    public CellFormatting CellFormatting
+    {
+        get => _cellFormatting;
+        set => _cellFormatting = value;
+    }
+
+}

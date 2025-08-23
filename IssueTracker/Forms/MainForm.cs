@@ -347,7 +347,7 @@ namespace IssueTracker
                     double daysDifference = (dueDate - currentDate).TotalDays;
 
                     // Apply formatting if due date is within 4 days (including past due)
-                    if (daysDifference <= 4 && daysDifference >= 0)
+                    if (daysDifference <= _appSettings.CellFormatting.DueDateWarningThresholdDays && daysDifference >= 0)
                     {
                         // Due within 4 days
                         e.CellStyle.BackColor = Color.SkyBlue;
@@ -371,7 +371,7 @@ namespace IssueTracker
                 // Calculate the difference in days
                 double daysDifference = (currentDate - modifiedDate).TotalDays;
 
-                if (daysDifference >= 14)
+                if (daysDifference >= _appSettings.CellFormatting.ModifiedDateStaleThresholdDays)
                 {
                     e.CellStyle.ForeColor = Color.Red;
                     e.CellStyle.SelectionForeColor = Color.Orange;
