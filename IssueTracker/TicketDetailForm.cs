@@ -63,6 +63,7 @@ namespace IssueTracker
                 {
                     var item = new ListViewItem(subTask.Title);
                     item.SubItems.Add(subTask.IsCompleted ? "Yes" : "No");
+                    item.SubItems.Add(subTask.CreatedDate.ToString("g")); // Add CreatedDate
                     item.Tag = subTask;
                     lvSubtasks.Items.Add(item);
                 }
@@ -111,12 +112,16 @@ namespace IssueTracker
                 ticket.SubTasks = new List<SubTask>();
                 foreach (ListViewItem item in lvSubtasks.Items)
                 {
-                    ticket.SubTasks.Add(new SubTask
+                    var existingSubTask = item.Tag as SubTask;
+                    var subTask = new SubTask
                     {
-                        Id = item.Tag != null ? ((SubTask)item.Tag).Id : 0,
+                        Id = existingSubTask?.Id ?? 0,
                         Title = item.Text,
-                        IsCompleted = item.SubItems[1].Text == "Yes"
-                    });
+                        IsCompleted = item.SubItems[1].Text == "Yes",
+                        // Preserve existing CreatedDate or set new one
+                        CreatedDate = existingSubTask?.CreatedDate ?? DateTime.Now
+                    };
+                    ticket.SubTasks.Add(subTask);
                 }
 
                 // Update comments
@@ -193,6 +198,14 @@ namespace IssueTracker
             {
                 var item = new ListViewItem(subTaskForm.InputText);
                 item.SubItems.Add("No");
+                item.SubItems.Add(DateTime.Now.ToString("g")); // Add current date
+                                                               // Store a temporary SubTask object with the creation date
+                item.Tag = new SubTask
+                {
+                    Title = subTaskForm.InputText,
+                    IsCompleted = false,
+                    CreatedDate = DateTime.Now
+                };
                 lvSubtasks.Items.Add(item);
             }
         }
@@ -234,6 +247,12 @@ namespace IssueTracker
 
             var selectedItem = lvSubtasks.SelectedItems[0];
             selectedItem.SubItems[1].Text = selectedItem.SubItems[1].Text == "Yes" ? "No" : "Yes";
+
+            // Update the Tag object to keep CreatedDate consistent
+            if (selectedItem.Tag is SubTask subTask)
+            {
+                subTask.IsCompleted = selectedItem.SubItems[1].Text == "Yes";
+            }
         }
 
         private void btnDeleteSubTask_Click(object sender, EventArgs e)

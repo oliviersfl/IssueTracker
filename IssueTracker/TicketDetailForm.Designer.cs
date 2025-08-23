@@ -61,6 +61,7 @@
             lvSubtasks = new ListView();
             subTaskHeaderTitle = new ColumnHeader();
             subTaskHeaderIsComplete = new ColumnHeader();
+            subTaskCreatedDate = new ColumnHeader();
             btnToggleComplete = new Button();
             btnDeleteSubTask = new Button();
             tabPageComments = new TabPage();
@@ -446,7 +447,7 @@
             // 
             // lvSubtasks
             // 
-            lvSubtasks.Columns.AddRange(new ColumnHeader[] { subTaskHeaderTitle, subTaskHeaderIsComplete });
+            lvSubtasks.Columns.AddRange(new ColumnHeader[] { subTaskHeaderTitle, subTaskHeaderIsComplete, subTaskCreatedDate });
             lvSubtasks.Dock = DockStyle.Fill;
             lvSubtasks.FullRowSelect = true;
             lvSubtasks.GridLines = true;
@@ -461,13 +462,17 @@
             // columnHeader1
             // 
             subTaskHeaderTitle.Text = "Title";
-            subTaskHeaderTitle.Width = 500;
+            subTaskHeaderTitle.Width = 430;
             // 
             // columnHeader2
             // 
             subTaskHeaderIsComplete.Text = "Completed";
             subTaskHeaderIsComplete.TextAlign = HorizontalAlignment.Center;
-            subTaskHeaderIsComplete.Width = 120;
+            subTaskHeaderIsComplete.Width = 90;
+
+            subTaskCreatedDate.Text = "Created Date";
+            subTaskCreatedDate.TextAlign = HorizontalAlignment.Left;
+            subTaskCreatedDate.Width = 120;
             // 
             // btnToggleComplete
             // 
@@ -683,6 +688,7 @@
         private System.Windows.Forms.ListView lvSubtasks;
         private System.Windows.Forms.ColumnHeader subTaskHeaderTitle;
         private System.Windows.Forms.ColumnHeader subTaskHeaderIsComplete;
+        private System.Windows.Forms.ColumnHeader subTaskCreatedDate;
         private System.Windows.Forms.TabPage tabPageComments;
         private System.Windows.Forms.Button btnAddComment;
         private System.Windows.Forms.Button btnEditComment;

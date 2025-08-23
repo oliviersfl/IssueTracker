@@ -163,7 +163,8 @@ namespace IssueTracker.Services
             {
                 Id = dbSubTask.Id,
                 Title = dbSubTask.Title,
-                IsCompleted = dbSubTask.IsCompleted
+                IsCompleted = dbSubTask.IsCompleted,
+                CreatedDate = dbSubTask.CreatedDate
             }).ToList();
 
             return subTasks;
