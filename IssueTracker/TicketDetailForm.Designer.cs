@@ -562,6 +562,7 @@
             btnAddComment.FlatStyle = FlatStyle.Flat;
             btnAddComment.ForeColor = Color.White;
             btnAddComment.Location = new Point(657, 507);
+            btnAddComment.Padding = new Padding(0, 4, 0, 4);
             btnAddComment.Margin = new Padding(3, 4, 3, 4);
             btnAddComment.Name = "btnAddComment";
             btnAddComment.Size = new Size(101, 40);
