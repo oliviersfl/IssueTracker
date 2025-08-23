@@ -4,7 +4,7 @@ using IssueTracker.Services.Interfaces;
 namespace IssueTracker
 {
     public partial class FilterDialog : Form
-    {
+    { 
         #region Properties
         private ITicketService _ticketService;
         // To keep track of past filter selected
@@ -40,58 +40,45 @@ namespace IssueTracker
             // Ticket Categories
             async Task InitializeCategories()
             {
-                cmbCategory.Items.Clear();
-                cmbCategory.Items.Add("All");
+                clbCategory.Items.Clear();
 
                 var categories = await _ticketService.GetTicketCategories();
-                int selectedIndex = 0; // Default to "All"
 
                 for (int i = 0; i < categories.Count; i++)
                 {
-                    cmbCategory.Items.Add(categories[i].Description);
+                    clbCategory.Items.Add(categories[i].Description);
+                }
 
-                    if (categories[i].Description == _currentFilter.Category)
+                // If no categories in filter and no items are checked, check all as fallback
+                if ((_currentFilter.Category == null || _currentFilter.Category.Count == 0) && clbCategory.CheckedItems.Count == 0 && clbCategory.Items.Count > 0)
+                {
+                    for (int i = 0; i < clbCategory.Items.Count; i++)
                     {
-                        selectedIndex = i + 1; // because "All" is index 0
-                    }
-                    else if (categories[i].IsDefault && _currentFilter.Category == null)
-                    {
-                        selectedIndex = i + 1;
-                    }
-                    else if (_currentFilter.Category == null)
-                    {
-                        selectedIndex = 0;
+                        clbCategory.SetItemChecked(i, true);
                     }
                 }
-                cmbCategory.SelectedIndex = selectedIndex;
             }
+
             // Ticket Type
             async Task InitializeTypes()
             {
-                cmbType.Items.Clear();
-                cmbType.Items.Add("All");
+                clbType.Items.Clear();
 
                 var types = await _ticketService.GetTicketTypes();
-                int selectedIndex = 0; // Default to "All"
 
                 for (int i = 0; i < types.Count; i++)
                 {
-                    cmbType.Items.Add(types[i].Description);
+                    clbType.Items.Add(types[i].Description);
+                }
 
-                    if (types[i].Description == _currentFilter.Type)
+                // If no types in filter and no items are checked, check all as fallback
+                if ((_currentFilter.Type == null || _currentFilter.Type.Count == 0) && clbType.CheckedItems.Count == 0 && clbType.Items.Count > 0)
+                {
+                    for (int i = 0; i < clbType.Items.Count; i++)
                     {
-                        selectedIndex = i + 1; // because "All" is index 0
-                    }
-                    else if (types[i].IsDefault && _currentFilter.Type == null)
-                    {
-                        selectedIndex = i + 1;
-                    }
-                    else if (_currentFilter.Type == null)
-                    {
-                        selectedIndex = 0;
+                        clbType.SetItemChecked(i, true);
                     }
                 }
-                cmbType.SelectedIndex = selectedIndex;
             }
             // Ticket Statuses
             async Task InitializeStatuses()
@@ -164,12 +151,24 @@ namespace IssueTracker
             // Save filter for next time
             ResultFilter = new TicketFilter
             {
-                Category = cmbCategory.SelectedIndex == 0 ? null : cmbCategory.SelectedItem.ToString(),
-                Type = cmbType.SelectedIndex == 0 ? null : cmbType.SelectedItem.ToString(),
+                Category = new List<string>(),
+                Type = new List<string>(),
                 Status = new List<string>(),
                 CreatedFromDate = chkFromDate.Checked ? dtpFromDate.Value : null,
                 CreatedToDate = chkToDate.Checked ? dtpToDate.Value : null
             };
+
+            // Get all checked categories
+            foreach (var item in clbCategory.CheckedItems)
+            {
+                ResultFilter.Category.Add(item.ToString());
+            }
+
+            // Get all checked types
+            foreach (var item in clbType.CheckedItems)
+            {
+                ResultFilter.Type.Add(item.ToString());
+            }
 
             // Get all checked statuses
             foreach (var item in clbStatus.CheckedItems)
@@ -177,10 +176,22 @@ namespace IssueTracker
                 ResultFilter.Status.Add(item.ToString());
             }
 
-            // If none selected, treat as all selected (Status = null)
+            // If none selected for Category, treat as all selected (Category = null)
+            if (ResultFilter.Category.Count == 0)
+            {
+                ResultFilter.Category = null;
+            }
+
+            // If none selected for Type, treat as all selected (Type = null)
+            if (ResultFilter.Type.Count == 0)
+            {
+                ResultFilter.Type = null;
+            }
+
+            // If none selected for Status, treat as all selected (Status = null)
             if (ResultFilter.Status.Count == 0)
             {
-                ResultFilter.Status = null; // This matches the pattern in InitializeStatuses
+                ResultFilter.Status = null;
             }
 
             DialogResult = DialogResult.OK;

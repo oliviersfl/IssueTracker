@@ -2,8 +2,8 @@
 {
     public class TicketFilter
     {
-        public string Category { get; set; }
-        public string Type { get; set; }
+        public List<string> Category { get; set; }
+        public List<string> Type { get; set; }
         public List<string> Status { get; set; }
         public DateTime? CreatedFromDate { get; set; }
         public DateTime? CreatedToDate { get; set; }

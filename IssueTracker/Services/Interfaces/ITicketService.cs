@@ -20,8 +20,8 @@ namespace IssueTracker.Services.Interfaces
             List<string> statuses,
             DateTime? fromDate,
             DateTime? toDate,
-            string type,
-            string category
+            List<string> type,
+            List<string> category
         );
     }
 }

@@ -243,8 +243,8 @@ namespace IssueTracker.Services
             List<string> statuses,
             DateTime? fromDate,
             DateTime? toDate,
-            string type,
-            string category
+            List<string> types,
+            List<string> categories
         )
         {
             // Handle null _tickets collection
@@ -257,10 +257,10 @@ namespace IssueTracker.Services
                            (t.Status != null && statuses.Contains(t.Status)))
                 .Where(t => !fromDate.HasValue || t.CreatedDate >= fromDate.Value)
                 .Where(t => !toDate.HasValue || t.CreatedDate <= toDate.Value)
-                .Where(t => string.IsNullOrEmpty(type) ||
-                           (!string.IsNullOrEmpty(t.Type) && t.Type.Equals(type, StringComparison.OrdinalIgnoreCase)))
-                .Where(t => string.IsNullOrEmpty(category) ||
-                           (!string.IsNullOrEmpty(t.Category) && t.Category.Equals(category, StringComparison.OrdinalIgnoreCase)))
+                .Where(t => types == null || types.Count == 0 ||
+                           (t.Type != null && types.Contains(t.Type)))
+                .Where(t => categories == null || categories.Count == 0 ||
+                           (t.Category != null && categories.Contains(t.Category)))
                 .ToList();
         }
         #endregion

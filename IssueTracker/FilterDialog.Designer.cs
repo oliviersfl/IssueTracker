@@ -39,9 +39,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.chkFromDate = new System.Windows.Forms.CheckBox();
             this.gbType = new System.Windows.Forms.GroupBox();
+            this.clbType = new System.Windows.Forms.CheckedListBox();
             this.gbCategory = new System.Windows.Forms.GroupBox();
-            this.cmbCategory = new System.Windows.Forms.ComboBox();
-            this.cmbType = new System.Windows.Forms.ComboBox();
+            this.clbCategory = new System.Windows.Forms.CheckedListBox();
             this.btnApply = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.gbStatus.SuspendLayout();
@@ -53,9 +53,9 @@
             // gbStatus
             // 
             this.gbStatus.Controls.Add(this.clbStatus);
-            this.gbStatus.Location = new System.Drawing.Point(12, 12);
+            this.gbStatus.Location = new System.Drawing.Point(15, 15);
             this.gbStatus.Name = "gbStatus";
-            this.gbStatus.Size = new System.Drawing.Size(300, 150);  // Increased height
+            this.gbStatus.Size = new System.Drawing.Size(360, 140);
             this.gbStatus.TabIndex = 0;
             this.gbStatus.TabStop = false;
             this.gbStatus.Text = "Status (Select multiple)";
@@ -67,8 +67,8 @@
             this.clbStatus.FormattingEnabled = true;
             this.clbStatus.Location = new System.Drawing.Point(3, 19);
             this.clbStatus.Name = "clbStatus";
-            this.clbStatus.ScrollAlwaysVisible = true;  // Ensure scrollbar is always visible
-            this.clbStatus.Size = new System.Drawing.Size(294, 128);  // Increased height
+            this.clbStatus.ScrollAlwaysVisible = true;
+            this.clbStatus.Size = new System.Drawing.Size(354, 118);
             this.clbStatus.TabIndex = 0;
             // 
             // gbDateRange
@@ -79,9 +79,9 @@
             this.gbDateRange.Controls.Add(this.dtpFromDate);
             this.gbDateRange.Controls.Add(this.label1);
             this.gbDateRange.Controls.Add(this.chkFromDate);
-            this.gbDateRange.Location = new System.Drawing.Point(12, 168);  // Adjusted position
+            this.gbDateRange.Location = new System.Drawing.Point(15, 161);
             this.gbDateRange.Name = "gbDateRange";
-            this.gbDateRange.Size = new System.Drawing.Size(300, 120);
+            this.gbDateRange.Size = new System.Drawing.Size(360, 120);
             this.gbDateRange.TabIndex = 1;
             this.gbDateRange.TabStop = false;
             this.gbDateRange.Text = "Date Range (Created)";
@@ -90,15 +90,15 @@
             // 
             this.dtpToDate.Enabled = false;
             this.dtpToDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpToDate.Location = new System.Drawing.Point(100, 80);
+            this.dtpToDate.Location = new System.Drawing.Point(120, 80);
             this.dtpToDate.Name = "dtpToDate";
-            this.dtpToDate.Size = new System.Drawing.Size(150, 23);
+            this.dtpToDate.Size = new System.Drawing.Size(180, 23);
             this.dtpToDate.TabIndex = 5;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(70, 85);
+            this.label2.Location = new System.Drawing.Point(85, 85);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(19, 15);
             this.label2.TabIndex = 4;
@@ -107,7 +107,7 @@
             // chkToDate
             // 
             this.chkToDate.AutoSize = true;
-            this.chkToDate.Location = new System.Drawing.Point(10, 85);
+            this.chkToDate.Location = new System.Drawing.Point(15, 85);
             this.chkToDate.Name = "chkToDate";
             this.chkToDate.Size = new System.Drawing.Size(15, 14);
             this.chkToDate.TabIndex = 3;
@@ -118,15 +118,15 @@
             // 
             this.dtpFromDate.Enabled = false;
             this.dtpFromDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFromDate.Location = new System.Drawing.Point(100, 40);
+            this.dtpFromDate.Location = new System.Drawing.Point(120, 40);
             this.dtpFromDate.Name = "dtpFromDate";
-            this.dtpFromDate.Size = new System.Drawing.Size(150, 23);
+            this.dtpFromDate.Size = new System.Drawing.Size(180, 23);
             this.dtpFromDate.TabIndex = 2;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(60, 45);
+            this.label1.Location = new System.Drawing.Point(75, 45);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(35, 15);
             this.label1.TabIndex = 1;
@@ -135,7 +135,7 @@
             // chkFromDate
             // 
             this.chkFromDate.AutoSize = true;
-            this.chkFromDate.Location = new System.Drawing.Point(10, 45);
+            this.chkFromDate.Location = new System.Drawing.Point(15, 45);
             this.chkFromDate.Name = "chkFromDate";
             this.chkFromDate.Size = new System.Drawing.Size(15, 14);
             this.chkFromDate.TabIndex = 0;
@@ -144,44 +144,45 @@
             // 
             // gbType
             // 
-            this.gbType.Controls.Add(this.cmbType);
-            this.gbType.Location = new System.Drawing.Point(12, 294);  // Adjusted position
+            this.gbType.Controls.Add(this.clbType);
+            this.gbType.Location = new System.Drawing.Point(15, 287);
             this.gbType.Name = "gbType";
-            this.gbType.Size = new System.Drawing.Size(300, 60);
+            this.gbType.Size = new System.Drawing.Size(175, 140);
             this.gbType.TabIndex = 2;
             this.gbType.TabStop = false;
-            this.gbType.Text = "Type";
+            this.gbType.Text = "Type (Select multiple)";
+            // 
+            // clbType
+            // 
+            this.clbType.CheckOnClick = true;
+            this.clbType.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.clbType.FormattingEnabled = true;
+            this.clbType.Location = new System.Drawing.Point(3, 19);
+            this.clbType.Name = "clbType";
+            this.clbType.ScrollAlwaysVisible = true;
+            this.clbType.Size = new System.Drawing.Size(169, 118);
+            this.clbType.TabIndex = 0;
             // 
             // gbCategory
             // 
-            this.gbCategory.Controls.Add(this.cmbCategory);
-            this.gbCategory.Location = new System.Drawing.Point(12, 360);  // Adjust position as needed
+            this.gbCategory.Controls.Add(this.clbCategory);
+            this.gbCategory.Location = new System.Drawing.Point(200, 287);
             this.gbCategory.Name = "gbCategory";
-            this.gbCategory.Size = new System.Drawing.Size(300, 60);
+            this.gbCategory.Size = new System.Drawing.Size(175, 140);
             this.gbCategory.TabIndex = 5;
             this.gbCategory.TabStop = false;
-            this.gbCategory.Text = "Category";
+            this.gbCategory.Text = "Category (Select multiple)";
             // 
-            // cmbCategory
+            // clbCategory
             // 
-            this.cmbCategory.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbCategory.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCategory.FormattingEnabled = true;
-            this.cmbCategory.Location = new System.Drawing.Point(3, 19);
-            this.cmbCategory.Name = "cmbCategory";
-            this.cmbCategory.Size = new System.Drawing.Size(294, 23);
-            this.cmbCategory.TabIndex = 0;
-            // 
-            // cmbType
-            // 
-            this.cmbType.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cmbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbType.FormattingEnabled = true;
-            this.cmbType.Location = new System.Drawing.Point(3, 19);
-            this.cmbType.Name = "cmbType";
-            this.cmbType.Size = new System.Drawing.Size(294, 23);
-            this.cmbType.TabIndex = 0;
-
+            this.clbCategory.CheckOnClick = true;
+            this.clbCategory.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.clbCategory.FormattingEnabled = true;
+            this.clbCategory.Location = new System.Drawing.Point(3, 19);
+            this.clbCategory.Name = "clbCategory";
+            this.clbCategory.ScrollAlwaysVisible = true;
+            this.clbCategory.Size = new System.Drawing.Size(169, 118);
+            this.clbCategory.TabIndex = 0;
             // 
             // btnApply
             // 
@@ -190,9 +191,9 @@
             this.btnApply.FlatAppearance.BorderSize = 0;
             this.btnApply.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnApply.ForeColor = System.Drawing.Color.White;
-            this.btnApply.Location = new System.Drawing.Point(156, 432);
+            this.btnApply.Location = new System.Drawing.Point(200, 440);
             this.btnApply.Name = "btnApply";
-            this.btnApply.Size = new System.Drawing.Size(75, 30);
+            this.btnApply.Size = new System.Drawing.Size(85, 35);
             this.btnApply.TabIndex = 3;
             this.btnApply.Text = "Apply";
             this.btnApply.UseVisualStyleBackColor = false;
@@ -205,9 +206,9 @@
             this.btnCancel.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue;
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.ForeColor = System.Drawing.Color.SteelBlue;
-            this.btnCancel.Location = new System.Drawing.Point(237, 432);
+            this.btnCancel.Location = new System.Drawing.Point(290, 440);
             this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 30);
+            this.btnCancel.Size = new System.Drawing.Size(85, 35);
             this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = false;
@@ -218,11 +219,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(324, 474);
+            this.ClientSize = new System.Drawing.Size(390, 487);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnApply);
-            this.Controls.Add(this.gbType);
             this.Controls.Add(this.gbCategory);
+            this.Controls.Add(this.gbType);
             this.Controls.Add(this.gbDateRange);
             this.Controls.Add(this.gbStatus);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -236,6 +237,7 @@
             this.gbDateRange.ResumeLayout(false);
             this.gbDateRange.PerformLayout();
             this.gbType.ResumeLayout(false);
+            this.gbCategory.ResumeLayout(false);
             this.ResumeLayout(false);
         }
 
@@ -251,10 +253,10 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox chkFromDate;
         private System.Windows.Forms.GroupBox gbType;
-        private System.Windows.Forms.ComboBox cmbType;
         private System.Windows.Forms.Button btnApply;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.GroupBox gbCategory;
-        private System.Windows.Forms.ComboBox cmbCategory;
+        private System.Windows.Forms.CheckedListBox clbType;
+        private System.Windows.Forms.CheckedListBox clbCategory;
     }
 }
