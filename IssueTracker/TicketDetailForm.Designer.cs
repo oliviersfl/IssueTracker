@@ -470,7 +470,7 @@
             subTaskHeaderIsComplete.TextAlign = HorizontalAlignment.Center;
             subTaskHeaderIsComplete.Width = 90;
 
-            subTaskCreatedDate.Text = "Created Date";
+            subTaskCreatedDate.Text = "Date Created";
             subTaskCreatedDate.TextAlign = HorizontalAlignment.Left;
             subTaskCreatedDate.Width = 120;
             // 
