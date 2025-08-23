@@ -174,11 +174,11 @@
             this.btnExportCsv.ForeColor = System.Drawing.Color.SteelBlue;
             this.btnExportCsv.Image = ((System.Drawing.Image)(resources.GetObject("btnExportCsv.Image")));
             this.btnExportCsv.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnExportCsv.Location = new System.Drawing.Point(522, 12);
+            this.btnExportCsv.Location = new System.Drawing.Point(396, 12);
             this.btnExportCsv.Name = "btnExportCsv";
             this.btnExportCsv.Size = new System.Drawing.Size(120, 36);
             this.btnExportCsv.TabIndex = 5;
-            this.btnExportCsv.Text = "Export";
+            this.btnExportCsv.Text = "Export to Excel";
             this.btnExportCsv.UseVisualStyleBackColor = false;
             this.btnExportCsv.Click += new System.EventHandler(this.btnExportExcel_Click);
             // 
@@ -202,11 +202,11 @@
             this.btnClearFilter.ForeColor = System.Drawing.Color.SteelBlue;
             this.btnClearFilter.Image = ((System.Drawing.Image)(resources.GetObject("btnClearFilter.Image")));
             this.btnClearFilter.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btnClearFilter.Location = new System.Drawing.Point(396, 12);
+            this.btnClearFilter.Location = new System.Drawing.Point(522, 12);
             this.btnClearFilter.Name = "btnClearFilter";
             this.btnClearFilter.Size = new System.Drawing.Size(120, 36);
             this.btnClearFilter.TabIndex = 4;
-            this.btnClearFilter.Text = "Clear";
+            this.btnClearFilter.Text = "Clear Filters";
             this.btnClearFilter.UseVisualStyleBackColor = false;
             this.btnClearFilter.Click += new System.EventHandler(this.btnClearFilter_Click);
             // 
