@@ -155,14 +155,18 @@
             // txtSearch
             // 
             this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtSearch.BackColor = System.Drawing.Color.White;
             this.txtSearch.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtSearch.Location = new System.Drawing.Point(170, 17); // Move up 2 pixels
+            this.txtSearch.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.txtSearch.Location = new System.Drawing.Point(170, 16);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.PlaceholderText = "Search ticket title...";
-            this.txtSearch.Size = new System.Drawing.Size(200, 28); // Increase height
+            this.txtSearch.PlaceholderText = "🔍 Search ticket title...";
+            this.txtSearch.Size = new System.Drawing.Size(200, 23);
             this.txtSearch.TabIndex = 6;
             this.txtSearch.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
+            this.txtSearch.Margin = new System.Windows.Forms.Padding(3, 3, 12, 3); // Add some spacing
+            this.txtSearch.MaxLength = 100; // Prevent excessively long search terms
             // 
             // btnExportCsv
             // 
