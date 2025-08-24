@@ -58,6 +58,7 @@
             // 
             this.dgvTickets.AllowUserToAddRows = false;
             this.dgvTickets.AllowUserToDeleteRows = false;
+            this.dgvTickets.AllowUserToResizeRows = false;
             this.dgvTickets.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvTickets.BackgroundColor = System.Drawing.SystemColors.Window;
             this.dgvTickets.BorderStyle = System.Windows.Forms.BorderStyle.None;
