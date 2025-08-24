@@ -26,17 +26,17 @@ namespace IssueTracker.Services
                 }
 
                 // Set column widths and text wrapping for specific columns
-                worksheet.Column(2).Width = 50; // Description column
-                worksheet.Column(9).Width = 50; // Comment Text column
+                worksheet.Column(2).Width = 55; // Description column
+                worksheet.Column(9).Width = 55; // Comment Text column
 
                 // Set smaller widths for other columns
-                worksheet.Column(1).Width = 30; // Title
+                worksheet.Column(1).Width = 35; // Title
                 worksheet.Column(3).Width = 15; // Category
                 worksheet.Column(4).Width = 12; // Priority
                 worksheet.Column(5).Width = 20; // Type
-                worksheet.Column(6).Width = 18; // Created Date
-                worksheet.Column(7).Width = 18; // Modified Date
-                worksheet.Column(8).Width = 12; // Status
+                worksheet.Column(6).Width = 15; // Created Date
+                worksheet.Column(7).Width = 15; // Modified Date
+                worksheet.Column(8).Width = 22; // Status
 
                 // Enable text wrapping for all cells
                 worksheet.Columns().Style.Alignment.WrapText = true;
