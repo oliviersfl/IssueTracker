@@ -178,6 +178,8 @@ namespace IssueTracker
                     _currentFilter.Status,
                     _currentFilter.CreatedFromDate,
                     _currentFilter.CreatedToDate,
+                    _currentFilter.ModifiedFromDate,
+                    _currentFilter.ModifiedToDate,
                     _currentFilter.Type,
                     _currentFilter.Category
                 );
@@ -199,7 +201,7 @@ namespace IssueTracker
             var statusesToInclude = filters.Where(s => s.IsDefault == true).Select(s => s.Description).ToList();
             _currentFilter.Status = statusesToInclude;
 
-            List<Ticket> tickets = _ticketService.FilterTickets(statusesToInclude, null, null, null, null);
+            List<Ticket> tickets = _ticketService.FilterTickets(statusesToInclude, null, null, null, null, null, null);
 
             _ticketsBindingSource.DataSource = tickets;
 
@@ -256,11 +258,15 @@ namespace IssueTracker
                 _currentFilter.Status = filterDialog.ResultFilter.Status;
                 _currentFilter.CreatedFromDate = filterDialog.ResultFilter.CreatedFromDate;
                 _currentFilter.CreatedToDate = filterDialog.ResultFilter.CreatedToDate;
+                _currentFilter.ModifiedFromDate = filterDialog.ResultFilter.ModifiedFromDate;
+                _currentFilter.ModifiedToDate = filterDialog.ResultFilter.ModifiedToDate;
 
                 var filteredTickets = _ticketService.FilterTickets(
                     _currentFilter.Status,
                     _currentFilter.CreatedFromDate,
                     _currentFilter.CreatedToDate,
+                    _currentFilter.ModifiedFromDate,
+                    _currentFilter.ModifiedToDate,
                     _currentFilter.Type,
                     _currentFilter.Category // Use the updated value
                 );
@@ -285,6 +291,8 @@ namespace IssueTracker
                     _currentFilter.Status,
                     _currentFilter.CreatedFromDate,
                     _currentFilter.CreatedToDate,
+                    _currentFilter.ModifiedFromDate,
+                    _currentFilter.ModifiedToDate,
                     _currentFilter.Type,
                     _currentFilter.Category
                 );
@@ -399,6 +407,8 @@ namespace IssueTracker
                 _currentFilter.Status,
                 _currentFilter.CreatedFromDate,
                 _currentFilter.CreatedToDate,
+                _currentFilter.ModifiedFromDate,
+                _currentFilter.ModifiedToDate,
                 _currentFilter.Type,
                 _currentFilter.Category
             );

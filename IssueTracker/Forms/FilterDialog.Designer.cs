@@ -31,23 +31,31 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FilterDialog));
             this.gbStatus = new System.Windows.Forms.GroupBox();
             this.clbStatus = new System.Windows.Forms.CheckedListBox();
-            this.gbDateRange = new System.Windows.Forms.GroupBox();
-            this.dtpToDate = new System.Windows.Forms.DateTimePicker();
-            this.label2 = new System.Windows.Forms.Label();
-            this.chkToDate = new System.Windows.Forms.CheckBox();
-            this.dtpFromDate = new System.Windows.Forms.DateTimePicker();
-            this.label1 = new System.Windows.Forms.Label();
-            this.chkFromDate = new System.Windows.Forms.CheckBox();
+            this.gbCreatedDateRange = new System.Windows.Forms.GroupBox();
+            this.dtpToCreatedDate = new System.Windows.Forms.DateTimePicker();
+            this.lblToCreatedDate = new System.Windows.Forms.Label();
+            this.chkToCreatedDate = new System.Windows.Forms.CheckBox();
+            this.dtpFromCreatedDate = new System.Windows.Forms.DateTimePicker();
+            this.lblFromCreatedDate = new System.Windows.Forms.Label();
+            this.chkFromCreatedDate = new System.Windows.Forms.CheckBox();
             this.gbType = new System.Windows.Forms.GroupBox();
             this.clbType = new System.Windows.Forms.CheckedListBox();
             this.gbCategory = new System.Windows.Forms.GroupBox();
             this.clbCategory = new System.Windows.Forms.CheckedListBox();
             this.btnApply = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.gbModifiedDateRange = new System.Windows.Forms.GroupBox();
+            this.dtpToModifiedDate = new System.Windows.Forms.DateTimePicker();
+            this.lblToModifiedDate = new System.Windows.Forms.Label();
+            this.chkToModifiedDate = new System.Windows.Forms.CheckBox();
+            this.dtpFromModifiedDate = new System.Windows.Forms.DateTimePicker();
+            this.lblFromModifiedDate = new System.Windows.Forms.Label();
+            this.chkFromModifiedDate = new System.Windows.Forms.CheckBox();
             this.gbStatus.SuspendLayout();
-            this.gbDateRange.SuspendLayout();
+            this.gbCreatedDateRange.SuspendLayout();
             this.gbType.SuspendLayout();
             this.gbCategory.SuspendLayout();
+            this.gbModifiedDateRange.SuspendLayout();
             this.SuspendLayout();
             // 
             // gbStatus
@@ -71,81 +79,81 @@
             this.clbStatus.Size = new System.Drawing.Size(354, 118);
             this.clbStatus.TabIndex = 0;
             // 
-            // gbDateRange
+            // gbCreatedDateRange
             // 
-            this.gbDateRange.Controls.Add(this.dtpToDate);
-            this.gbDateRange.Controls.Add(this.label2);
-            this.gbDateRange.Controls.Add(this.chkToDate);
-            this.gbDateRange.Controls.Add(this.dtpFromDate);
-            this.gbDateRange.Controls.Add(this.label1);
-            this.gbDateRange.Controls.Add(this.chkFromDate);
-            this.gbDateRange.Location = new System.Drawing.Point(15, 161);
-            this.gbDateRange.Name = "gbDateRange";
-            this.gbDateRange.Size = new System.Drawing.Size(360, 120);
-            this.gbDateRange.TabIndex = 1;
-            this.gbDateRange.TabStop = false;
-            this.gbDateRange.Text = "Date Range (Created)";
+            this.gbCreatedDateRange.Controls.Add(this.dtpToCreatedDate);
+            this.gbCreatedDateRange.Controls.Add(this.lblToCreatedDate);
+            this.gbCreatedDateRange.Controls.Add(this.chkToCreatedDate);
+            this.gbCreatedDateRange.Controls.Add(this.dtpFromCreatedDate);
+            this.gbCreatedDateRange.Controls.Add(this.lblFromCreatedDate);
+            this.gbCreatedDateRange.Controls.Add(this.chkFromCreatedDate);
+            this.gbCreatedDateRange.Location = new System.Drawing.Point(15, 161);
+            this.gbCreatedDateRange.Name = "gbCreatedDateRange";
+            this.gbCreatedDateRange.Size = new System.Drawing.Size(360, 120);
+            this.gbCreatedDateRange.TabIndex = 1;
+            this.gbCreatedDateRange.TabStop = false;
+            this.gbCreatedDateRange.Text = "Date Range (Created)";
             // 
-            // dtpToDate
+            // dtpToCreatedDate
             // 
-            this.dtpToDate.Enabled = false;
-            this.dtpToDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpToDate.Location = new System.Drawing.Point(120, 80);
-            this.dtpToDate.Name = "dtpToDate";
-            this.dtpToDate.Size = new System.Drawing.Size(180, 23);
-            this.dtpToDate.TabIndex = 5;
+            this.dtpToCreatedDate.Enabled = false;
+            this.dtpToCreatedDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpToCreatedDate.Location = new System.Drawing.Point(120, 80);
+            this.dtpToCreatedDate.Name = "dtpToCreatedDate";
+            this.dtpToCreatedDate.Size = new System.Drawing.Size(180, 23);
+            this.dtpToCreatedDate.TabIndex = 5;
             // 
-            // label2
+            // lblToCreatedDate
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(85, 85);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(19, 15);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "To";
+            this.lblToCreatedDate.AutoSize = true;
+            this.lblToCreatedDate.Location = new System.Drawing.Point(85, 85);
+            this.lblToCreatedDate.Name = "lblToCreatedDate";
+            this.lblToCreatedDate.Size = new System.Drawing.Size(19, 15);
+            this.lblToCreatedDate.TabIndex = 4;
+            this.lblToCreatedDate.Text = "To";
             // 
-            // chkToDate
+            // chkToCreatedDate
             // 
-            this.chkToDate.AutoSize = true;
-            this.chkToDate.Location = new System.Drawing.Point(15, 85);
-            this.chkToDate.Name = "chkToDate";
-            this.chkToDate.Size = new System.Drawing.Size(15, 14);
-            this.chkToDate.TabIndex = 3;
-            this.chkToDate.UseVisualStyleBackColor = true;
-            this.chkToDate.CheckedChanged += new System.EventHandler(this.chkToDate_CheckedChanged);
+            this.chkToCreatedDate.AutoSize = true;
+            this.chkToCreatedDate.Location = new System.Drawing.Point(15, 85);
+            this.chkToCreatedDate.Name = "chkToCreatedDate";
+            this.chkToCreatedDate.Size = new System.Drawing.Size(15, 14);
+            this.chkToCreatedDate.TabIndex = 3;
+            this.chkToCreatedDate.UseVisualStyleBackColor = true;
+            this.chkToCreatedDate.CheckedChanged += new System.EventHandler(this.chkToCreatedDate_CheckedChanged);
             // 
-            // dtpFromDate
+            // dtpFromCreatedDate
             // 
-            this.dtpFromDate.Enabled = false;
-            this.dtpFromDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpFromDate.Location = new System.Drawing.Point(120, 40);
-            this.dtpFromDate.Name = "dtpFromDate";
-            this.dtpFromDate.Size = new System.Drawing.Size(180, 23);
-            this.dtpFromDate.TabIndex = 2;
+            this.dtpFromCreatedDate.Enabled = false;
+            this.dtpFromCreatedDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpFromCreatedDate.Location = new System.Drawing.Point(120, 40);
+            this.dtpFromCreatedDate.Name = "dtpFromCreatedDate";
+            this.dtpFromCreatedDate.Size = new System.Drawing.Size(180, 23);
+            this.dtpFromCreatedDate.TabIndex = 2;
             // 
-            // label1
+            // lblFromCreatedDate
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(75, 45);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 15);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "From";
+            this.lblFromCreatedDate.AutoSize = true;
+            this.lblFromCreatedDate.Location = new System.Drawing.Point(75, 45);
+            this.lblFromCreatedDate.Name = "lblFromCreatedDate";
+            this.lblFromCreatedDate.Size = new System.Drawing.Size(35, 15);
+            this.lblFromCreatedDate.TabIndex = 1;
+            this.lblFromCreatedDate.Text = "From";
             // 
-            // chkFromDate
+            // chkFromCreatedDate
             // 
-            this.chkFromDate.AutoSize = true;
-            this.chkFromDate.Location = new System.Drawing.Point(15, 45);
-            this.chkFromDate.Name = "chkFromDate";
-            this.chkFromDate.Size = new System.Drawing.Size(15, 14);
-            this.chkFromDate.TabIndex = 0;
-            this.chkFromDate.UseVisualStyleBackColor = true;
-            this.chkFromDate.CheckedChanged += new System.EventHandler(this.chkFromDate_CheckedChanged);
+            this.chkFromCreatedDate.AutoSize = true;
+            this.chkFromCreatedDate.Location = new System.Drawing.Point(15, 45);
+            this.chkFromCreatedDate.Name = "chkFromCreatedDate";
+            this.chkFromCreatedDate.Size = new System.Drawing.Size(15, 14);
+            this.chkFromCreatedDate.TabIndex = 0;
+            this.chkFromCreatedDate.UseVisualStyleBackColor = true;
+            this.chkFromCreatedDate.CheckedChanged += new System.EventHandler(this.chkFromCreatedDate_CheckedChanged);
             // 
             // gbType
             // 
             this.gbType.Controls.Add(this.clbType);
-            this.gbType.Location = new System.Drawing.Point(15, 287);
+            this.gbType.Location = new System.Drawing.Point(15, 439);
             this.gbType.Name = "gbType";
             this.gbType.Size = new System.Drawing.Size(175, 140);
             this.gbType.TabIndex = 2;
@@ -166,7 +174,7 @@
             // gbCategory
             // 
             this.gbCategory.Controls.Add(this.clbCategory);
-            this.gbCategory.Location = new System.Drawing.Point(200, 287);
+            this.gbCategory.Location = new System.Drawing.Point(200, 439);
             this.gbCategory.Name = "gbCategory";
             this.gbCategory.Size = new System.Drawing.Size(175, 140);
             this.gbCategory.TabIndex = 5;
@@ -191,7 +199,7 @@
             this.btnApply.FlatAppearance.BorderSize = 0;
             this.btnApply.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnApply.ForeColor = System.Drawing.Color.White;
-            this.btnApply.Location = new System.Drawing.Point(200, 440);
+            this.btnApply.Location = new System.Drawing.Point(200, 598);
             this.btnApply.Name = "btnApply";
             this.btnApply.Size = new System.Drawing.Size(85, 35);
             this.btnApply.TabIndex = 3;
@@ -206,7 +214,7 @@
             this.btnCancel.FlatAppearance.BorderColor = System.Drawing.Color.SteelBlue;
             this.btnCancel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCancel.ForeColor = System.Drawing.Color.SteelBlue;
-            this.btnCancel.Location = new System.Drawing.Point(290, 440);
+            this.btnCancel.Location = new System.Drawing.Point(290, 598);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(85, 35);
             this.btnCancel.TabIndex = 4;
@@ -214,17 +222,89 @@
             this.btnCancel.UseVisualStyleBackColor = false;
             this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
             // 
+            // gbModifiedDateRange
+            // 
+            this.gbModifiedDateRange.Controls.Add(this.dtpToModifiedDate);
+            this.gbModifiedDateRange.Controls.Add(this.lblToModifiedDate);
+            this.gbModifiedDateRange.Controls.Add(this.chkToModifiedDate);
+            this.gbModifiedDateRange.Controls.Add(this.dtpFromModifiedDate);
+            this.gbModifiedDateRange.Controls.Add(this.lblFromModifiedDate);
+            this.gbModifiedDateRange.Controls.Add(this.chkFromModifiedDate);
+            this.gbModifiedDateRange.Location = new System.Drawing.Point(15, 298);
+            this.gbModifiedDateRange.Name = "gbModifiedDateRange";
+            this.gbModifiedDateRange.Size = new System.Drawing.Size(360, 120);
+            this.gbModifiedDateRange.TabIndex = 6;
+            this.gbModifiedDateRange.TabStop = false;
+            this.gbModifiedDateRange.Text = "Date Range (Modified)";
+            // 
+            // dtpToModifiedDate
+            // 
+            this.dtpToModifiedDate.Enabled = false;
+            this.dtpToModifiedDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpToModifiedDate.Location = new System.Drawing.Point(120, 80);
+            this.dtpToModifiedDate.Name = "dtpToModifiedDate";
+            this.dtpToModifiedDate.Size = new System.Drawing.Size(180, 23);
+            this.dtpToModifiedDate.TabIndex = 5;
+            // 
+            // lblToModifiedDate
+            // 
+            this.lblToModifiedDate.AutoSize = true;
+            this.lblToModifiedDate.Location = new System.Drawing.Point(85, 85);
+            this.lblToModifiedDate.Name = "lblToModifiedDate";
+            this.lblToModifiedDate.Size = new System.Drawing.Size(19, 15);
+            this.lblToModifiedDate.TabIndex = 4;
+            this.lblToModifiedDate.Text = "To";
+            // 
+            // chkToModifiedDate
+            // 
+            this.chkToModifiedDate.AutoSize = true;
+            this.chkToModifiedDate.Location = new System.Drawing.Point(15, 85);
+            this.chkToModifiedDate.Name = "chkToModifiedDate";
+            this.chkToModifiedDate.Size = new System.Drawing.Size(15, 14);
+            this.chkToModifiedDate.TabIndex = 3;
+            this.chkToModifiedDate.UseVisualStyleBackColor = true;
+            this.chkToModifiedDate.CheckedChanged += new System.EventHandler(this.chkToModifiedDate_CheckedChanged);
+            // 
+            // dtpFromModifiedDate
+            // 
+            this.dtpFromModifiedDate.Enabled = false;
+            this.dtpFromModifiedDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpFromModifiedDate.Location = new System.Drawing.Point(120, 40);
+            this.dtpFromModifiedDate.Name = "dtpFromModifiedDate";
+            this.dtpFromModifiedDate.Size = new System.Drawing.Size(180, 23);
+            this.dtpFromModifiedDate.TabIndex = 2;
+            // 
+            // lblFromModifiedDate
+            // 
+            this.lblFromModifiedDate.AutoSize = true;
+            this.lblFromModifiedDate.Location = new System.Drawing.Point(75, 45);
+            this.lblFromModifiedDate.Name = "lblFromModifiedDate";
+            this.lblFromModifiedDate.Size = new System.Drawing.Size(35, 15);
+            this.lblFromModifiedDate.TabIndex = 1;
+            this.lblFromModifiedDate.Text = "From";
+            // 
+            // chkFromModifiedDate
+            // 
+            this.chkFromModifiedDate.AutoSize = true;
+            this.chkFromModifiedDate.Location = new System.Drawing.Point(15, 45);
+            this.chkFromModifiedDate.Name = "chkFromModifiedDate";
+            this.chkFromModifiedDate.Size = new System.Drawing.Size(15, 14);
+            this.chkFromModifiedDate.TabIndex = 0;
+            this.chkFromModifiedDate.UseVisualStyleBackColor = true;
+            this.chkFromModifiedDate.CheckedChanged += new System.EventHandler(this.chkFromModifiedDate_CheckedChanged);
+            // 
             // FilterDialog
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(390, 487);
+            this.ClientSize = new System.Drawing.Size(390, 645); // Increased ClientSize to accommodate new controls
+            this.Controls.Add(this.gbModifiedDateRange);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnApply);
             this.Controls.Add(this.gbCategory);
             this.Controls.Add(this.gbType);
-            this.Controls.Add(this.gbDateRange);
+            this.Controls.Add(this.gbCreatedDateRange);
             this.Controls.Add(this.gbStatus);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -234,10 +314,12 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Filter Tickets";
             this.gbStatus.ResumeLayout(false);
-            this.gbDateRange.ResumeLayout(false);
-            this.gbDateRange.PerformLayout();
+            this.gbCreatedDateRange.ResumeLayout(false);
+            this.gbCreatedDateRange.PerformLayout();
             this.gbType.ResumeLayout(false);
             this.gbCategory.ResumeLayout(false);
+            this.gbModifiedDateRange.ResumeLayout(false);
+            this.gbModifiedDateRange.PerformLayout();
             this.ResumeLayout(false);
         }
 
@@ -245,18 +327,25 @@
 
         private System.Windows.Forms.GroupBox gbStatus;
         private System.Windows.Forms.CheckedListBox clbStatus;
-        private System.Windows.Forms.GroupBox gbDateRange;
-        private System.Windows.Forms.DateTimePicker dtpFromDate;
-        private System.Windows.Forms.DateTimePicker dtpToDate;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.CheckBox chkToDate;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.CheckBox chkFromDate;
+        private System.Windows.Forms.GroupBox gbCreatedDateRange;
+        private System.Windows.Forms.DateTimePicker dtpFromCreatedDate;
+        private System.Windows.Forms.DateTimePicker dtpToCreatedDate;
+        private System.Windows.Forms.Label lblToCreatedDate;
+        private System.Windows.Forms.CheckBox chkToCreatedDate;
+        private System.Windows.Forms.Label lblFromCreatedDate;
+        private System.Windows.Forms.CheckBox chkFromCreatedDate;
         private System.Windows.Forms.GroupBox gbType;
         private System.Windows.Forms.Button btnApply;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.GroupBox gbCategory;
         private System.Windows.Forms.CheckedListBox clbType;
         private System.Windows.Forms.CheckedListBox clbCategory;
+        private System.Windows.Forms.GroupBox gbModifiedDateRange;
+        private System.Windows.Forms.DateTimePicker dtpToModifiedDate;
+        private System.Windows.Forms.Label lblToModifiedDate;
+        private System.Windows.Forms.CheckBox chkToModifiedDate;
+        private System.Windows.Forms.DateTimePicker dtpFromModifiedDate;
+        private System.Windows.Forms.Label lblFromModifiedDate;
+        private System.Windows.Forms.CheckBox chkFromModifiedDate;
     }
 }

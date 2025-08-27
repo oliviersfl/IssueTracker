@@ -18,8 +18,10 @@ namespace IssueTracker.Services.Interfaces
         void ClearTickets();
         List<Ticket> FilterTickets(
             List<string> statuses,
-            DateTime? fromDate,
-            DateTime? toDate,
+            DateTime? createdFromDate,
+            DateTime? createdToDate,
+            DateTime? modifiedFromDate,
+            DateTime? modifiedToDate,
             List<string> type,
             List<string> category
         );

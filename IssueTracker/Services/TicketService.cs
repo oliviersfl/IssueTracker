@@ -242,11 +242,13 @@ namespace IssueTracker.Services
 
         public List<Ticket> FilterTickets(
             List<string> statuses,
-            DateTime? fromDate,
-            DateTime? toDate,
+            DateTime? createdFromDate,
+            DateTime? createdToDate,
+            DateTime? modifiedFromDate,
+            DateTime? modifiedToDate,
             List<string> types,
             List<string> categories
-        )
+)
         {
             // Handle null _tickets collection
             if (_tickets == null)
@@ -256,12 +258,17 @@ namespace IssueTracker.Services
                 .Where(t => t != null) // Handle null tickets in the collection
                 .Where(t => statuses == null || statuses.Count == 0 ||
                            (t.Status != null && statuses.Contains(t.Status)))
-                .Where(t => !fromDate.HasValue || t.CreatedDate >= fromDate.Value)
-                .Where(t => !toDate.HasValue || t.CreatedDate <= toDate.Value)
                 .Where(t => types == null || types.Count == 0 ||
                            (t.Type != null && types.Contains(t.Type)))
                 .Where(t => categories == null || categories.Count == 0 ||
                            (t.Category != null && categories.Contains(t.Category)))
+
+                // Compare only the date component for CreatedDate
+                .Where(t => !createdFromDate.HasValue || t.CreatedDate.Date >= createdFromDate.Value.Date)
+                .Where(t => !createdToDate.HasValue || t.CreatedDate.Date <= createdToDate.Value.Date)
+                // Compare only the date component for ModifiedDate
+                .Where(t => !modifiedFromDate.HasValue || t.ModifiedDate.Date >= modifiedFromDate.Value.Date)
+                .Where(t => !modifiedToDate.HasValue || t.ModifiedDate.Date <= modifiedToDate.Value.Date)
                 .ToList();
         }
         #endregion

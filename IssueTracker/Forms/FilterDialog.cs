@@ -142,27 +142,49 @@ namespace IssueTracker
             // Ticket Created Date Range
             void InitializeCreatedDates()
             {
-                // From
+                // Created From
                 if (_currentFilter.CreatedFromDate.HasValue)
                 {
-                    chkFromDate.Checked = true;
-                    dtpFromDate.Value = _currentFilter.CreatedFromDate.Value;
+                    chkFromCreatedDate.Checked = true;
+                    dtpFromCreatedDate.Value = _currentFilter.CreatedFromDate.Value;
                 }
                 else
                 {
-                    chkFromDate.Checked = false;
-                    dtpFromDate.Value = DateTime.Now;
+                    chkFromCreatedDate.Checked = false;
+                    dtpFromCreatedDate.Value = DateTime.Now;
                 }
-                // To
+                // Created To
                 if (_currentFilter.CreatedToDate.HasValue)
                 {
-                    chkToDate.Checked = true;
-                    dtpToDate.Value = _currentFilter.CreatedToDate.Value;
+                    chkToCreatedDate.Checked = true;
+                    dtpToCreatedDate.Value = _currentFilter.CreatedToDate.Value;
                 }
                 else
                 {
-                    chkToDate.Checked = false;
-                    dtpToDate.Value = DateTime.Now;
+                    chkToCreatedDate.Checked = false;
+                    dtpToCreatedDate.Value = DateTime.Now;
+                }
+                // Modified From
+                if (_currentFilter.ModifiedFromDate.HasValue)
+                {
+                    chkFromModifiedDate.Checked = true;
+                    dtpFromModifiedDate.Value = _currentFilter.ModifiedFromDate.Value;
+                }
+                else
+                {
+                    chkFromModifiedDate.Checked = false;
+                    dtpFromModifiedDate.Value = DateTime.Now;
+                }
+                // Modified To
+                if (_currentFilter.ModifiedToDate.HasValue)
+                {
+                    chkToModifiedDate.Checked = true;
+                    dtpToModifiedDate.Value = _currentFilter.ModifiedToDate.Value;
+                }
+                else
+                {
+                    chkToModifiedDate.Checked = false;
+                    dtpToModifiedDate.Value = DateTime.Now;
                 }
             }
             #endregion
@@ -176,8 +198,10 @@ namespace IssueTracker
                 Category = new List<string>(),
                 Type = new List<string>(),
                 Status = new List<string>(),
-                CreatedFromDate = chkFromDate.Checked ? dtpFromDate.Value : null,
-                CreatedToDate = chkToDate.Checked ? dtpToDate.Value : null
+                CreatedFromDate = chkFromCreatedDate.Checked ? dtpFromCreatedDate.Value : null,
+                CreatedToDate = chkToCreatedDate.Checked ? dtpToCreatedDate.Value : null,
+                ModifiedFromDate = chkFromModifiedDate.Checked ? dtpFromModifiedDate.Value : null,
+                ModifiedToDate = chkToModifiedDate.Checked ? dtpToModifiedDate.Value : null
             };
 
             // Get all checked categories
@@ -225,14 +249,22 @@ namespace IssueTracker
             Close();
         }
 
-        private void chkFromDate_CheckedChanged(object sender, EventArgs e)
+        private void chkFromCreatedDate_CheckedChanged(object sender, EventArgs e)
         {
-            dtpFromDate.Enabled = chkFromDate.Checked;
+            dtpFromCreatedDate.Enabled = chkFromCreatedDate.Checked;
         }
 
-        private void chkToDate_CheckedChanged(object sender, EventArgs e)
+        private void chkToCreatedDate_CheckedChanged(object sender, EventArgs e)
         {
-            dtpToDate.Enabled = chkToDate.Checked;
+            dtpToCreatedDate.Enabled = chkToCreatedDate.Checked;
+        }
+        private void chkFromModifiedDate_CheckedChanged(object sender, EventArgs e)
+        {
+            dtpFromModifiedDate.Enabled = chkFromModifiedDate.Checked;
+        }
+        private void chkToModifiedDate_CheckedChanged(object sender, EventArgs e)
+        {
+            dtpToModifiedDate.Enabled = chkToModifiedDate.Checked;
         }
     }
 }

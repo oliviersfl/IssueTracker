@@ -7,6 +7,8 @@
         public List<string> Status { get; set; }
         public DateTime? CreatedFromDate { get; set; }
         public DateTime? CreatedToDate { get; set; }
+        public DateTime? ModifiedFromDate { get; set; }
+        public DateTime? ModifiedToDate { get; set; }
 
         public TicketFilter()
         {
@@ -15,6 +17,8 @@
             Status = null;
             CreatedFromDate = null;
             CreatedToDate = null;
+            ModifiedFromDate = null;
+            ModifiedToDate = null;
         }
     }
 }
