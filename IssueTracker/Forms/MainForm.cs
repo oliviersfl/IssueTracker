@@ -324,6 +324,8 @@ namespace IssueTracker
                     {
                         dgvTickets.ClearSelection();
                     }
+
+                    txtSearch.Text = "";
                 }
             }
         }
