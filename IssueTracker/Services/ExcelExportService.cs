@@ -18,7 +18,7 @@ namespace IssueTracker.Services
                 headerRow.Style.Font.Bold = true;
 
                 string[] headers = { "Title", "Description", "Category", "Priority", "Type",
-                           "Created Date", "Modified Date", "Status", "Comments" };
+                   "Created Date", "Modified Date", "Status", "Comments" };
 
                 for (int i = 0; i < headers.Length; i++)
                 {
@@ -48,24 +48,47 @@ namespace IssueTracker.Services
                 int row = 2;
                 foreach (var ticket in tickets)
                 {
-                    string commentText = string.Join(Environment.NewLine + Environment.NewLine,
-                        ticket.Comments.ConvertAll(c =>
-                            $"({c.CreatedDate:yyyy-MM-dd HH:mm}):{Environment.NewLine}{c.Text}"));
+                    if (ticket.Comments != null && ticket.Comments.Count > 0)
+                    {
+                        // First row with ticket info and first comment
+                        worksheet.Cell(row, 1).Value = ticket.Title;
+                        worksheet.Cell(row, 2).Value = ticket.Description.Replace("\r", "");
+                        worksheet.Cell(row, 3).Value = ticket.Category;
+                        worksheet.Cell(row, 4).Value = ticket.Priority;
+                        worksheet.Cell(row, 5).Value = ticket.Type;
+                        worksheet.Cell(row, 6).Value = ticket.CreatedDate;
+                        worksheet.Cell(row, 7).Value = ticket.ModifiedDate;
+                        worksheet.Cell(row, 8).Value = ticket.Status;
 
-                    worksheet.Cell(row, 1).Value = ticket.Title;
-                    worksheet.Cell(row, 2).Value = ticket.Description.Replace("\r", "");
-                    worksheet.Cell(row, 3).Value = ticket.Category;
-                    worksheet.Cell(row, 4).Value = ticket.Priority;
-                    worksheet.Cell(row, 5).Value = ticket.Type;
-                    worksheet.Cell(row, 6).Value = ticket.CreatedDate;
-                    worksheet.Cell(row, 7).Value = ticket.ModifiedDate;
-                    worksheet.Cell(row, 8).Value = ticket.Status;
-                    worksheet.Cell(row, 9).Value = commentText;
+                        var firstComment = ticket.Comments[0];
+                        worksheet.Cell(row, 9).Value = $"({firstComment.CreatedDate:yyyy-MM-dd HH:mm}):{Environment.NewLine}{firstComment.Text}";
 
-                    // Set row height to auto-adjust to wrapped text
-                    worksheet.Row(row).Height = -1; // -1 means auto-height
+                        row++;
 
-                    row++;
+                        // Additional comments (only comment column filled, others left empty)
+                        for (int i = 1; i < ticket.Comments.Count; i++)
+                        {
+                            var comment = ticket.Comments[i];
+                            worksheet.Cell(row, 9).Value = $"({comment.CreatedDate:yyyy-MM-dd HH:mm}):{Environment.NewLine}{comment.Text}";
+                            row++;
+                        }
+                    }
+                    else
+                    {
+                        // Ticket with no comments
+                        worksheet.Cell(row, 1).Value = ticket.Title;
+                        worksheet.Cell(row, 2).Value = ticket.Description.Replace("\r", "");
+                        worksheet.Cell(row, 3).Value = ticket.Category;
+                        worksheet.Cell(row, 4).Value = ticket.Priority;
+                        worksheet.Cell(row, 5).Value = ticket.Type;
+                        worksheet.Cell(row, 6).Value = ticket.CreatedDate;
+                        worksheet.Cell(row, 7).Value = ticket.ModifiedDate;
+                        worksheet.Cell(row, 8).Value = ticket.Status;
+                        row++;
+                    }
+
+                    // Set row height to auto-adjust
+                    worksheet.Rows(2, row - 1).Height = -1;
                 }
 
                 // Optional: Adjust row heights for better visibility
