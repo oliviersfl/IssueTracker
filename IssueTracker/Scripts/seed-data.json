@@ -1,205 +1,173 @@
 {
   "ticketCategories": [
-    { "description": "Financial Reporting", "order": 1, "isDefault": true },
-    { "description": "Budget & Forecasting", "order": 2, "isDefault": false },
-    { "description": "Investment Analysis", "order": 3, "isDefault": false },
-    { "description": "Risk Assessment", "order": 4, "isDefault": false },
-    { "description": "Portfolio Performance", "order": 5, "isDefault": false },
-    { "description": "Regulatory Compliance", "order": 6, "isDefault": false },
-    { "description": "Data Validation", "order": 7, "isDefault": false },
-    { "description": "Model Development", "order": 8, "isDefault": false },
-    { "description": "Variance Analysis", "order": 9, "isDefault": false },
-    { "description": "Client Reporting", "order": 10, "isDefault": false },
-    { "description": "Expense Analysis", "order": 11, "isDefault": false },
-    { "description": "Revenue Recognition", "order": 12, "isDefault": false },
-    { "description": "Cash Flow Analysis", "order": 13, "isDefault": false },
-    { "description": "M&A Due Diligence", "order": 14, "isDefault": false },
-    { "description": "Audit Support", "order": 15, "isDefault": false },
-    { "description": "Other", "order": 16, "isDefault": false }
+    {
+      "description": "Bug",
+      "order": 1,
+      "isDefault": false
+    },
+    {
+      "description": "Change Request",
+      "order": 2,
+      "isDefault": false
+    },
+    {
+      "description": "Integration",
+      "order": 3,
+      "isDefault": false
+    },
+    {
+      "description": "Documentation",
+      "order": 4,
+      "isDefault": false
+    },
+    {
+      "description": "Support",
+      "order": 5,
+      "isDefault": true
+    },
+    {
+      "description": "Training",
+      "order": 6,
+      "isDefault": false
+    },
+    {
+      "description": "Other",
+      "order": 7,
+      "isDefault": false
+    }
   ],
   "ticketPriorities": [
-    { "description": "Low", "order": 1, "isDefault": false },
-    { "description": "Medium", "order": 2, "isDefault": true },
-    { "description": "High", "order": 3, "isDefault": false },
-    { "description": "Critical - Regulatory Deadline", "order": 4, "isDefault": false }
+    {
+      "description": "Low",
+      "order": 1,
+      "isDefault": false
+    },
+    {
+      "description": "Medium",
+      "order": 2,
+      "isDefault": true
+    },
+    {
+      "description": "High",
+      "order": 3,
+      "isDefault": false
+    },
+    {
+      "description": "Critical",
+      "order": 4,
+      "isDefault": false
+    }
   ],
   "ticketTypes": [
-    { "description": "Data Analysis", "order": 1, "isDefault": true },
-    { "description": "Report Generation", "order": 2, "isDefault": false },
-    { "description": "Model Validation", "order": 3, "isDefault": false },
-    { "description": "Forecast Update", "order": 4, "isDefault": false },
-    { "description": "Compliance Review", "order": 5, "isDefault": false },
-    { "description": "Process Improvement", "order": 6, "isDefault": false },
-    { "description": "Data Reconciliation", "order": 7, "isDefault": false },
-    { "description": "Research", "order": 8, "isDefault": false },
-    { "description": "Ad-hoc Request", "order": 9, "isDefault": false },
-    { "description": "Other", "order": 10, "isDefault": false }
+    {
+      "description": "API",
+      "order": 1,
+      "isDefault": false
+    },
+    {
+      "description": "Data Bridge",
+      "order": 2,
+      "isDefault": false
+    },
+    {
+      "description": "Custom Interface",
+      "order": 3,
+      "isDefault": true
+    },
+    {
+      "description": "Sandbox",
+      "order": 4,
+      "isDefault": false
+    },
+    {
+      "description": "SFTP",
+      "order": 5,
+      "isDefault": false
+    },
+    {
+      "description": "Others",
+      "order": 6,
+      "isDefault": false
+    }
   ],
   "ticketStatuses": [
-    { "description": "New Request", "order": 1, "isDefault": true },
-    { "description": "Data Collection", "order": 2, "isDefault": true },
-    { "description": "Analysis in Progress", "order": 3, "isDefault": true },
-    { "description": "Review Needed", "order": 4, "isDefault": true },
-    { "description": "Waiting on Stakeholder", "order": 5, "isDefault": true },
-    { "description": "Waiting on Data Source", "order": 6, "isDefault": true },
-    { "description": "Quality Assurance", "order": 7, "isDefault": true },
-    { "description": "Final Review", "order": 8, "isDefault": true },
-    { "description": "On Hold", "order": 9, "isDefault": true },
-    { "description": "Completed", "order": 10, "isDefault": false },
-    { "description": "Cancelled", "order": 11, "isDefault": false }
+    {
+      "description": "To Do",
+      "order": 1,
+      "isDefault": true
+    },
+    {
+      "description": "In Progress",
+      "order": 2,
+      "isDefault": true
+    },
+    {
+      "description": "Planned",
+      "order": 3,
+      "isDefault": true
+    },
+    {
+      "description": "Processing",
+      "order": 4,
+      "isDefault": true
+    },
+    {
+      "description": "Call Scheduled",
+      "order": 5,
+      "isDefault": true
+    },
+    {
+      "description": "Waiting on Client",
+      "order": 6,
+      "isDefault": true
+    },
+    {
+      "description": "Waiting on Internal Team",
+      "order": 7,
+      "isDefault": true
+    },
+    {
+      "description": "On Hold",
+      "order": 8,
+      "isDefault": true
+    },
+    {
+      "description": "Reassigned",
+      "order": 9,
+      "isDefault": false
+    },
+    {
+      "description": "Cancelled",
+      "order": 10,
+      "isDefault": false
+    },
+    {
+      "description": "Done",
+      "order": 11,
+      "isDefault": false
+    }
   ],
   "tickets": [
     {
-      "title": "Q3 Financial Statements Preparation",
-      "description": "Prepare quarterly financial statements for board review",
-      "categoryId": 1,
-      "priorityId": 3,
-      "typeId": 2,
-      "statusId": 3
-    },
-    {
-      "title": "Investment Portfolio Performance Analysis",
-      "description": "Analyze Q3 portfolio returns vs benchmark indices",
-      "categoryId": 5,
-      "priorityId": 2,
-      "typeId": 1,
-      "statusId": 2
-    },
-    {
-      "title": "Budget Variance Explanation - Q3 Actuals",
-      "description": "Investigate and explain significant budget variances",
-      "categoryId": 9,
-      "priorityId": 2,
-      "typeId": 1,
-      "statusId": 3
-    },
-    {
-      "title": "New Risk Assessment Model Validation",
-      "description": "Validate new credit risk model for corporate bonds",
+      "title": "Welcome to Issue Tracker",
+      "description": "This is your first ticket",
       "categoryId": 4,
-      "priorityId": 3,
+      "priorityId": 1,
       "typeId": 3,
-      "statusId": 4
-    },
-    {
-      "title": "Regulatory Filing - SEC Quarterly Report",
-      "description": "Prepare and validate SEC 10-Q filing components",
-      "categoryId": 6,
-      "priorityId": 4,
-      "typeId": 5,
       "statusId": 1
-    },
-    {
-      "title": "Client Performance Report Generation",
-      "description": "Generate monthly performance reports for top clients",
-      "categoryId": 10,
-      "priorityId": 2,
-      "typeId": 2,
-      "statusId": 7
-    },
-    {
-      "title": "Cash Flow Forecasting Model Update",
-      "description": "Update cash flow model with latest market data",
-      "categoryId": 2,
-      "priorityId": 2,
-      "typeId": 4,
-      "statusId": 3
-    },
-    {
-      "title": "Data Reconciliation - General Ledger vs Subsystems",
-      "description": "Reconcile GL accounts with subsidiary systems",
-      "categoryId": 7,
-      "priorityId": 3,
-      "typeId": 7,
-      "statusId": 6
     }
   ],
   "ticketComments": [
     {
       "ticketId": 1,
-      "author": "senior_analyst",
-      "text": "Need to incorporate latest FX impact calculations"
-    },
-    {
-      "ticketId": 2,
-      "author": "investment_team",
-      "text": "Focus on fixed income portfolio underperformance"
-    },
-    {
-      "ticketId": 4,
-      "author": "risk_analyst",
-      "text": "Model validation required before November board meeting"
-    },
-    {
-      "ticketId": 5,
-      "author": "compliance_officer",
-      "text": "SEC deadline is 45 days after quarter end - urgent"
-    },
-    {
-      "ticketId": 7,
-      "author": "treasury_analyst",
-      "text": "Include latest interest rate forecast changes"
+      "author": "newuser",
+      "text": "Hello, this is a sample comment"
     }
   ],
   "ticketSubTasks": [
     {
       "ticketId": 1,
-      "title": "Collect subsidiary financials",
-      "isCompleted": true
-    },
-    {
-      "ticketId": 1,
-      "title": "Prepare consolidation worksheets",
-      "isCompleted": false
-    },
-    {
-      "ticketId": 2,
-      "title": "Gather benchmark index data",
-      "isCompleted": true
-    },
-    {
-      "ticketId": 2,
-      "title": "Calculate risk-adjusted returns",
-      "isCompleted": false
-    },
-    {
-      "ticketId": 3,
-      "title": "Identify top 5 variance categories",
-      "isCompleted": true
-    },
-    {
-      "ticketId": 3,
-      "title": "Schedule meetings with department heads",
-      "isCompleted": false
-    },
-    {
-      "ticketId": 4,
-      "title": "Run back-testing scenarios",
-      "isCompleted": false
-    },
-    {
-      "ticketId": 4,
-      "title": "Prepare validation report",
-      "isCompleted": false
-    },
-    {
-      "ticketId": 5,
-      "title": "Review SEC disclosure requirements",
-      "isCompleted": true
-    },
-    {
-      "ticketId": 5,
-      "title": "Coordinate with legal team",
-      "isCompleted": false
-    },
-    {
-      "ticketId": 7,
-      "title": "Update interest rate assumptions",
-      "isCompleted": true
-    },
-    {
-      "ticketId": 7,
-      "title": "Run sensitivity analysis",
+      "title": "Mark subtask as complete",
       "isCompleted": false
     }
   ]
