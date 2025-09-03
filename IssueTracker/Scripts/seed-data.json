@@ -1,29 +1,29 @@
 {
   "ticketCategories": [
     {
-      "description": "Bug",
+      "description": "Support",
       "order": 1,
-      "isDefault": false
+      "isDefault": true
     },
     {
-      "description": "Change Request",
+      "description": "Integration",
       "order": 2,
       "isDefault": false
     },
     {
-      "description": "Integration",
+      "description": "Change Request",
       "order": 3,
       "isDefault": false
     },
     {
-      "description": "Documentation",
+      "description": "Lead",
       "order": 4,
       "isDefault": false
     },
     {
-      "description": "Support",
+      "description": "Documentation",
       "order": 5,
-      "isDefault": true
+      "isDefault": false
     },
     {
       "description": "Training",
