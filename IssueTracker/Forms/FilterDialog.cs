@@ -4,7 +4,7 @@ using IssueTracker.Services.Interfaces;
 namespace IssueTracker
 {
     public partial class FilterDialog : Form
-    { 
+    {
         #region Properties
         private ITicketService _ticketService;
         // To keep track of past filter selected

@@ -287,15 +287,15 @@ namespace IssueTracker
         {
             // Get the search term and trim whitespace
             string searchTerm = txtSearch.Text.Trim().ToLower();
-                var filteredTickets = _ticketService.FilterTickets(
-                    _currentFilter.Status,
-                    _currentFilter.CreatedFromDate,
-                    _currentFilter.CreatedToDate,
-                    _currentFilter.ModifiedFromDate,
-                    _currentFilter.ModifiedToDate,
-                    _currentFilter.Type,
-                    _currentFilter.Category
-                );
+            var filteredTickets = _ticketService.FilterTickets(
+                _currentFilter.Status,
+                _currentFilter.CreatedFromDate,
+                _currentFilter.CreatedToDate,
+                _currentFilter.ModifiedFromDate,
+                _currentFilter.ModifiedToDate,
+                _currentFilter.Type,
+                _currentFilter.Category
+            );
 
 
             if (!string.IsNullOrEmpty(searchTerm))
