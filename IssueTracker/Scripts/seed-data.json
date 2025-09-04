@@ -75,18 +75,23 @@
       "isDefault": true
     },
     {
-      "description": "Sandbox",
+      "description": "Sage",
       "order": 4,
       "isDefault": false
     },
     {
-      "description": "SFTP",
+      "description": "Sandbox",
       "order": 5,
       "isDefault": false
     },
     {
-      "description": "Others",
+      "description": "SFTP",
       "order": 6,
+      "isDefault": false
+    },
+    {
+      "description": "Others",
+      "order": 7,
       "isDefault": false
     }
   ],
