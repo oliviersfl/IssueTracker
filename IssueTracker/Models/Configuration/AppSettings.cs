@@ -1,16 +1,4 @@
-﻿public class ConnectionStrings
-{
-    private string _sQLite;
-    public string SQLite
-    {
-        get => _sQLite;
-        set => _sQLite = value;
-    }
-
-}
-
-
-public class Database
+﻿public class Database
 {
     private string _dbPath;
     public string DbPath
@@ -78,13 +66,6 @@ public class CellFormatting
 
 public class AppSettings
 {
-    private ConnectionStrings _connectionStrings;
-    public ConnectionStrings ConnectionStrings
-    {
-        get => _connectionStrings;
-        set => _connectionStrings = value;
-    }
-
     private Database _database;
     public Database Database
     {

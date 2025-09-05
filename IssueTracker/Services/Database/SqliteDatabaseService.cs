@@ -12,7 +12,7 @@ namespace IssueTracker.Services.Database
         public SqliteDatabaseService(AppSettings appSettings)
         {
             _appSettings = appSettings;
-            _connectionString = _appSettings.ConnectionStrings.SQLite!;
+            _connectionString = "Data Source=" + _appSettings.Database.DbPath!;
         }
 
         private async Task EnsureConnectionOpenAsync()

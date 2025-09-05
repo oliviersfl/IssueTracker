@@ -18,7 +18,7 @@ namespace IssueTracker.Services.Database
 
         public async Task InitializeAsync()
         {
-            var dbPath = new SqliteConnectionStringBuilder(_appSettings.ConnectionStrings.SQLite).DataSource;
+            var dbPath = new SqliteConnectionStringBuilder("Data Source=" + _appSettings.Database.DbPath!).DataSource;
             if (!File.Exists(dbPath))
             {
                 await ExecuteScriptAsync("Schema.sql");

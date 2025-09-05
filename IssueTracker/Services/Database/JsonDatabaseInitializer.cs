@@ -19,7 +19,19 @@ namespace IssueTracker.Services.Database
 
         public async Task InitializeAsync()
         {
-            var dbPath = new SqliteConnectionStringBuilder(_appSettings.ConnectionStrings.SQLite).DataSource;
+            var dbPath = _appSettings.Database.DbPath;
+            if (string.IsNullOrEmpty(dbPath))
+            {
+                throw new InvalidOperationException("Database path is not configured");
+            }
+
+            var directoryPath = Path.GetDirectoryName(dbPath);
+            if (!string.IsNullOrEmpty(directoryPath) && !Directory.Exists(directoryPath))
+            {
+                Directory.CreateDirectory(directoryPath);
+            }
+
+
             if (!File.Exists(dbPath))
             {
                 await ExecuteScriptAsync("Schema.sql");
