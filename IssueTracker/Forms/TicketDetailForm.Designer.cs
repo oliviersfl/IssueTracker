@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.Icon = new Icon("task.ico");
             panel1 = new Panel();
             lblTitle = new Label();
             panel2 = new Panel();
