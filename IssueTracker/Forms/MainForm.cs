@@ -222,6 +222,7 @@ namespace IssueTracker
                 "CreatedDate" => ticket.CreatedDate,
                 "ModifiedDate" => ticket.ModifiedDate,
                 "DueDate" => ticket.DueDate,
+                "PendingSubTasksCount" => ticket.PendingSubTasksCount,
                 _ => throw new ArgumentException($"Unknown property: {propertyName}")
             };
         }
