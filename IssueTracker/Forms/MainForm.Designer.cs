@@ -32,7 +32,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.Icon = new Icon("task.ico");
+            if(File.Exists("task.ico"))
+                this.Icon = new Icon("task.ico");
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle3 = new DataGridViewCellStyle();
