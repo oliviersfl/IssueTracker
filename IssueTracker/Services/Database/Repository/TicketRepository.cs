@@ -17,7 +17,24 @@ namespace IssueTracker.Services.Database.Repository
         // Get Tickets
         public async Task<IEnumerable<Ticket>> GetAllTicketsAsync()
         {
-            const string sql = "SELECT t.id, t.title, t.description, t.categoryid, t.priorityid, t.typeid, t.statusid, t.CreatedDate, t.ModifiedDate, DueDate FROM Ticket t\r\nINNER JOIN TicketStatus s\r\nON t.statusid = s.id\r\nORDER BY s.\"order\"";
+            const string sql = @"SELECT
+	            t.id,
+	            t.title,
+	            t.description,
+	            t.categoryid,
+	            t.priorityid,
+	            t.typeid,
+	            t.statusid,
+	            t.CreatedDate,
+	            t.ModifiedDate,
+	            DueDate
+            FROM Ticket t
+            INNER JOIN TicketStatus s ON t.statusid = s.id
+            INNER JOIN TicketPriority p ON t.priorityid = p.id
+            ORDER BY
+	            s.""order"",
+	            p.""order"" DESC,
+	            t.ModifiedDate DESC";
             return await _db.QueryAsync(sql, MapTicket);
         }
 
