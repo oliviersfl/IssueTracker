@@ -266,5 +266,139 @@ namespace IssueTracker
         {
             dtpToModifiedDate.Enabled = chkToModifiedDate.Checked;
         }
+
+        #region Select All/None methods
+        /// <summary>
+        /// Event handler for Status Select All button click.
+        /// </summary>
+        private void btnStatusSelectAll_Click(object sender, EventArgs e)
+        {
+            ResultFilter = new TicketFilter
+            {
+                Category = new List<string>(),
+                Type = new List<string>(),
+                Status = new List<string>(),
+                CreatedFromDate = chkFromCreatedDate.Checked ? dtpFromCreatedDate.Value : null,
+                CreatedToDate = chkToCreatedDate.Checked ? dtpToCreatedDate.Value : null,
+                ModifiedFromDate = chkFromModifiedDate.Checked ? dtpFromModifiedDate.Value : null,
+                ModifiedToDate = chkToModifiedDate.Checked ? dtpToModifiedDate.Value : null
+            };
+            for (int i = 0; i < clbStatus.Items.Count; i++)
+            {
+                ResultFilter.Status.Add(clbStatus.Items[i].ToString());
+                clbStatus.SetItemChecked(i, true);
+            }
+        }
+
+        /// <summary>
+        /// Event handler for Status Select None button click.
+        /// </summary>
+        private void btnStatusSelectNone_Click(object sender, EventArgs e)
+        {
+            ResultFilter = new TicketFilter
+            {
+                Category = new List<string>(),
+                Type = new List<string>(),
+                Status = new List<string>(),
+                CreatedFromDate = chkFromCreatedDate.Checked ? dtpFromCreatedDate.Value : null,
+                CreatedToDate = chkToCreatedDate.Checked ? dtpToCreatedDate.Value : null,
+                ModifiedFromDate = chkFromModifiedDate.Checked ? dtpFromModifiedDate.Value : null,
+                ModifiedToDate = chkToModifiedDate.Checked ? dtpToModifiedDate.Value : null
+            };
+            for (int i = 0; i < clbStatus.Items.Count; i++)
+            {
+                ResultFilter.Status.Clear();
+                clbStatus.SetItemChecked(i, false);
+            }
+        }
+
+        /// <summary>
+        /// Event handler for Type Select All button click.
+        /// </summary>
+        private void btnTypeSelectAll_Click(object sender, EventArgs e)
+        {
+            ResultFilter = new TicketFilter
+            {
+                Category = new List<string>(),
+                Type = new List<string>(),
+                Status = new List<string>(),
+                CreatedFromDate = chkFromCreatedDate.Checked ? dtpFromCreatedDate.Value : null,
+                CreatedToDate = chkToCreatedDate.Checked ? dtpToCreatedDate.Value : null,
+                ModifiedFromDate = chkFromModifiedDate.Checked ? dtpFromModifiedDate.Value : null,
+                ModifiedToDate = chkToModifiedDate.Checked ? dtpToModifiedDate.Value : null
+            };
+            for (int i = 0; i < clbType.Items.Count; i++)
+            {
+                ResultFilter.Type.Add(clbType.Items[i].ToString());
+                clbType.SetItemChecked(i, true);
+            }
+        }
+
+        /// <summary>
+        /// Event handler for Type Select None button click.
+        /// </summary>
+        private void btnTypeSelectNone_Click(object sender, EventArgs e)
+        {
+            ResultFilter = new TicketFilter
+            {
+                Category = new List<string>(),
+                Type = new List<string>(),
+                Status = new List<string>(),
+                CreatedFromDate = chkFromCreatedDate.Checked ? dtpFromCreatedDate.Value : null,
+                CreatedToDate = chkToCreatedDate.Checked ? dtpToCreatedDate.Value : null,
+                ModifiedFromDate = chkFromModifiedDate.Checked ? dtpFromModifiedDate.Value : null,
+                ModifiedToDate = chkToModifiedDate.Checked ? dtpToModifiedDate.Value : null
+            };
+            for (int i = 0; i < clbType.Items.Count; i++)
+            {
+                ResultFilter.Status.Clear();
+                clbType.SetItemChecked(i, false);
+            }
+        }
+
+        /// <summary>
+        /// Event handler for Category Select All button click.
+        /// </summary>
+        private void btnCategorySelectAll_Click(object sender, EventArgs e)
+        {
+            ResultFilter = new TicketFilter
+            {
+                Category = new List<string>(),
+                Type = new List<string>(),
+                Status = new List<string>(),
+                CreatedFromDate = chkFromCreatedDate.Checked ? dtpFromCreatedDate.Value : null,
+                CreatedToDate = chkToCreatedDate.Checked ? dtpToCreatedDate.Value : null,
+                ModifiedFromDate = chkFromModifiedDate.Checked ? dtpFromModifiedDate.Value : null,
+                ModifiedToDate = chkToModifiedDate.Checked ? dtpToModifiedDate.Value : null
+            };
+            for (int i = 0; i < clbType.Items.Count; i++)
+            {
+                ResultFilter.Category.Add(clbCategory.Items[i].ToString());
+                clbCategory.SetItemChecked(i, true);
+            }
+        }
+
+        /// <summary>
+        /// Event handler for Category Select None button click.
+        /// </summary>
+        private void btnCategorySelectNone_Click(object sender, EventArgs e)
+        {
+            ResultFilter = new TicketFilter
+            {
+                Category = new List<string>(),
+                Type = new List<string>(),
+                Status = new List<string>(),
+                CreatedFromDate = chkFromCreatedDate.Checked ? dtpFromCreatedDate.Value : null,
+                CreatedToDate = chkToCreatedDate.Checked ? dtpToCreatedDate.Value : null,
+                ModifiedFromDate = chkFromModifiedDate.Checked ? dtpFromModifiedDate.Value : null,
+                ModifiedToDate = chkToModifiedDate.Checked ? dtpToModifiedDate.Value : null
+            };
+            for (int i = 0; i < clbCategory.Items.Count; i++)
+            {
+                ResultFilter.Status.Clear();
+                clbCategory.SetItemChecked(i, false);
+            }
+        }
+        #endregion
     }
 }
