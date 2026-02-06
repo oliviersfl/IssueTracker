@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using IssueTracker.Models;
 using IssueTracker.Services.Database.Repository.Interfaces;
 using IssueTracker.Services.Interfaces;
@@ -310,7 +311,32 @@ namespace IssueTracker
                 Path.Combine(_appSettings.ExportPath, _appSettings.ExportFileName)
             );
 
+            OpenFileExplorerToLocation(_appSettings.ExportPath);
             MessageBox.Show("Excel Export Complete!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+        /// <summary>
+        /// Opens File Explorer to the specified directory path.
+        /// </summary>
+        /// <param name="path">The path to the directory to open.</param>
+        private void OpenFileExplorerToLocation(string path)
+        {
+            if (Directory.Exists(path))
+            {
+                Process.Start("explorer.exe", path);
+            }
+            else if (File.Exists(path))
+            {
+                // If the path is a file, open File Explorer to its containing directory
+                // and select the file.
+                string argument = "/select,\"" + path + "\"";
+                Process.Start("explorer.exe", argument);
+            }
+            else
+            {
+                // Handle the case where the path does not exist.
+                // You might want to throw an exception, log an error, or inform the user.
+                System.Console.WriteLine($"Error: The path '{path}' does not exist.");
+            }
         }
 
         // Double-click event for ticket selection
