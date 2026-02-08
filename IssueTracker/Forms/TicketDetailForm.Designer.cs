@@ -64,6 +64,7 @@
             subTaskHeaderTitle = new ColumnHeader();
             subTaskHeaderIsComplete = new ColumnHeader();
             subTaskCreatedDate = new ColumnHeader();
+            chkShowOnlyActive = new CheckBox();
             btnToggleComplete = new Button();
             btnDeleteSubTask = new Button();
             tabPageComments = new TabPage();
@@ -410,6 +411,7 @@
             // 
             tabPageSubtasks.Controls.Add(btnAddSubTask);
             tabPageSubtasks.Controls.Add(panel3);
+            tabPageSubtasks.Controls.Add(chkShowOnlyActive);
             tabPageSubtasks.Controls.Add(btnToggleComplete);
             tabPageSubtasks.Controls.Add(btnDeleteSubTask);
             tabPageSubtasks.Location = new Point(4, 29);
@@ -446,6 +448,21 @@
             panel3.Name = "panel3";
             panel3.Size = new Size(752, 480);
             panel3.TabIndex = 0;
+            // 
+            // chkShowOnlyActive
+            // 
+            chkShowOnlyActive.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            chkShowOnlyActive.AutoSize = true;
+            chkShowOnlyActive.Checked = true;
+            chkShowOnlyActive.CheckState = CheckState.Checked;
+            chkShowOnlyActive.Location = new Point(11, 517);
+            chkShowOnlyActive.Margin = new Padding(3, 4, 3, 4);
+            chkShowOnlyActive.Name = "chkShowOnlyActive";
+            chkShowOnlyActive.Size = new Size(142, 24);
+            chkShowOnlyActive.TabIndex = 0;
+            chkShowOnlyActive.Text = "Show only active";
+            chkShowOnlyActive.UseVisualStyleBackColor = true;
+            chkShowOnlyActive.CheckedChanged += chkShowOnlyActive_CheckedChanged;
             // 
             // lvSubtasks
             // 
@@ -704,5 +721,6 @@
         private System.Windows.Forms.ColumnHeader commentHeaderDateCreated;
         private System.Windows.Forms.Button btnDeleteSubTask;
         private System.Windows.Forms.Button btnToggleComplete;
+        private System.Windows.Forms.CheckBox chkShowOnlyActive;
     }
 }

@@ -59,14 +59,7 @@ namespace IssueTracker
 
                 // Load subtasks
                 _currentTicket.SubTasks = subTasks;
-                foreach (var subTask in _currentTicket.SubTasks)
-                {
-                    var item = new ListViewItem(subTask.Title);
-                    item.SubItems.Add(subTask.IsCompleted ? "Yes" : "No");
-                    item.SubItems.Add(subTask.CreatedDate.ToString("g")); // Add CreatedDate
-                    item.Tag = subTask;
-                    lvSubtasks.Items.Add(item);
-                }
+                LoadSubtasks();
 
                 // Load comments
                 _currentTicket.Comments = comments;
@@ -196,17 +189,21 @@ namespace IssueTracker
             var subTaskForm = new SimpleInputForm("Add Subtask", "Subtask title:");
             if (subTaskForm.ShowDialog() == DialogResult.OK)
             {
-                var item = new ListViewItem(subTaskForm.InputText);
-                item.SubItems.Add("No");
-                item.SubItems.Add(DateTime.Now.ToString("g")); // Add current date
-                                                               // Store a temporary SubTask object with the creation date
-                item.Tag = new SubTask
+                var newSubTask = new SubTask
                 {
                     Title = subTaskForm.InputText,
                     IsCompleted = false,
                     CreatedDate = DateTime.Now
                 };
-                lvSubtasks.Items.Add(item);
+
+                // Add to the ticket's subtask list
+                if (_currentTicket.SubTasks == null)
+                    _currentTicket.SubTasks = new List<SubTask>();
+
+                _currentTicket.SubTasks.Add(newSubTask);
+
+                // Refresh the list view
+                LoadSubtasks();
             }
         }
 
@@ -246,12 +243,10 @@ namespace IssueTracker
             }
 
             var selectedItem = lvSubtasks.SelectedItems[0];
-            selectedItem.SubItems[1].Text = selectedItem.SubItems[1].Text == "Yes" ? "No" : "Yes";
-
-            // Update the Tag object to keep CreatedDate consistent
             if (selectedItem.Tag is SubTask subTask)
             {
-                subTask.IsCompleted = selectedItem.SubItems[1].Text == "Yes";
+                subTask.IsCompleted = !subTask.IsCompleted;
+                LoadSubtasks(); // Refresh the list to apply filter
             }
         }
 
@@ -266,7 +261,11 @@ namespace IssueTracker
             if (MessageBox.Show("Are you sure you want to delete this subtask?", "Confirm Delete",
                 MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
-                lvSubtasks.SelectedItems[0].Remove();
+                if (lvSubtasks.SelectedItems[0].Tag is SubTask subTask && _currentTicket.SubTasks != null)
+                {
+                    _currentTicket.SubTasks.Remove(subTask);
+                    LoadSubtasks(); // Refresh the list
+                }
             }
         }
         private void btnEditComment_Click(object sender, EventArgs e)
@@ -309,6 +308,30 @@ namespace IssueTracker
             {
                 e.SuppressKeyPress = true; // Prevent the ding sound
                 btnAddComment.PerformClick(); // Trigger the add comment button click
+            }
+        }
+        private void chkShowOnlyActive_CheckedChanged(object sender, EventArgs e)
+        {
+            LoadSubtasks();
+        }
+        private void LoadSubtasks()
+        {
+            lvSubtasks.Items.Clear();
+
+            if (_currentTicket?.SubTasks == null)
+                return;
+
+            var subtasksToShow = chkShowOnlyActive.Checked
+                ? _currentTicket.SubTasks.Where(st => !st.IsCompleted).ToList()
+                : _currentTicket.SubTasks.ToList();
+
+            foreach (var subTask in subtasksToShow)
+            {
+                var item = new ListViewItem(subTask.Title);
+                item.SubItems.Add(subTask.IsCompleted ? "Yes" : "No");
+                item.SubItems.Add(subTask.CreatedDate.ToString("g"));
+                item.Tag = subTask;
+                lvSubtasks.Items.Add(item);
             }
         }
     }
