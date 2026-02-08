@@ -101,20 +101,13 @@ namespace IssueTracker
                 ticket.DueDate = chkDueDate.Checked ? dtpDueDate.Value : (DateTime?)null;
                 ticket.Status = cmbStatus.SelectedValue.ToString();
 
-                // Update subtasks
-                ticket.SubTasks = new List<SubTask>();
-                foreach (ListViewItem item in lvSubtasks.Items)
+                if (_currentTicket?.SubTasks != null)
                 {
-                    var existingSubTask = item.Tag as SubTask;
-                    var subTask = new SubTask
-                    {
-                        Id = existingSubTask?.Id ?? 0,
-                        Title = item.Text,
-                        IsCompleted = item.SubItems[1].Text == "Yes",
-                        // Preserve existing CreatedDate or set new one
-                        CreatedDate = existingSubTask?.CreatedDate ?? DateTime.Now
-                    };
-                    ticket.SubTasks.Add(subTask);
+                    ticket.SubTasks = _currentTicket.SubTasks;
+                }
+                else
+                {
+                    ticket.SubTasks = new List<SubTask>();
                 }
 
                 // Update comments
@@ -139,6 +132,7 @@ namespace IssueTracker
                 {
                     ticket.CreatedDate = DateTime.Now;
                     ticket.ModifiedDate = DateTime.Now;
+                    ticket.SubTasks = _currentTicket?.SubTasks ?? new List<SubTask>(); // Ensure subtasks are included
                     _ticketService.AddTicket(ticket); // Uncomment when service is ready
                 }
 
