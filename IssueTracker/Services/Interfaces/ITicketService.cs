@@ -12,6 +12,7 @@ namespace IssueTracker.Services.Interfaces
         Task<List<TicketPriority>> GetTicketPriorities();
         Task<List<SubTask>> GetTicketSubTasksByTicketId(int ticketId);
         Task<List<Comment>> GetTicketCommentsByTicketId(int ticketId);
+        Task<List<TicketAuditLog>> GetTicketAuditLogsByTicketId(int ticketId);
         Task AddTicket(Ticket ticket);
         Task UpdateTicket(Ticket ticket);
         Task DeleteTicket(int id);

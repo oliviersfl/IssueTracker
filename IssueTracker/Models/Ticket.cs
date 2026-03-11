@@ -16,6 +16,15 @@
         public List<Comment> Comments { get; set; } = new List<Comment>();
         public List<DateTime> ModificationDates { get; set; } = new List<DateTime>();
 
+        // Snapshot of values before the current save — used by UpdateTicket() for audit diffing
+        public string PreviousTitle { get; set; }
+        public string PreviousDescription { get; set; }
+        public string PreviousStatus { get; set; }
+        public string PreviousPriority { get; set; }
+        public string PreviousCategory { get; set; }
+        public string PreviousType { get; set; }
+        public DateTime? PreviousDueDate { get; set; }
+
         public int PendingSubTasksCount => SubTasks.Count(st => !st.IsCompleted);
     }
 }

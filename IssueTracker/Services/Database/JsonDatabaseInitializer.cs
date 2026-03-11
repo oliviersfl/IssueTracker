@@ -39,10 +39,20 @@ namespace IssueTracker.Services.Database
                 if (_appSettings.Database.SeedSampleData)
                     await SeedFromJsonAsync();
             }
-            else
+
+            // Always run all migration scripts in alphabetical order (idempotent).
+            // New migrations are picked up automatically — no code change needed here.
+            var scriptsFolder = _appSettings.Database.ScriptsFolder;
+            if (Directory.Exists(scriptsFolder))
             {
-                // Run migrations for existing databases (all scripts are idempotent)
-                await ExecuteScriptAsync("Migration_AddTicketHistory.sql");
+                var migrations = Directory.GetFiles(scriptsFolder, "Migration_*.sql")
+                    .OrderBy(f => Path.GetFileName(f))
+                    .ToList();
+
+                foreach (var migration in migrations)
+                {
+                    await ExecuteScriptAsync(Path.GetFileName(migration));
+                }
             }
         }
 

@@ -1,7 +1,7 @@
-﻿using System.Diagnostics;
-using IssueTracker.Models;
+﻿using IssueTracker.Models;
 using IssueTracker.Services.Database.Repository.Interfaces;
 using IssueTracker.Services.Interfaces;
+using System.Diagnostics;
 
 namespace IssueTracker
 {

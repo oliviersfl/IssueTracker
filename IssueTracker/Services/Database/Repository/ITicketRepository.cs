@@ -33,5 +33,9 @@ namespace IssueTracker.Services.Database.Repository.Interfaces
         // History operations
         Task AddHistoryEntryAsync(int ticketId, DateTime modifiedDate);
         Task<IEnumerable<DateTime>> GetHistoryDatesByTicketIdAsync(int ticketId);
+
+        // Audit log operations
+        Task AddAuditLogAsync(int ticketId, string changeType, string oldValue, string newValue);
+        Task<IEnumerable<Database.Models.TicketAuditLog>> GetAuditLogsByTicketIdAsync(int ticketId);
     }
 }

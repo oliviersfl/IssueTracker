@@ -264,6 +264,35 @@ namespace IssueTracker.Services.Database.Repository
                 new SqliteParameter("@TicketId", ticketId));
         }
 
+        // --- Audit Log Methods ---
+        public async Task AddAuditLogAsync(int ticketId, string changeType, string oldValue, string newValue)
+        {
+            const string sql = @"
+            INSERT INTO TicketAuditLog (ticketid, Timestamp, ChangeType, OldValue, NewValue)
+            VALUES (@TicketId, @Timestamp, @ChangeType, @OldValue, @NewValue);";
+
+            await _db.ExecuteNonQueryAsync(sql,
+                new SqliteParameter("@TicketId", ticketId),
+                new SqliteParameter("@Timestamp", DateTime.UtcNow),
+                new SqliteParameter("@ChangeType", changeType),
+                new SqliteParameter("@OldValue", oldValue ?? (object)DBNull.Value),
+                new SqliteParameter("@NewValue", newValue ?? (object)DBNull.Value));
+        }
+
+        public async Task<IEnumerable<Database.Models.TicketAuditLog>> GetAuditLogsByTicketIdAsync(int ticketId)
+        {
+            const string sql = "SELECT id, ticketid, Timestamp, ChangeType, OldValue, NewValue FROM TicketAuditLog WHERE ticketid = @TicketId ORDER BY Timestamp DESC";
+            return await _db.QueryAsync(sql, reader => new Database.Models.TicketAuditLog
+            {
+                Id = reader.GetInt32(0),
+                TicketId = reader.GetInt32(1),
+                Timestamp = TimeZoneInfo.ConvertTimeFromUtc(reader.GetDateTime(2), TimeZoneInfo.Local),
+                ChangeType = reader.GetString(3),
+                OldValue = reader.IsDBNull(4) ? null : reader.GetString(4),
+                NewValue = reader.IsDBNull(5) ? null : reader.GetString(5)
+            }, new SqliteParameter("@TicketId", ticketId));
+        }
+
         public async Task DeleteTicketAsync(int id)
         {
             // Using a transaction to ensure all related data is deleted
@@ -283,6 +312,11 @@ namespace IssueTracker.Services.Database.Repository
                 // Delete history
                 await _db.ExecuteNonQueryAsync(
                     "DELETE FROM TicketHistory WHERE ticketid = @TicketId",
+                    new SqliteParameter("@TicketId", id));
+
+                // Delete audit log
+                await _db.ExecuteNonQueryAsync(
+                    "DELETE FROM TicketAuditLog WHERE ticketid = @TicketId",
                     new SqliteParameter("@TicketId", id));
 
                 // Finally, delete the ticket

@@ -30,6 +30,9 @@
     <None Update="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Scripts\Migration_AddTicketAuditLog.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Scripts\Migration_AddTicketHistory.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

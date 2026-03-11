@@ -77,6 +77,13 @@
             commentHeaderAuthor = new ColumnHeader();
             commentHeaderComment = new ColumnHeader();
             commentHeaderDateCreated = new ColumnHeader();
+            tabPageHistory = new TabPage();
+            panel5 = new Panel();
+            lvHistory = new ListView();
+            historyHeaderTimestamp = new ColumnHeader();
+            historyHeaderChangeType = new ColumnHeader();
+            historyHeaderOldValue = new ColumnHeader();
+            historyHeaderNewValue = new ColumnHeader();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
             tabControl1.SuspendLayout();
@@ -90,6 +97,8 @@
             panel3.SuspendLayout();
             tabPageComments.SuspendLayout();
             panel4.SuspendLayout();
+            tabPageHistory.SuspendLayout();
+            panel5.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -180,6 +189,7 @@
             tabControl1.Controls.Add(tabPageDetails);
             tabControl1.Controls.Add(tabPageSubtasks);
             tabControl1.Controls.Add(tabPageComments);
+            tabControl1.Controls.Add(tabPageHistory);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.Location = new Point(0, 80);
             tabControl1.Margin = new Padding(3, 4, 3, 4);
@@ -640,6 +650,63 @@
             commentHeaderDateCreated.Text = "Date Created";
             commentHeaderDateCreated.Width = 150;
             // 
+            // tabPageHistory
+            // 
+            tabPageHistory.Controls.Add(panel5);
+            tabPageHistory.Location = new Point(4, 29);
+            tabPageHistory.Margin = new Padding(3, 4, 3, 4);
+            tabPageHistory.Name = "tabPageHistory";
+            tabPageHistory.Padding = new Padding(11, 13, 11, 13);
+            tabPageHistory.Size = new Size(774, 568);
+            tabPageHistory.TabIndex = 3;
+            tabPageHistory.Text = "History";
+            tabPageHistory.UseVisualStyleBackColor = true;
+            // 
+            // panel5
+            // 
+            panel5.Controls.Add(lvHistory);
+            panel5.Dock = DockStyle.Fill;
+            panel5.Location = new Point(11, 13);
+            panel5.Margin = new Padding(3, 4, 3, 4);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(752, 542);
+            panel5.TabIndex = 0;
+            // 
+            // lvHistory
+            // 
+            lvHistory.Columns.AddRange(new ColumnHeader[] { historyHeaderTimestamp, historyHeaderChangeType, historyHeaderOldValue, historyHeaderNewValue });
+            lvHistory.Dock = DockStyle.Fill;
+            lvHistory.FullRowSelect = true;
+            lvHistory.GridLines = true;
+            lvHistory.ShowItemToolTips = true;
+            lvHistory.Location = new Point(0, 0);
+            lvHistory.Margin = new Padding(3, 4, 3, 4);
+            lvHistory.Name = "lvHistory";
+            lvHistory.Size = new Size(752, 542);
+            lvHistory.TabIndex = 0;
+            lvHistory.UseCompatibleStateImageBehavior = false;
+            lvHistory.View = View.Details;
+            // 
+            // historyHeaderTimestamp
+            // 
+            historyHeaderTimestamp.Text = "Timestamp";
+            historyHeaderTimestamp.Width = 140;
+            // 
+            // historyHeaderChangeType
+            // 
+            historyHeaderChangeType.Text = "Change";
+            historyHeaderChangeType.Width = 140;
+            // 
+            // historyHeaderOldValue
+            // 
+            historyHeaderOldValue.Text = "Old Value";
+            historyHeaderOldValue.Width = 220;
+            // 
+            // historyHeaderNewValue
+            // 
+            historyHeaderNewValue.Text = "New Value";
+            historyHeaderNewValue.Width = 220;
+            // 
             // TicketDetailForm
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
@@ -670,6 +737,8 @@
             tabPageComments.ResumeLayout(false);
             tabPageComments.PerformLayout();
             panel4.ResumeLayout(false);
+            tabPageHistory.ResumeLayout(false);
+            panel5.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -722,5 +791,12 @@
         private System.Windows.Forms.Button btnDeleteSubTask;
         private System.Windows.Forms.Button btnToggleComplete;
         private System.Windows.Forms.CheckBox chkShowOnlyActive;
+        private System.Windows.Forms.TabPage tabPageHistory;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.ListView lvHistory;
+        private System.Windows.Forms.ColumnHeader historyHeaderTimestamp;
+        private System.Windows.Forms.ColumnHeader historyHeaderChangeType;
+        private System.Windows.Forms.ColumnHeader historyHeaderOldValue;
+        private System.Windows.Forms.ColumnHeader historyHeaderNewValue;
     }
 }

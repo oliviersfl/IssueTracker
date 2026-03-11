@@ -200,6 +200,20 @@ namespace IssueTracker.Services
             return comments;
         }
 
+        public async Task<List<TicketAuditLog>> GetTicketAuditLogsByTicketId(int ticketId)
+        {
+            var dbLogs = await _ticketRepository.GetAuditLogsByTicketIdAsync(ticketId);
+            return dbLogs.Select(l => new TicketAuditLog
+            {
+                Id = l.Id,
+                TicketId = l.TicketId,
+                Timestamp = l.Timestamp,
+                ChangeType = l.ChangeType,
+                OldValue = l.OldValue,
+                NewValue = l.NewValue
+            }).ToList();
+        }
+
         private async Task UpdateComments(int ticketId, List<Comment> comments)
         {
             // Get existing comments from database
@@ -230,6 +244,7 @@ namespace IssueTracker.Services
                     CreatedDate = comment.CreatedDate
                 };
                 await _ticketRepository.AddCommentAsync(ticketId, dbComment);
+                await _ticketRepository.AddAuditLogAsync(ticketId, "Comment Added", null, $"\"{TruncateForLog(comment.Text)}\" by {comment.Author}");
             }
 
             // Update existing comments
@@ -244,12 +259,14 @@ namespace IssueTracker.Services
                     CreatedDate = comment.CreatedDate
                 };
                 await _ticketRepository.UpdateCommentAsync(ticketId, dbComment);
+                await _ticketRepository.AddAuditLogAsync(ticketId, "Comment Edited", null, $"\"{TruncateForLog(comment.Text)}\" by {comment.Author}");
             }
 
             // Delete removed comments
             foreach (var commentId in commentIdsToDelete)
             {
                 await _ticketRepository.DeleteCommentAsync(ticketId, commentId);
+                await _ticketRepository.AddAuditLogAsync(ticketId, "Comment Deleted", null, null);
             }
         }
 
@@ -385,6 +402,19 @@ namespace IssueTracker.Services
             // Record this modification in history
             await _ticketRepository.AddHistoryEntryAsync(ticket.Id, DateTime.Now);
 
+            // Diff against snapshot of previous state and write audit log entries
+            var now = DateTime.Now;
+            await DiffAndLogAsync(ticket.Id, "Title", ticket.PreviousTitle, ticket.Title, now);
+            await DiffAndLogAsync(ticket.Id, "Description", ticket.PreviousDescription, ticket.Description, now);
+            await DiffAndLogAsync(ticket.Id, "Status", ticket.PreviousStatus, ticket.Status, now);
+            await DiffAndLogAsync(ticket.Id, "Priority", ticket.PreviousPriority, ticket.Priority, now);
+            await DiffAndLogAsync(ticket.Id, "Category", ticket.PreviousCategory, ticket.Category, now);
+            await DiffAndLogAsync(ticket.Id, "Type", ticket.PreviousType, ticket.Type, now);
+            await DiffAndLogAsync(ticket.Id, "Due Date",
+                ticket.PreviousDueDate?.ToString("d") ?? "(none)",
+                ticket.DueDate?.ToString("d") ?? "(none)",
+                now);
+
             // Update comments in database
             await UpdateComments(ticket.Id, ticket.Comments);
 
@@ -443,11 +473,13 @@ namespace IssueTracker.Services
                     CreatedDate = DateTime.Now
                 };
                 await _ticketRepository.AddSubTaskAsync(ticketId, dbSubTask);
+                await _ticketRepository.AddAuditLogAsync(ticketId, "Subtask Added", null, subTask.Title);
             }
 
             // Update existing subtasks
             foreach (var subTask in subTasksToUpdate)
             {
+                var existing = existingDbSubTasks.FirstOrDefault(db => db.Id == subTask.Id);
                 var dbSubTask = new Database.Models.TicketSubTask
                 {
                     Id = subTask.Id,
@@ -456,12 +488,22 @@ namespace IssueTracker.Services
                     IsCompleted = subTask.IsCompleted
                 };
                 await _ticketRepository.UpdateSubTaskAsync(dbSubTask);
+
+                // Log completion toggle separately from title edit
+                if (existing != null && existing.IsCompleted != subTask.IsCompleted)
+                    await _ticketRepository.AddAuditLogAsync(ticketId,
+                        subTask.IsCompleted ? "Subtask Completed" : "Subtask Reopened",
+                        null, subTask.Title);
+                else if (existing != null && existing.Title != subTask.Title)
+                    await _ticketRepository.AddAuditLogAsync(ticketId, "Subtask Renamed", existing.Title, subTask.Title);
             }
 
             // Delete removed subtasks
             foreach (var subTaskId in subTaskIdsToDelete)
             {
+                var removed = existingDbSubTasks.FirstOrDefault(db => db.Id == subTaskId);
                 await _ticketRepository.DeleteSubTaskAsync(subTaskId);
+                await _ticketRepository.AddAuditLogAsync(ticketId, "Subtask Deleted", removed?.Title, null);
             }
         }
 
@@ -480,6 +522,28 @@ namespace IssueTracker.Services
         public void ClearTickets()
         {
             _tickets.Clear();
+        }
+
+        private async Task DiffAndLogAsync(int ticketId, string field, string oldVal, string newVal, DateTime timestamp)
+        {
+            var oldNorm = oldVal?.Trim() ?? string.Empty;
+            var newNorm = newVal?.Trim() ?? string.Empty;
+            if (string.Equals(oldNorm, newNorm, StringComparison.Ordinal)) return;
+
+            // For Description, store a short indicator rather than full text
+            if (field == "Description")
+            {
+                oldVal = string.IsNullOrEmpty(oldNorm) ? "(empty)" : TruncateForLog(oldNorm);
+                newVal = string.IsNullOrEmpty(newNorm) ? "(empty)" : TruncateForLog(newNorm);
+            }
+
+            await _ticketRepository.AddAuditLogAsync(ticketId, $"{field} Changed", oldVal, newVal);
+        }
+
+        private static string TruncateForLog(string value, int maxLength = 80)
+        {
+            if (string.IsNullOrEmpty(value)) return value;
+            return value.Length <= maxLength ? value : value[..maxLength] + "…";
         }
         #endregion
     }

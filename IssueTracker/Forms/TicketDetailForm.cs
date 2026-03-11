@@ -71,6 +71,17 @@ namespace IssueTracker
                     item.Tag = comment;
                     lvComments.Items.Add(item);
                 }
+
+                // Load history
+                var auditLogs = await _ticketService.GetTicketAuditLogsByTicketId(_currentTicket.Id);
+                foreach (var log in auditLogs)
+                {
+                    var item = new ListViewItem(log.Timestamp.ToString("g"));
+                    item.SubItems.Add(log.ChangeType);
+                    item.SubItems.Add(log.OldValue ?? string.Empty);
+                    item.SubItems.Add(log.NewValue ?? string.Empty);
+                    lvHistory.Items.Add(item);
+                }
             }
             else
             {
@@ -91,6 +102,19 @@ namespace IssueTracker
             if (ValidateForm())
             {
                 var ticket = _isEditMode ? _currentTicket : new Ticket();
+
+                // Snapshot the previous state BEFORE overwriting fields,
+                // so UpdateTicket() can diff old vs new for the audit log.
+                if (_isEditMode)
+                {
+                    ticket.PreviousTitle = ticket.Title;
+                    ticket.PreviousDescription = ticket.Description;
+                    ticket.PreviousStatus = ticket.Status;
+                    ticket.PreviousPriority = ticket.Priority;
+                    ticket.PreviousCategory = ticket.Category;
+                    ticket.PreviousType = ticket.Type;
+                    ticket.PreviousDueDate = ticket.DueDate;
+                }
 
                 // Map form fields to ticket properties
                 ticket.Title = txtTitle.Text;

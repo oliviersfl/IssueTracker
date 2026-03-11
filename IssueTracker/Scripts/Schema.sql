@@ -84,6 +84,17 @@ CREATE TABLE IF NOT EXISTS TicketHistory (
     FOREIGN KEY (ticketid) REFERENCES Ticket(id)
 );
 
+-- Create TicketAuditLog table
+CREATE TABLE IF NOT EXISTS TicketAuditLog (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ticketid INTEGER NOT NULL,
+    Timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    ChangeType TEXT NOT NULL,
+    OldValue TEXT,
+    NewValue TEXT,
+    FOREIGN KEY (ticketid) REFERENCES Ticket(id)
+);
+
 -- Create indexes for better performance (with IF NOT EXISTS)
 CREATE INDEX IF NOT EXISTS idx_ticket_category ON Ticket(categoryid);
 CREATE INDEX IF NOT EXISTS idx_ticket_priority ON Ticket(priorityid);
