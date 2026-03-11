@@ -77,6 +77,10 @@
             btnEditSubTask = new Button();
             btnDeleteSubTask = new Button();
             tabPageComments = new TabPage();
+            pnlCommentBar = new Panel();
+            pnlCommentPreview = new Panel();
+            lblCommentPreview = new Label();
+            txtCommentPreview = new TextBox();
             btnDeleteComment = new Button();
             btnEditComment = new Button();
             btnAddComment = new Button();
@@ -113,6 +117,8 @@
             panel3.SuspendLayout();
             pnlSubtaskBar.SuspendLayout();
             tabPageComments.SuspendLayout();
+            pnlCommentBar.SuspendLayout();
+            pnlCommentPreview.SuspendLayout();
             panel4.SuspendLayout();
             tabPageHistory.SuspendLayout();
             panel5.SuspendLayout();
@@ -643,10 +649,8 @@
             // 
             // tabPageComments
             // 
-            tabPageComments.Controls.Add(btnDeleteComment);
-            tabPageComments.Controls.Add(btnEditComment);
-            tabPageComments.Controls.Add(btnAddComment);
-            tabPageComments.Controls.Add(txtComment);
+            tabPageComments.Controls.Add(pnlCommentBar);
+            tabPageComments.Controls.Add(pnlCommentPreview);
             tabPageComments.Controls.Add(panel4);
             tabPageComments.Location = new Point(4, 29);
             tabPageComments.Margin = new Padding(3, 4, 3, 4);
@@ -656,79 +660,130 @@
             tabPageComments.TabIndex = 2;
             tabPageComments.Text = "Comments";
             tabPageComments.UseVisualStyleBackColor = true;
-            // 
+            //
+            // pnlCommentBar  (bottom toolbar — mirrors subtask bar exactly)
+            //
+            pnlCommentBar.BackColor = Color.WhiteSmoke;
+            pnlCommentBar.Controls.Add(txtComment);
+            pnlCommentBar.Controls.Add(btnDeleteComment);
+            pnlCommentBar.Controls.Add(btnEditComment);
+            pnlCommentBar.Controls.Add(btnAddComment);
+            pnlCommentBar.Dock = DockStyle.Bottom;
+            pnlCommentBar.Height = 90;
+            pnlCommentBar.Name = "pnlCommentBar";
+            pnlCommentBar.Paint += (s, e) =>
+                e.Graphics.DrawLine(new System.Drawing.Pen(Color.FromArgb(210, 210, 215), 1), 0, 0, ((Panel)s).Width, 0);
+            //
+            // txtComment
+            //
+            txtComment.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+            txtComment.AcceptsReturn = true;
+            txtComment.Location = new Point(10, 9);
+            txtComment.Margin = new Padding(3, 4, 3, 4);
+            txtComment.Multiline = true;
+            txtComment.ScrollBars = ScrollBars.Vertical;
+            txtComment.Name = "txtComment";
+            txtComment.Size = new Size(390, 72);
+            txtComment.TabIndex = 1;
+            //
             // btnDeleteComment
-            // 
-            btnDeleteComment.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            //
+            btnDeleteComment.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             btnDeleteComment.BackColor = Color.IndianRed;
             btnDeleteComment.FlatAppearance.BorderSize = 0;
             btnDeleteComment.FlatStyle = FlatStyle.Flat;
             btnDeleteComment.ForeColor = Color.White;
-            btnDeleteComment.Location = new Point(442, 507);
+            btnDeleteComment.Location = new Point(408, 27);
             btnDeleteComment.Margin = new Padding(3, 4, 3, 4);
             btnDeleteComment.Name = "btnDeleteComment";
-            btnDeleteComment.Size = new Size(101, 40);
+            btnDeleteComment.Size = new Size(100, 36);
             btnDeleteComment.TabIndex = 4;
             btnDeleteComment.Text = "Delete";
             btnDeleteComment.UseVisualStyleBackColor = false;
             btnDeleteComment.Click += btnDeleteComment_Click;
-            // 
+            //
             // btnEditComment
-            // 
-            btnEditComment.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            //
+            btnEditComment.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             btnEditComment.BackColor = Color.SteelBlue;
             btnEditComment.FlatAppearance.BorderSize = 0;
             btnEditComment.FlatStyle = FlatStyle.Flat;
             btnEditComment.ForeColor = Color.White;
-            btnEditComment.Location = new Point(550, 507);
+            btnEditComment.Location = new Point(516, 27);
             btnEditComment.Margin = new Padding(3, 4, 3, 4);
             btnEditComment.Name = "btnEditComment";
-            btnEditComment.Size = new Size(101, 40);
+            btnEditComment.Size = new Size(100, 36);
             btnEditComment.TabIndex = 3;
             btnEditComment.Text = "Edit";
             btnEditComment.UseVisualStyleBackColor = false;
             btnEditComment.Click += btnEditComment_Click;
-            // 
+            //
             // btnAddComment
-            // 
-            btnAddComment.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            //
+            btnAddComment.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             btnAddComment.BackColor = Color.SteelBlue;
             btnAddComment.FlatAppearance.BorderSize = 0;
             btnAddComment.FlatStyle = FlatStyle.Flat;
             btnAddComment.ForeColor = Color.White;
-            btnAddComment.Location = new Point(657, 507);
-            btnAddComment.Padding = new Padding(0, 4, 0, 4);
+            btnAddComment.Location = new Point(624, 27);
             btnAddComment.Margin = new Padding(3, 4, 3, 4);
             btnAddComment.Name = "btnAddComment";
-            btnAddComment.Size = new Size(101, 40);
+            btnAddComment.Size = new Size(118, 36);
             btnAddComment.TabIndex = 2;
             btnAddComment.Text = "Add Comment";
             btnAddComment.UseVisualStyleBackColor = false;
             btnAddComment.Click += btnAddComment_Click;
+            //
+            // pnlCommentPreview  (preview panel docked above toolbar)
+            //
+            pnlCommentPreview.Controls.Add(txtCommentPreview);
+            pnlCommentPreview.Controls.Add(lblCommentPreview);
+            pnlCommentPreview.Dock = DockStyle.Bottom;
+            pnlCommentPreview.Height = 110;
+            pnlCommentPreview.Name = "pnlCommentPreview";
+            pnlCommentPreview.Padding = new Padding(0, 6, 0, 4);
+            pnlCommentPreview.Paint += (s, e) =>
+                e.Graphics.DrawLine(new System.Drawing.Pen(Color.FromArgb(210, 210, 215), 1), 0, 0, ((Panel)s).Width, 0);
+            //
+            // lblCommentPreview
+            //
+            lblCommentPreview.AutoSize = true;
+            lblCommentPreview.ForeColor = Color.Gray;
+            lblCommentPreview.Font = new System.Drawing.Font("Segoe UI", 8.25f, System.Drawing.FontStyle.Regular);
+            lblCommentPreview.Location = new Point(0, 6);
+            lblCommentPreview.Name = "lblCommentPreview";
+            lblCommentPreview.Text = "PREVIEW";
+            //
+            // txtCommentPreview
+            //
+            txtCommentPreview.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+            txtCommentPreview.BackColor = Color.White;
+            txtCommentPreview.BorderStyle = BorderStyle.None;
+            txtCommentPreview.Font = new System.Drawing.Font("Segoe UI", 10f);
+            txtCommentPreview.ForeColor = Color.FromArgb(40, 40, 40);
+            txtCommentPreview.Location = new Point(0, 26);
+            txtCommentPreview.Multiline = true;
+            txtCommentPreview.Name = "txtCommentPreview";
+            txtCommentPreview.ReadOnly = true;
+            txtCommentPreview.ScrollBars = ScrollBars.Vertical;
+            txtCommentPreview.Size = new Size(752, 75);
+            txtCommentPreview.TabIndex = 0;
+            txtCommentPreview.TabStop = false;
+            txtCommentPreview.Text = "Select a comment to preview it here...";
+            txtCommentPreview.ForeColor = Color.Gray;
             // 
-            // txtComment
-            // 
-            txtComment.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            txtComment.Location = new Point(11, 507);
-            txtComment.Margin = new Padding(3, 4, 3, 4);
-            txtComment.Multiline = true;
-            txtComment.Name = "txtComment";
-            txtComment.Size = new Size(425, 39);
-            txtComment.TabIndex = 1;
-            // 
-            // panel4
+            // panel4  (list — fills remaining space)
             // 
             panel4.Controls.Add(lvComments);
-            panel4.Dock = DockStyle.Top;
+            panel4.Dock = DockStyle.Fill;
             panel4.Location = new Point(11, 13);
             panel4.Margin = new Padding(3, 4, 3, 4);
             panel4.Name = "panel4";
-            panel4.Size = new Size(752, 480);
+            panel4.Size = new Size(752, 300);
             panel4.TabIndex = 0;
             // 
             // lvComments
             // 
-            lvComments.ShowItemToolTips = true;
             lvComments.Columns.AddRange(new ColumnHeader[] { commentHeaderAuthor, commentHeaderComment, commentHeaderDateCreated });
             lvComments.Dock = DockStyle.Fill;
             lvComments.FullRowSelect = true;
@@ -736,15 +791,18 @@
             lvComments.Location = new Point(0, 0);
             lvComments.Margin = new Padding(3, 4, 3, 4);
             lvComments.Name = "lvComments";
-            lvComments.Size = new Size(752, 480);
+            lvComments.Size = new Size(752, 300);
             lvComments.TabIndex = 0;
             lvComments.UseCompatibleStateImageBehavior = false;
             lvComments.View = View.Details;
+            lvComments.SelectedIndexChanged += lvComments_SelectedIndexChanged;
+            lvComments.MouseMove += lvComments_MouseMove;
+            lvComments.MouseLeave += (s, e) => { _commentTooltip.Hide(lvComments); _lastTooltipItem = null; };
             // 
             // columnHeader3
             // 
             commentHeaderAuthor.Text = "Author";
-            commentHeaderAuthor.Width = 150;
+            commentHeaderAuthor.Width = 120;
             // 
             // columnHeader4
             // 
@@ -753,8 +811,8 @@
             // 
             // columnHeader5
             // 
-            commentHeaderDateCreated.Text = "Date Created";
-            commentHeaderDateCreated.Width = 150;
+            commentHeaderDateCreated.Text = "Date";
+            commentHeaderDateCreated.Width = 130;
             // 
             // tabPageHistory
             // 
@@ -853,6 +911,10 @@
             pnlSubtaskBar.ResumeLayout(false);
             pnlSubtaskBar.PerformLayout();
             tabPageComments.ResumeLayout(false);
+            pnlCommentBar.ResumeLayout(false);
+            pnlCommentBar.PerformLayout();
+            pnlCommentPreview.ResumeLayout(false);
+            pnlCommentPreview.PerformLayout();
             tabPageComments.PerformLayout();
             panel4.ResumeLayout(false);
             tabPageHistory.ResumeLayout(false);
@@ -909,7 +971,13 @@
         private System.Windows.Forms.Button btnDeleteComment;
         private System.Windows.Forms.TextBox txtComment;
         private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Panel pnlCommentBar;
+        private System.Windows.Forms.Panel pnlCommentPreview;
+        private System.Windows.Forms.Label lblCommentPreview;
+        private System.Windows.Forms.TextBox txtCommentPreview;
         private System.Windows.Forms.ListView lvComments;
+        private System.Windows.Forms.ToolTip _commentTooltip = new System.Windows.Forms.ToolTip { AutoPopDelay = 10000, InitialDelay = 300, ReshowDelay = 100 };
+        private System.Windows.Forms.ListViewItem _lastTooltipItem = null;
         private System.Windows.Forms.ColumnHeader commentHeaderAuthor;
         private System.Windows.Forms.ColumnHeader commentHeaderComment;
         private System.Windows.Forms.ColumnHeader commentHeaderDateCreated;

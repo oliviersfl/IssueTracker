@@ -69,6 +69,7 @@ namespace IssueTracker
                     item.SubItems.Add(comment.Text);
                     item.SubItems.Add(comment.CreatedDate.ToString("g"));
                     item.Tag = comment;
+                    item.ToolTipText = comment.Text;
                     lvComments.Items.Add(item);
                 }
 
@@ -244,6 +245,43 @@ namespace IssueTracker
             }
         }
 
+        private void lvComments_MouseMove(object sender, MouseEventArgs e)
+        {
+            var item = lvComments.GetItemAt(e.X, e.Y);
+            if (item == null)
+            {
+                _commentTooltip.Hide(lvComments);
+                _lastTooltipItem = null;
+                return;
+            }
+
+            // Only update tooltip if we've moved to a different row
+            if (item == _lastTooltipItem) return;
+            _lastTooltipItem = item;
+
+            var commentText = item.SubItems.Count > 1 ? item.SubItems[1].Text : "";
+            if (!string.IsNullOrEmpty(commentText))
+                _commentTooltip.Show(commentText, lvComments, e.X + 15, e.Y + 10);
+        }
+
+        private void lvComments_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (lvComments.SelectedItems.Count == 0)
+            {
+                txtCommentPreview.Text = "Select a comment to preview it here...";
+                txtCommentPreview.ForeColor = Color.Gray;
+                return;
+            }
+
+            var selected = lvComments.SelectedItems[0];
+            var author = selected.Text;
+            var comment = selected.SubItems.Count > 1 ? selected.SubItems[1].Text : "";
+            var date = selected.SubItems.Count > 2 ? selected.SubItems[2].Text : "";
+
+            txtCommentPreview.ForeColor = Color.FromArgb(40, 40, 40);
+            txtCommentPreview.Text = comment;
+        }
+
         private void btnAddComment_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(txtComment.Text))
@@ -252,9 +290,10 @@ namespace IssueTracker
                 return;
             }
 
-            var item = new ListViewItem("Current User"); // Would normally get current user
+            var item = new ListViewItem("Current User");
             item.SubItems.Add(txtComment.Text);
             item.SubItems.Add(DateTime.Now.ToString("g"));
+            item.ToolTipText = txtComment.Text;
             lvComments.Items.Add(item);
 
             txtComment.Clear();
@@ -315,12 +354,13 @@ namespace IssueTracker
             }
 
             var selectedItem = lvComments.SelectedItems[0];
-            var editForm = new SimpleInputForm("Edit Comment", "Comment text:", selectedItem.SubItems[1].Text);
+            var editForm = new SimpleInputForm("Edit Comment", "Comment text:", selectedItem.SubItems[1].Text, multiline: true);
 
             if (editForm.ShowDialog() == DialogResult.OK)
             {
                 selectedItem.SubItems[1].Text = editForm.InputText;
-                selectedItem.SubItems[2].Text = DateTime.Now.ToString("g"); // Update modified time
+                selectedItem.SubItems[2].Text = DateTime.Now.ToString("g");
+                selectedItem.ToolTipText = editForm.InputText;
             }
         }
 
