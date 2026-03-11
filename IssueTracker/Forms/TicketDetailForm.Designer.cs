@@ -60,12 +60,14 @@
             tabPageSubtasks = new TabPage();
             btnAddSubTask = new Button();
             panel3 = new Panel();
+            pnlSubtaskBar = new Panel();
             lvSubtasks = new ListView();
             subTaskHeaderTitle = new ColumnHeader();
             subTaskHeaderIsComplete = new ColumnHeader();
             subTaskCreatedDate = new ColumnHeader();
             chkShowOnlyActive = new CheckBox();
             btnToggleComplete = new Button();
+            btnEditSubTask = new Button();
             btnDeleteSubTask = new Button();
             tabPageComments = new TabPage();
             btnDeleteComment = new Button();
@@ -95,6 +97,7 @@
             gbCategory.SuspendLayout();
             tabPageSubtasks.SuspendLayout();
             panel3.SuspendLayout();
+            pnlSubtaskBar.SuspendLayout();
             tabPageComments.SuspendLayout();
             panel4.SuspendLayout();
             tabPageHistory.SuspendLayout();
@@ -419,11 +422,8 @@
             // 
             // tabPageSubtasks
             // 
-            tabPageSubtasks.Controls.Add(btnAddSubTask);
-            tabPageSubtasks.Controls.Add(panel3);
-            tabPageSubtasks.Controls.Add(chkShowOnlyActive);
-            tabPageSubtasks.Controls.Add(btnToggleComplete);
-            tabPageSubtasks.Controls.Add(btnDeleteSubTask);
+            tabPageSubtasks.Controls.Add(panel3);       // list — DockStyle.Fill, added first so it fills remaining space
+            tabPageSubtasks.Controls.Add(pnlSubtaskBar); // toolbar — DockStyle.Bottom, added second so it docks first
             tabPageSubtasks.Location = new Point(4, 29);
             tabPageSubtasks.Margin = new Padding(3, 4, 3, 4);
             tabPageSubtasks.Name = "tabPageSubtasks";
@@ -433,46 +433,102 @@
             tabPageSubtasks.Text = "Subtasks";
             tabPageSubtasks.UseVisualStyleBackColor = true;
             // 
-            // btnAddSubTask
+            // pnlSubtaskBar  (toolbar docked to bottom)
             // 
-            btnAddSubTask.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnAddSubTask.BackColor = Color.SteelBlue;
-            btnAddSubTask.FlatAppearance.BorderSize = 0;
-            btnAddSubTask.FlatStyle = FlatStyle.Flat;
-            btnAddSubTask.ForeColor = Color.White;
-            btnAddSubTask.Location = new Point(657, 507);
-            btnAddSubTask.Margin = new Padding(3, 4, 3, 4);
-            btnAddSubTask.Name = "btnAddSubTask";
-            btnAddSubTask.Size = new Size(101, 40);
-            btnAddSubTask.TabIndex = 1;
-            btnAddSubTask.Text = "Add Subtask";
-            btnAddSubTask.UseVisualStyleBackColor = false;
-            btnAddSubTask.Click += btnAddSubTask_Click;
+            pnlSubtaskBar.BackColor = Color.WhiteSmoke;
+            pnlSubtaskBar.Controls.Add(chkShowOnlyActive);
+            pnlSubtaskBar.Controls.Add(btnDeleteSubTask);
+            pnlSubtaskBar.Controls.Add(btnEditSubTask);
+            pnlSubtaskBar.Controls.Add(btnToggleComplete);
+            pnlSubtaskBar.Controls.Add(btnAddSubTask);
+            pnlSubtaskBar.Dock = DockStyle.Bottom;
+            pnlSubtaskBar.Height = 54;
+            pnlSubtaskBar.Name = "pnlSubtaskBar";
+            pnlSubtaskBar.Padding = new Padding(10, 7, 10, 7);
+            // separator line on top
+            pnlSubtaskBar.Paint += (s, e) =>
+                e.Graphics.DrawLine(new System.Drawing.Pen(Color.FromArgb(210, 210, 215), 1), 0, 0, ((Panel)s).Width, 0);
             // 
-            // panel3
+            // chkShowOnlyActive  (left-anchored)
             // 
-            panel3.Controls.Add(lvSubtasks);
-            panel3.Dock = DockStyle.Top;
-            panel3.Location = new Point(11, 13);
-            panel3.Margin = new Padding(3, 4, 3, 4);
-            panel3.Name = "panel3";
-            panel3.Size = new Size(752, 480);
-            panel3.TabIndex = 0;
-            // 
-            // chkShowOnlyActive
-            // 
-            chkShowOnlyActive.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            chkShowOnlyActive.Anchor = AnchorStyles.Left | AnchorStyles.Top;
             chkShowOnlyActive.AutoSize = true;
             chkShowOnlyActive.Checked = true;
             chkShowOnlyActive.CheckState = CheckState.Checked;
-            chkShowOnlyActive.Location = new Point(11, 517);
-            chkShowOnlyActive.Margin = new Padding(3, 4, 3, 4);
+            chkShowOnlyActive.Location = new Point(10, 15);
+            chkShowOnlyActive.Margin = new Padding(0);
             chkShowOnlyActive.Name = "chkShowOnlyActive";
-            chkShowOnlyActive.Size = new Size(142, 24);
             chkShowOnlyActive.TabIndex = 0;
             chkShowOnlyActive.Text = "Show only active";
             chkShowOnlyActive.UseVisualStyleBackColor = true;
             chkShowOnlyActive.CheckedChanged += chkShowOnlyActive_CheckedChanged;
+            // 
+            // btnDeleteSubTask  (left side — destructive)
+            // 
+            btnDeleteSubTask.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+            btnDeleteSubTask.BackColor = Color.IndianRed;
+            btnDeleteSubTask.FlatAppearance.BorderSize = 0;
+            btnDeleteSubTask.FlatStyle = FlatStyle.Flat;
+            btnDeleteSubTask.ForeColor = Color.White;
+            btnDeleteSubTask.Location = new Point(175, 7);
+            btnDeleteSubTask.Name = "btnDeleteSubTask";
+            btnDeleteSubTask.Size = new Size(120, 36);
+            btnDeleteSubTask.TabIndex = 1;
+            btnDeleteSubTask.Text = "Delete";
+            btnDeleteSubTask.UseVisualStyleBackColor = false;
+            btnDeleteSubTask.Click += btnDeleteSubTask_Click;
+            // 
+            // btnEditSubTask
+            // 
+            btnEditSubTask.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+            btnEditSubTask.BackColor = Color.SteelBlue;
+            btnEditSubTask.FlatAppearance.BorderSize = 0;
+            btnEditSubTask.FlatStyle = FlatStyle.Flat;
+            btnEditSubTask.ForeColor = Color.White;
+            btnEditSubTask.Location = new Point(390, 7);
+            btnEditSubTask.Name = "btnEditSubTask";
+            btnEditSubTask.Size = new Size(120, 36);
+            btnEditSubTask.TabIndex = 2;
+            btnEditSubTask.Text = "Edit";
+            btnEditSubTask.UseVisualStyleBackColor = false;
+            btnEditSubTask.Click += btnEditSubTask_Click;
+            // 
+            // btnToggleComplete
+            // 
+            btnToggleComplete.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+            btnToggleComplete.BackColor = Color.SteelBlue;
+            btnToggleComplete.FlatAppearance.BorderSize = 0;
+            btnToggleComplete.FlatStyle = FlatStyle.Flat;
+            btnToggleComplete.ForeColor = Color.White;
+            btnToggleComplete.Location = new Point(518, 7);
+            btnToggleComplete.Name = "btnToggleComplete";
+            btnToggleComplete.Size = new Size(120, 36);
+            btnToggleComplete.TabIndex = 3;
+            btnToggleComplete.Text = "Toggle Complete";
+            btnToggleComplete.UseVisualStyleBackColor = false;
+            btnToggleComplete.Click += btnToggleComplete_Click;
+            // 
+            // btnAddSubTask
+            // 
+            btnAddSubTask.Anchor = AnchorStyles.Left | AnchorStyles.Top;
+            btnAddSubTask.BackColor = Color.SteelBlue;
+            btnAddSubTask.FlatAppearance.BorderSize = 0;
+            btnAddSubTask.FlatStyle = FlatStyle.Flat;
+            btnAddSubTask.ForeColor = Color.White;
+            btnAddSubTask.Location = new Point(646, 7);
+            btnAddSubTask.Name = "btnAddSubTask";
+            btnAddSubTask.Size = new Size(120, 36);
+            btnAddSubTask.TabIndex = 4;
+            btnAddSubTask.Text = "Add Subtask";
+            btnAddSubTask.UseVisualStyleBackColor = false;
+            btnAddSubTask.Click += btnAddSubTask_Click;
+            // 
+            // panel3  (list panel — fills remaining space)
+            // 
+            panel3.Controls.Add(lvSubtasks);
+            panel3.Dock = DockStyle.Fill;
+            panel3.Name = "panel3";
+            panel3.TabIndex = 5;
             // 
             // lvSubtasks
             // 
@@ -480,13 +536,11 @@
             lvSubtasks.Dock = DockStyle.Fill;
             lvSubtasks.FullRowSelect = true;
             lvSubtasks.GridLines = true;
-            lvSubtasks.Location = new Point(0, 0);
-            lvSubtasks.Margin = new Padding(3, 4, 3, 4);
             lvSubtasks.Name = "lvSubtasks";
-            lvSubtasks.Size = new Size(752, 480);
             lvSubtasks.TabIndex = 0;
             lvSubtasks.UseCompatibleStateImageBehavior = false;
             lvSubtasks.View = View.Details;
+            lvSubtasks.DoubleClick += (s, e) => btnEditSubTask.PerformClick();
             // 
             // columnHeader1
             // 
@@ -502,38 +556,6 @@
             subTaskCreatedDate.Text = "Date Created";
             subTaskCreatedDate.TextAlign = HorizontalAlignment.Left;
             subTaskCreatedDate.Width = 120;
-            // 
-            // btnToggleComplete
-            // 
-            btnToggleComplete.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnToggleComplete.BackColor = Color.SteelBlue;
-            btnToggleComplete.FlatAppearance.BorderSize = 0;
-            btnToggleComplete.FlatStyle = FlatStyle.Flat;
-            btnToggleComplete.ForeColor = Color.White;
-            btnToggleComplete.Location = new Point(451, 507);
-            btnToggleComplete.Margin = new Padding(3, 4, 3, 4);
-            btnToggleComplete.Name = "btnToggleComplete";
-            btnToggleComplete.Size = new Size(137, 40);
-            btnToggleComplete.TabIndex = 2;
-            btnToggleComplete.Text = "Toggle Complete";
-            btnToggleComplete.UseVisualStyleBackColor = false;
-            btnToggleComplete.Click += btnToggleComplete_Click;
-            // 
-            // btnDeleteSubTask
-            // 
-            btnDeleteSubTask.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            btnDeleteSubTask.BackColor = Color.IndianRed;
-            btnDeleteSubTask.FlatAppearance.BorderSize = 0;
-            btnDeleteSubTask.FlatStyle = FlatStyle.Flat;
-            btnDeleteSubTask.ForeColor = Color.White;
-            btnDeleteSubTask.Location = new Point(307, 507);
-            btnDeleteSubTask.Margin = new Padding(3, 4, 3, 4);
-            btnDeleteSubTask.Name = "btnDeleteSubTask";
-            btnDeleteSubTask.Size = new Size(137, 40);
-            btnDeleteSubTask.TabIndex = 3;
-            btnDeleteSubTask.Text = "Delete Subtask";
-            btnDeleteSubTask.UseVisualStyleBackColor = false;
-            btnDeleteSubTask.Click += btnDeleteSubTask_Click;
             // 
             // tabPageComments
             // 
@@ -734,6 +756,8 @@
             gbCategory.ResumeLayout(false);
             tabPageSubtasks.ResumeLayout(false);
             panel3.ResumeLayout(false);
+            pnlSubtaskBar.ResumeLayout(false);
+            pnlSubtaskBar.PerformLayout();
             tabPageComments.ResumeLayout(false);
             tabPageComments.PerformLayout();
             panel4.ResumeLayout(false);
@@ -789,7 +813,9 @@
         private System.Windows.Forms.ColumnHeader commentHeaderComment;
         private System.Windows.Forms.ColumnHeader commentHeaderDateCreated;
         private System.Windows.Forms.Button btnDeleteSubTask;
+        private System.Windows.Forms.Button btnEditSubTask;
         private System.Windows.Forms.Button btnToggleComplete;
+        private System.Windows.Forms.Panel pnlSubtaskBar;
         private System.Windows.Forms.CheckBox chkShowOnlyActive;
         private System.Windows.Forms.TabPage tabPageHistory;
         private System.Windows.Forms.Panel panel5;

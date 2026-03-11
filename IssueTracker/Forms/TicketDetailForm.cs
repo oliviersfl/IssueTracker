@@ -202,6 +202,25 @@ namespace IssueTracker
             return true;
         }
 
+        private void btnEditSubTask_Click(object sender, EventArgs e)
+        {
+            if (lvSubtasks.SelectedItems.Count == 0)
+            {
+                MessageBox.Show("Please select a subtask to edit", "No Selection", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            if (lvSubtasks.SelectedItems[0].Tag is SubTask subTask)
+            {
+                var editForm = new SimpleInputForm("Edit Subtask", "Subtask title:", subTask.Title);
+                if (editForm.ShowDialog() == DialogResult.OK && !string.IsNullOrWhiteSpace(editForm.InputText))
+                {
+                    subTask.Title = editForm.InputText;
+                    LoadSubtasks();
+                }
+            }
+        }
+
         private void btnAddSubTask_Click(object sender, EventArgs e)
         {
             var subTaskForm = new SimpleInputForm("Add Subtask", "Subtask title:");
