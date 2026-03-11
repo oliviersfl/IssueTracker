@@ -26,6 +26,11 @@ namespace IssueTracker.Services.Database
                 if (_appSettings.Database.SeedSampleData)
                     await ExecuteScriptAsync("SeedData.sql");
             }
+            else
+            {
+                // Run migrations for existing databases (all scripts are idempotent)
+                await ExecuteScriptAsync("Migration_AddTicketHistory.sql");
+            }
         }
 
         private async Task ExecuteScriptAsync(string scriptName)

@@ -76,6 +76,14 @@ CREATE TABLE IF NOT EXISTS TicketComment (
     FOREIGN KEY (ticketid) REFERENCES Ticket(id)
 );
 
+-- Create TicketHistory table
+CREATE TABLE IF NOT EXISTS TicketHistory (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    ticketid INTEGER NOT NULL,
+    ModifiedDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (ticketid) REFERENCES Ticket(id)
+);
+
 -- Create indexes for better performance (with IF NOT EXISTS)
 CREATE INDEX IF NOT EXISTS idx_ticket_category ON Ticket(categoryid);
 CREATE INDEX IF NOT EXISTS idx_ticket_priority ON Ticket(priorityid);
@@ -83,3 +91,5 @@ CREATE INDEX IF NOT EXISTS idx_ticket_type ON Ticket(typeid);
 CREATE INDEX IF NOT EXISTS idx_ticket_status ON Ticket(statusid);
 CREATE INDEX IF NOT EXISTS idx_subtask_ticket ON TicketSubTask(ticketid);
 CREATE INDEX IF NOT EXISTS idx_comment_ticket ON TicketComment(ticketid);
+CREATE INDEX IF NOT EXISTS idx_history_ticket ON TicketHistory(ticketid);
+CREATE INDEX IF NOT EXISTS idx_history_date ON TicketHistory(ModifiedDate);

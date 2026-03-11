@@ -32,7 +32,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            if(File.Exists("task.ico"))
+            if (File.Exists("task.ico"))
                 this.Icon = new Icon("task.ico");
             DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
             DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
@@ -50,9 +50,12 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.lblTicketCount = new System.Windows.Forms.ToolStripStatusLabel();
+            this.pnlDashboard = new System.Windows.Forms.Panel();
+            this.flpDashboardContent = new System.Windows.Forms.FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTickets)).BeginInit();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.pnlDashboard.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -164,7 +167,7 @@
             this.txtSearch.ForeColor = System.Drawing.SystemColors.ControlText;
             this.txtSearch.Location = new System.Drawing.Point(170, 16);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.PlaceholderText = "🔍 Search ticket title...";
+            this.txtSearch.PlaceholderText = "🔍 Search title or description...";
             this.txtSearch.Size = new System.Drawing.Size(200, 23);
             this.txtSearch.TabIndex = 6;
             this.txtSearch.KeyUp += new System.Windows.Forms.KeyEventHandler(this.txtSearch_KeyUp);
@@ -217,9 +220,36 @@
             this.btnClearFilter.UseVisualStyleBackColor = false;
             this.btnClearFilter.Click += new System.EventHandler(this.btnClearFilter_Click);
             // 
+            // pnlDashboard
+            // 
+            this.pnlDashboard.BackColor = System.Drawing.Color.FromArgb(248, 249, 252);
+            this.pnlDashboard.Dock = System.Windows.Forms.DockStyle.Right;
+            this.pnlDashboard.Width = 190;
+            this.pnlDashboard.Name = "pnlDashboard";
+            this.pnlDashboard.Padding = new System.Windows.Forms.Padding(0, 8, 0, 0);
+            this.pnlDashboard.Controls.Add(this.flpDashboardContent);
+            // Paint a left-side separator line
+            this.pnlDashboard.Paint += (s, e) =>
+            {
+                e.Graphics.DrawLine(
+                    new System.Drawing.Pen(System.Drawing.Color.FromArgb(220, 220, 230), 1),
+                    0, 0, 0, ((System.Windows.Forms.Panel)s).Height);
+            };
+            // 
+            // flpDashboardContent
+            // 
+            this.flpDashboardContent.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.flpDashboardContent.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flpDashboardContent.WrapContents = false;
+            this.flpDashboardContent.AutoScroll = true;
+            this.flpDashboardContent.Padding = new System.Windows.Forms.Padding(10, 4, 6, 4);
+            this.flpDashboardContent.Name = "flpDashboardContent";
+            this.flpDashboardContent.BackColor = System.Drawing.Color.Transparent;
+            // 
             // panel2
             // 
             this.panel2.Controls.Add(this.dgvTickets);
+            this.panel2.Controls.Add(this.pnlDashboard);
             this.panel2.Controls.Add(this.panel1);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(0, 0);
@@ -254,10 +284,10 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(984, 583);
+            this.ClientSize = new System.Drawing.Size(1184, 583);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.statusStrip1);
-            this.MinimumSize = new System.Drawing.Size(1000, 600);
+            this.MinimumSize = new System.Drawing.Size(1200, 600);
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Issue Tracker";
@@ -266,6 +296,7 @@
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.panel2.ResumeLayout(false);
+            this.pnlDashboard.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -288,5 +319,7 @@
         private ToolStripStatusLabel lblTicketCount;
         private TextBox txtSearch;
         private System.Windows.Forms.Timer _searchTimer;
+        private Panel pnlDashboard;
+        private FlowLayoutPanel flpDashboardContent;
     }
 }

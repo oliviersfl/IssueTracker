@@ -39,6 +39,11 @@ namespace IssueTracker.Services.Database
                 if (_appSettings.Database.SeedSampleData)
                     await SeedFromJsonAsync();
             }
+            else
+            {
+                // Run migrations for existing databases (all scripts are idempotent)
+                await ExecuteScriptAsync("Migration_AddTicketHistory.sql");
+            }
         }
 
         private async Task SeedFromJsonAsync()

@@ -244,6 +244,26 @@ namespace IssueTracker.Services.Database.Repository
                 new SqliteParameter("@CommentId", commentId),
                 new SqliteParameter("@TicketId", ticketId));
         }
+        // --- History Methods ---
+        public async Task AddHistoryEntryAsync(int ticketId, DateTime modifiedDate)
+        {
+            const string sql = @"
+            INSERT INTO TicketHistory (ticketid, ModifiedDate)
+            VALUES (@TicketId, @ModifiedDate);";
+
+            await _db.ExecuteNonQueryAsync(sql,
+                new SqliteParameter("@TicketId", ticketId),
+                new SqliteParameter("@ModifiedDate", modifiedDate.ToUniversalTime()));
+        }
+
+        public async Task<IEnumerable<DateTime>> GetHistoryDatesByTicketIdAsync(int ticketId)
+        {
+            const string sql = "SELECT ModifiedDate FROM TicketHistory WHERE ticketid = @TicketId ORDER BY ModifiedDate";
+            return await _db.QueryAsync(sql,
+                reader => TimeZoneInfo.ConvertTimeFromUtc(reader.GetDateTime(0), TimeZoneInfo.Local),
+                new SqliteParameter("@TicketId", ticketId));
+        }
+
         public async Task DeleteTicketAsync(int id)
         {
             // Using a transaction to ensure all related data is deleted
@@ -258,6 +278,11 @@ namespace IssueTracker.Services.Database.Repository
                 // Delete comments
                 await _db.ExecuteNonQueryAsync(
                     "DELETE FROM TicketComment WHERE ticketid = @TicketId",
+                    new SqliteParameter("@TicketId", id));
+
+                // Delete history
+                await _db.ExecuteNonQueryAsync(
+                    "DELETE FROM TicketHistory WHERE ticketid = @TicketId",
                     new SqliteParameter("@TicketId", id));
 
                 // Finally, delete the ticket

@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using IssueTracker.Models;
 using IssueTracker.Services.Database.Repository.Interfaces;
 using IssueTracker.Services.Interfaces;
@@ -15,6 +15,7 @@ namespace IssueTracker
         private BindingSource _ticketsBindingSource = new BindingSource();
 
         private ITicketRepository _ticketRepo;
+        private List<TicketStatus> _cachedStatuses = new List<TicketStatus>();
 
         public MainForm(
             AppSettings appSettings,
@@ -175,6 +176,8 @@ namespace IssueTracker
 
             await _ticketService.GetAllTickets();
 
+            _cachedStatuses = await _ticketService.GetTicketStatuses();
+
             var filteredTickets = _ticketService.FilterTickets(
                     _currentFilter.Status,
                     _currentFilter.CreatedFromDate,
@@ -187,6 +190,7 @@ namespace IssueTracker
 
             _ticketsBindingSource.DataSource = filteredTickets;
             UpdateTicketCount();
+            UpdateDashboard();
 
             dgvTickets.Refresh();
         }
@@ -194,6 +198,193 @@ namespace IssueTracker
         private void UpdateTicketCount()
         {
             lblTicketCount.Text = _ticketsBindingSource.Count.ToString();
+        }
+
+        private void UpdateDashboard()
+        {
+            // Compute stats from whatever is currently visible in the grid,
+            // so the dashboard always reflects the active filter + search.
+            var allTickets = _ticketsBindingSource.DataSource as List<Ticket> ?? new List<Ticket>();
+
+            flpDashboardContent.SuspendLayout();
+            flpDashboardContent.Controls.Clear();
+
+            int panelWidth = flpDashboardContent.ClientSize.Width - flpDashboardContent.Padding.Horizontal - 4;
+
+            // ── Helper factories ──────────────────────────────────────────
+            Label MakeSectionHeader(string text)
+            {
+                return new Label
+                {
+                    Text = text,
+                    AutoSize = false,
+                    Width = panelWidth,
+                    Height = 20,
+                    Font = new Font("Segoe UI", 8f, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(100, 100, 120),
+                    Padding = new Padding(0, 6, 0, 2),
+                    Margin = new Padding(0, 2, 0, 0)
+                };
+            }
+
+            Label MakeTitleLabel()
+            {
+                return new Label
+                {
+                    Text = "📊  Dashboard",
+                    AutoSize = false,
+                    Width = panelWidth,
+                    Height = 28,
+                    Font = new Font("Segoe UI", 10.5f, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(40, 40, 60),
+                    Margin = new Padding(0, 0, 0, 4)
+                };
+            }
+
+            Panel MakeDivider()
+            {
+                return new Panel
+                {
+                    Height = 1,
+                    Width = panelWidth,
+                    BackColor = Color.FromArgb(220, 220, 230),
+                    Margin = new Padding(0, 4, 0, 4)
+                };
+            }
+
+            Control MakeStatRow(string label, int count, Color dotColor)
+            {
+                var row = new Panel
+                {
+                    Width = panelWidth,
+                    Height = 22,
+                    Margin = new Padding(0, 1, 0, 1),
+                    BackColor = Color.Transparent
+                };
+
+                // Coloured dot
+                var dot = new Panel
+                {
+                    Width = 8,
+                    Height = 8,
+                    BackColor = dotColor,
+                    Location = new Point(2, 7),
+                    Tag = "dot"
+                };
+                // Make it round-ish
+                dot.Region = new System.Drawing.Region(new System.Drawing.Rectangle(0, 0, 8, 8));
+
+                var lblName = new Label
+                {
+                    Text = label,
+                    AutoSize = false,
+                    Width = panelWidth - 44,
+                    Height = 20,
+                    Location = new Point(16, 2),
+                    Font = new Font("Segoe UI", 8.5f),
+                    ForeColor = Color.FromArgb(50, 50, 70),
+                    TextAlign = ContentAlignment.MiddleLeft
+                };
+
+                var lblCount = new Label
+                {
+                    Text = count.ToString(),
+                    AutoSize = false,
+                    Width = 28,
+                    Height = 18,
+                    Location = new Point(panelWidth - 30, 2),
+                    Font = new Font("Segoe UI", 8f, FontStyle.Bold),
+                    ForeColor = Color.White,
+                    BackColor = count > 0 ? dotColor : Color.FromArgb(180, 180, 190),
+                    TextAlign = ContentAlignment.MiddleCenter
+                };
+
+                row.Controls.AddRange(new Control[] { dot, lblName, lblCount });
+                return row;
+            }
+
+            // ── Build content ─────────────────────────────────────────────
+            flpDashboardContent.Controls.Add(MakeTitleLabel());
+            flpDashboardContent.Controls.Add(MakeDivider());
+
+            // By Status
+            flpDashboardContent.Controls.Add(MakeSectionHeader("BY STATUS"));
+            var byStatus = allTickets
+                .GroupBy(t => t.Status ?? "Unknown")
+                .OrderBy(g =>
+                {
+                    var match = _cachedStatuses.FirstOrDefault(s => s.Description == g.Key);
+                    return match?.Order ?? int.MaxValue;
+                })
+                .ToList();
+
+            // Assign colours cycling through a palette
+            Color[] statusColors =
+            {
+                Color.FromArgb(70, 130, 180),   // SteelBlue
+                Color.FromArgb(60, 179, 113),   // MediumSeaGreen
+                Color.FromArgb(255, 165, 0),    // Orange
+                Color.FromArgb(147, 112, 219),  // MediumPurple
+                Color.FromArgb(220, 90, 90),    // Red
+                Color.FromArgb(64, 164, 164),   // Teal
+            };
+
+            for (int i = 0; i < byStatus.Count; i++)
+            {
+                var g = byStatus[i];
+                flpDashboardContent.Controls.Add(
+                    MakeStatRow(g.Key, g.Count(), statusColors[i % statusColors.Length]));
+            }
+
+            flpDashboardContent.Controls.Add(MakeDivider());
+
+            // By Priority
+            flpDashboardContent.Controls.Add(MakeSectionHeader("BY PRIORITY"));
+            var byPriority = allTickets
+                .GroupBy(t => t.Priority ?? "Unknown")
+                .OrderBy(g => g.Key)
+                .ToList();
+
+            Color[] priorityColors =
+            {
+                Color.FromArgb(220, 60, 60),    // High → Red
+                Color.FromArgb(255, 165, 0),    // Medium → Orange
+                Color.FromArgb(60, 179, 113),   // Low → Green
+                Color.FromArgb(150, 150, 165),  // Fallback grey
+            };
+
+            // Map well-known priority names to fixed colours
+            Color PriorityColor(string name) => name.ToLower() switch
+            {
+                "high" or "critical" or "urgent" => priorityColors[0],
+                "medium" or "normal" => priorityColors[1],
+                "low" or "minor" => priorityColors[2],
+                _ => priorityColors[3]
+            };
+
+            foreach (var g in byPriority)
+            {
+                flpDashboardContent.Controls.Add(
+                    MakeStatRow(g.Key, g.Count(), PriorityColor(g.Key)));
+            }
+
+            flpDashboardContent.Controls.Add(MakeDivider());
+
+            // ── Date-based alerts ─────────────────────────────────────────
+            flpDashboardContent.Controls.Add(MakeSectionHeader("DUE DATE"));
+
+            var now = DateTime.Now;
+            int overdue = allTickets.Count(t => t.DueDate.HasValue && t.DueDate.Value < now);
+            int dueSoon = allTickets.Count(t => t.DueDate.HasValue
+                && t.DueDate.Value >= now
+                && (t.DueDate.Value - now).TotalDays <= _appSettings.CellFormatting.DueDateWarningThresholdDays);
+
+            flpDashboardContent.Controls.Add(
+                MakeStatRow("Overdue", overdue, Color.FromArgb(200, 60, 60)));
+            flpDashboardContent.Controls.Add(
+                MakeStatRow("Due soon", dueSoon, Color.FromArgb(70, 130, 180)));
+
+            flpDashboardContent.ResumeLayout(true);
         }
         public async Task ApplyDefaultFilters()
         {
@@ -207,6 +398,7 @@ namespace IssueTracker
             _ticketsBindingSource.DataSource = tickets;
 
             UpdateTicketCount();
+            UpdateDashboard();
         }
 
         // Used for sorting
@@ -276,6 +468,7 @@ namespace IssueTracker
                 _ticketsBindingSource.DataSource = filteredTickets;
             }
             UpdateTicketCount();
+            UpdateDashboard();
         }
         private async void btnClearFilter_Click(object sender, EventArgs e)
         {
@@ -284,6 +477,7 @@ namespace IssueTracker
             _ticketsBindingSource.DataSource = allTickets;
             txtSearch.Text = "";
             UpdateTicketCount();
+            UpdateDashboard();
         }
         private void btnExportExcel_Click(object sender, EventArgs e)
         {
@@ -303,7 +497,8 @@ namespace IssueTracker
             if (!string.IsNullOrEmpty(searchTerm))
             {
                 filteredTickets = filteredTickets
-                    .Where(t => t.Title.ToLower().Contains(searchTerm))
+                    .Where(t => t.Title.ToLower().Contains(searchTerm) ||
+                                (!string.IsNullOrEmpty(t.Description) && t.Description.ToLower().Contains(searchTerm)))
                     .ToList();
             }
             _excelExportService.ExportTicketsToFile(
@@ -447,15 +642,17 @@ namespace IssueTracker
             }
             else
             {
-                // Filter tickets by title containing the search term
+                // Filter tickets by title or description containing the search term
                 var filteredTickets = currentTickets
-                    .Where(t => t.Title.ToLower().Contains(searchTerm))
+                    .Where(t => t.Title.ToLower().Contains(searchTerm) ||
+                                (!string.IsNullOrEmpty(t.Description) && t.Description.ToLower().Contains(searchTerm)))
                     .ToList();
 
                 _ticketsBindingSource.DataSource = filteredTickets;
             }
 
             UpdateTicketCount();
+            UpdateDashboard();
         }
         #endregion
     }

@@ -74,6 +74,14 @@ namespace IssueTracker.Services
                 })));
             }
 
+            // Get all modification history for all tickets
+            var allHistoryDates = new List<(int TicketId, DateTime Date)>();
+            foreach (var ticketId in ticketIds)
+            {
+                var dates = await _ticketRepository.GetHistoryDatesByTicketIdAsync(ticketId);
+                allHistoryDates.AddRange(dates.Select(d => (ticketId, d)));
+            }
+
             // Assign subtasks and comments to tickets
             foreach (var ticket in tickets)
             {
@@ -85,6 +93,11 @@ namespace IssueTracker.Services
                 ticket.Comments = allComments
                     .Where(x => x.TicketId == ticket.Id)
                     .Select(x => x.Comment)
+                    .ToList();
+
+                ticket.ModificationDates = allHistoryDates
+                    .Where(x => x.TicketId == ticket.Id)
+                    .Select(x => x.Date)
                     .ToList();
             }
 
@@ -266,9 +279,13 @@ namespace IssueTracker.Services
                 // Compare only the date component for CreatedDate
                 .Where(t => !createdFromDate.HasValue || t.CreatedDate.Date >= createdFromDate.Value.Date)
                 .Where(t => !createdToDate.HasValue || t.CreatedDate.Date <= createdToDate.Value.Date)
-                // Compare only the date component for ModifiedDate
-                .Where(t => !modifiedFromDate.HasValue || t.ModifiedDate.Date >= modifiedFromDate.Value.Date)
-                .Where(t => !modifiedToDate.HasValue || t.ModifiedDate.Date <= modifiedToDate.Value.Date)
+                // Modified date: match tickets that have ANY history entry within the range
+                .Where(t =>
+                    (!modifiedFromDate.HasValue && !modifiedToDate.HasValue) ||
+                    (t.ModificationDates != null && t.ModificationDates.Any(d =>
+                        (!modifiedFromDate.HasValue || d.Date >= modifiedFromDate.Value.Date) &&
+                        (!modifiedToDate.HasValue || d.Date <= modifiedToDate.Value.Date)))
+                )
                 .ToList();
         }
         #endregion
@@ -365,6 +382,9 @@ namespace IssueTracker.Services
             // Update ticket in database
             await _ticketRepository.UpdateTicketAsync(dbTicket);
 
+            // Record this modification in history
+            await _ticketRepository.AddHistoryEntryAsync(ticket.Id, DateTime.Now);
+
             // Update comments in database
             await UpdateComments(ticket.Id, ticket.Comments);
 
@@ -385,6 +405,9 @@ namespace IssueTracker.Services
                 existingTicket.ModifiedDate = dbTicket.ModifiedDate;
                 existingTicket.Comments = ticket.Comments;
                 existingTicket.SubTasks = ticket.SubTasks;
+                existingTicket.ModificationDates = (existingTicket.ModificationDates ?? new List<DateTime>())
+                    .Append(DateTime.Now)
+                    .ToList();
             }
         }
 
