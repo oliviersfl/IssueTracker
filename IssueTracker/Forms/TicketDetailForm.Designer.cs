@@ -38,6 +38,13 @@
             btnDelete = new Button();
             tabControl1 = new TabControl();
             tabPageDetails = new TabPage();
+            tblDetails = new System.Windows.Forms.TableLayoutPanel();
+            pnlDetailsLeft = new Panel();
+            pnlDetailsRight = new Panel();
+            tblDetailsRight = new System.Windows.Forms.TableLayoutPanel();
+            pnlTitleTop = new Panel();
+            pnlCategoryBottom = new Panel();
+            pnlDescriptionFill = new Panel();
             gbDates = new GroupBox();
             lblModified = new Label();
             label5 = new Label();
@@ -90,6 +97,13 @@
             panel2.SuspendLayout();
             tabControl1.SuspendLayout();
             tabPageDetails.SuspendLayout();
+            tblDetails.SuspendLayout();
+            pnlDetailsLeft.SuspendLayout();
+            pnlDetailsRight.SuspendLayout();
+            tblDetailsRight.SuspendLayout();
+            pnlTitleTop.SuspendLayout();
+            pnlCategoryBottom.SuspendLayout();
+            pnlDescriptionFill.SuspendLayout();
             gbDates.SuspendLayout();
             gbStatus.SuspendLayout();
             gbType.SuspendLayout();
@@ -203,15 +217,7 @@
             // 
             // tabPageDetails
             // 
-            tabPageDetails.Controls.Add(gbDates);
-            tabPageDetails.Controls.Add(gbStatus);
-            tabPageDetails.Controls.Add(gbType);
-            tabPageDetails.Controls.Add(gbPriority);
-            tabPageDetails.Controls.Add(gbCategory);
-            tabPageDetails.Controls.Add(txtDescription);
-            tabPageDetails.Controls.Add(label2);
-            tabPageDetails.Controls.Add(txtTitle);
-            tabPageDetails.Controls.Add(label1);
+            tabPageDetails.Controls.Add(tblDetails);
             tabPageDetails.Location = new Point(4, 29);
             tabPageDetails.Margin = new Padding(3, 4, 3, 4);
             tabPageDetails.Name = "tabPageDetails";
@@ -220,69 +226,228 @@
             tabPageDetails.TabIndex = 0;
             tabPageDetails.Text = "Details";
             tabPageDetails.UseVisualStyleBackColor = true;
+            //
+            // tblDetails  (2-column responsive layout)
+            //
+            tblDetails.ColumnCount = 2;
+            tblDetails.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 60F));
+            tblDetails.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 40F));
+            tblDetails.RowCount = 1;
+            tblDetails.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            tblDetails.Controls.Add(pnlDetailsLeft, 0, 0);
+            tblDetails.Controls.Add(pnlDetailsRight, 1, 0);
+            tblDetails.Dock = DockStyle.Fill;
+            tblDetails.Name = "tblDetails";
+            tblDetails.Padding = new Padding(0);
+            tblDetails.Margin = new Padding(0);
+            //
+            // pnlDetailsLeft
+            //
+            pnlDetailsLeft.Controls.Add(pnlDescriptionFill);  // Fill — added first
+            pnlDetailsLeft.Controls.Add(pnlCategoryBottom);   // Bottom — docked second
+            pnlDetailsLeft.Controls.Add(pnlTitleTop);         // Top — docked third
+            pnlDetailsLeft.Dock = DockStyle.Fill;
+            pnlDetailsLeft.Padding = new Padding(0, 0, 8, 0);
+            pnlDetailsLeft.Name = "pnlDetailsLeft";
+            //
+            // pnlTitleTop  (docked top, holds Title label + textbox)
+            //
+            pnlTitleTop.Controls.Add(label1);
+            pnlTitleTop.Controls.Add(txtTitle);
+            pnlTitleTop.Dock = DockStyle.Top;
+            pnlTitleTop.Height = 70;
+            pnlTitleTop.Name = "pnlTitleTop";
+            pnlTitleTop.Padding = new Padding(0, 0, 0, 0);
+            //
+            // label1
+            //
+            label1.AutoSize = true;
+            label1.Location = new Point(0, 0);
+            label1.Name = "label1";
+            label1.TabIndex = 0;
+            label1.Text = "Title:";
+            //
+            // txtTitle
+            //
+            txtTitle.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtTitle.Location = new Point(0, 20);
+            txtTitle.Margin = new Padding(3, 4, 3, 4);
+            txtTitle.Name = "txtTitle";
+            txtTitle.Size = new Size(340, 27);
+            txtTitle.TabIndex = 1;
+            //
+            // pnlCategoryBottom  (docked bottom, holds Category groupbox)
+            //
+            pnlCategoryBottom.Controls.Add(gbCategory);
+            pnlCategoryBottom.Dock = DockStyle.Bottom;
+            pnlCategoryBottom.Height = 90;
+            pnlCategoryBottom.Name = "pnlCategoryBottom";
+            pnlCategoryBottom.Padding = new Padding(0, 10, 0, 0);
+            //
+            // gbCategory
+            //
+            gbCategory.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            gbCategory.Controls.Add(cmbCategory);
+            gbCategory.Location = new Point(0, 10);
+            gbCategory.Margin = new Padding(3, 4, 3, 4);
+            gbCategory.Name = "gbCategory";
+            gbCategory.Padding = new Padding(3, 4, 3, 4);
+            gbCategory.Size = new Size(340, 80);
+            gbCategory.TabIndex = 4;
+            gbCategory.TabStop = false;
+            gbCategory.Text = "Category";
+            //
+            // cmbCategory
+            //
+            cmbCategory.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            cmbCategory.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbCategory.FormattingEnabled = true;
+            cmbCategory.Location = new Point(17, 33);
+            cmbCategory.Margin = new Padding(3, 4, 3, 4);
+            cmbCategory.Name = "cmbCategory";
+            cmbCategory.Size = new Size(308, 28);
+            cmbCategory.TabIndex = 0;
+            //
+            // pnlDescriptionFill  (fills remaining space, holds Description label + textbox)
+            //
+            pnlDescriptionFill.Controls.Add(txtDescription);
+            pnlDescriptionFill.Controls.Add(label2);
+            pnlDescriptionFill.Dock = DockStyle.Fill;
+            pnlDescriptionFill.Name = "pnlDescriptionFill";
+            pnlDescriptionFill.Padding = new Padding(0, 0, 0, 4);
+            //
+            // label2
+            //
+            label2.AutoSize = true;
+            label2.Location = new Point(0, 0);
+            label2.Name = "label2";
+            label2.TabIndex = 2;
+            label2.Text = "Description:";
+            //
+            // txtDescription
+            //
+            txtDescription.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+            txtDescription.Location = new Point(0, 22);
+            txtDescription.Margin = new Padding(3, 4, 3, 4);
+            txtDescription.Multiline = true;
+            txtDescription.Name = "txtDescription";
+            txtDescription.ScrollBars = ScrollBars.Vertical;
+            txtDescription.Size = new Size(340, 200);
+            txtDescription.TabIndex = 3;
+            //
+            // pnlDetailsRight
+            //
+            pnlDetailsRight.Controls.Add(tblDetailsRight);
+            pnlDetailsRight.Dock = DockStyle.Fill;
+            pnlDetailsRight.Padding = new Padding(8, 0, 0, 0);
+            pnlDetailsRight.Name = "pnlDetailsRight";
+            //
+            // tblDetailsRight (4 rows: Priority, Type, Status, Dates)
+            //
+            tblDetailsRight.ColumnCount = 1;
+            tblDetailsRight.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            tblDetailsRight.RowCount = 4;
+            tblDetailsRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 90F));  // Priority
+            tblDetailsRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 90F));  // Type
+            tblDetailsRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 90F));  // Status
+            tblDetailsRight.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F)); // Dates — fill remaining
+            tblDetailsRight.Controls.Add(gbPriority, 0, 0);
+            tblDetailsRight.Controls.Add(gbType, 0, 1);
+            tblDetailsRight.Controls.Add(gbStatus, 0, 2);
+            tblDetailsRight.Controls.Add(gbDates, 0, 3);
+            tblDetailsRight.Dock = DockStyle.Fill;
+            tblDetailsRight.Name = "tblDetailsRight";
+            tblDetailsRight.Margin = new Padding(0);
+            //
+            // gbPriority
+            //
+            gbPriority.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            gbPriority.Controls.Add(cmbPriority);
+            gbPriority.Location = new Point(0, 5);
+            gbPriority.Margin = new Padding(0, 5, 0, 0);
+            gbPriority.Name = "gbPriority";
+            gbPriority.Padding = new Padding(3, 4, 3, 4);
+            gbPriority.Size = new Size(200, 80);
+            gbPriority.TabIndex = 5;
+            gbPriority.TabStop = false;
+            gbPriority.Text = "Priority";
+            //
+            // cmbPriority
+            //
+            cmbPriority.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            cmbPriority.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbPriority.FormattingEnabled = true;
+            cmbPriority.Location = new Point(10, 30);
+            cmbPriority.Margin = new Padding(3, 4, 3, 4);
+            cmbPriority.Name = "cmbPriority";
+            cmbPriority.Size = new Size(160, 28);
+            cmbPriority.TabIndex = 0;
+            //
+            // gbType
+            //
+            gbType.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            gbType.Controls.Add(cmbType);
+            gbType.Location = new Point(0, 5);
+            gbType.Margin = new Padding(0, 5, 0, 0);
+            gbType.Name = "gbType";
+            gbType.Padding = new Padding(3, 4, 3, 4);
+            gbType.Size = new Size(200, 80);
+            gbType.TabIndex = 6;
+            gbType.TabStop = false;
+            gbType.Text = "Type";
+            //
+            // cmbType
+            //
+            cmbType.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            cmbType.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbType.FormattingEnabled = true;
+            cmbType.Location = new Point(10, 30);
+            cmbType.Margin = new Padding(3, 4, 3, 4);
+            cmbType.Name = "cmbType";
+            cmbType.Size = new Size(160, 28);
+            cmbType.TabIndex = 0;
+            //
+            // gbStatus
+            //
+            gbStatus.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            gbStatus.Controls.Add(cmbStatus);
+            gbStatus.Location = new Point(0, 5);
+            gbStatus.Margin = new Padding(0, 5, 0, 0);
+            gbStatus.Name = "gbStatus";
+            gbStatus.Padding = new Padding(3, 4, 3, 4);
+            gbStatus.Size = new Size(200, 80);
+            gbStatus.TabIndex = 7;
+            gbStatus.TabStop = false;
+            gbStatus.Text = "Status";
+            //
+            // cmbStatus
+            //
+            cmbStatus.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            cmbStatus.DropDownStyle = ComboBoxStyle.DropDownList;
+            cmbStatus.FormattingEnabled = true;
+            cmbStatus.Location = new Point(10, 30);
+            cmbStatus.Margin = new Padding(3, 4, 3, 4);
+            cmbStatus.Name = "cmbStatus";
+            cmbStatus.Size = new Size(160, 28);
+            cmbStatus.TabIndex = 0;
             // 
             // gbDates
             // 
+            gbDates.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             gbDates.Controls.Add(lblModified);
             gbDates.Controls.Add(label5);
             gbDates.Controls.Add(lblCreated);
             gbDates.Controls.Add(label3);
             gbDates.Controls.Add(dtpDueDate);
             gbDates.Controls.Add(chkDueDate);
-            gbDates.Location = new Point(400, 413);
-            gbDates.Margin = new Padding(3, 4, 3, 4);
+            gbDates.Location = new Point(0, 5);
+            gbDates.Margin = new Padding(0, 5, 0, 0);
             gbDates.Name = "gbDates";
             gbDates.Padding = new Padding(3, 4, 3, 4);
-            gbDates.Size = new Size(343, 227);
+            gbDates.Size = new Size(200, 160);
             gbDates.TabIndex = 8;
             gbDates.TabStop = false;
             gbDates.Text = "Dates";
-            // 
-            // lblModified
-            // 
-            lblModified.AutoSize = true;
-            lblModified.Location = new Point(91, 113);
-            lblModified.Name = "lblModified";
-            lblModified.Size = new Size(50, 20);
-            lblModified.TabIndex = 5;
-            lblModified.Text = "label6";
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new Point(17, 113);
-            label5.Name = "label5";
-            label5.Size = new Size(73, 20);
-            label5.TabIndex = 4;
-            label5.Text = "Modified:";
-            // 
-            // lblCreated
-            // 
-            lblCreated.AutoSize = true;
-            lblCreated.Location = new Point(91, 73);
-            lblCreated.Name = "lblCreated";
-            lblCreated.Size = new Size(50, 20);
-            lblCreated.TabIndex = 3;
-            lblCreated.Text = "label4";
-            // 
-            // label3
-            // 
-            label3.AutoSize = true;
-            label3.Location = new Point(17, 73);
-            label3.Name = "label3";
-            label3.Size = new Size(64, 20);
-            label3.TabIndex = 2;
-            label3.Text = "Created:";
-            // 
-            // dtpDueDate
-            // 
-            dtpDueDate.Enabled = false;
-            dtpDueDate.Format = DateTimePickerFormat.Short;
-            dtpDueDate.Location = new Point(91, 27);
-            dtpDueDate.Margin = new Padding(3, 4, 3, 4);
-            dtpDueDate.Name = "dtpDueDate";
-            dtpDueDate.Size = new Size(228, 27);
-            dtpDueDate.TabIndex = 1;
             // 
             // chkDueDate
             // 
@@ -296,129 +461,48 @@
             chkDueDate.UseVisualStyleBackColor = true;
             chkDueDate.CheckedChanged += chkDueDate_CheckedChanged;
             // 
-            // gbStatus
+            // dtpDueDate
+            //
+            dtpDueDate.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            dtpDueDate.Enabled = false;
+            dtpDueDate.Format = DateTimePickerFormat.Short;
+            dtpDueDate.Location = new Point(91, 27);
+            dtpDueDate.Margin = new Padding(3, 4, 3, 4);
+            dtpDueDate.Name = "dtpDueDate";
+            dtpDueDate.Size = new Size(90, 27);
+            dtpDueDate.TabIndex = 1;
             // 
-            gbStatus.Controls.Add(cmbStatus);
-            gbStatus.Location = new Point(400, 320);
-            gbStatus.Margin = new Padding(3, 4, 3, 4);
-            gbStatus.Name = "gbStatus";
-            gbStatus.Padding = new Padding(3, 4, 3, 4);
-            gbStatus.Size = new Size(343, 80);
-            gbStatus.TabIndex = 7;
-            gbStatus.TabStop = false;
-            gbStatus.Text = "Status";
+            // label3 (Created label)
             // 
-            // cmbStatus
+            label3.AutoSize = true;
+            label3.Location = new Point(17, 73);
+            label3.Name = "label3";
+            label3.TabIndex = 2;
+            label3.Text = "Created:";
             // 
-            cmbStatus.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbStatus.FormattingEnabled = true;
-            cmbStatus.Location = new Point(17, 33);
-            cmbStatus.Margin = new Padding(3, 4, 3, 4);
-            cmbStatus.Name = "cmbStatus";
-            cmbStatus.Size = new Size(308, 28);
-            cmbStatus.TabIndex = 0;
+            // lblCreated
             // 
-            // gbType
+            lblCreated.AutoSize = true;
+            lblCreated.Location = new Point(91, 73);
+            lblCreated.Name = "lblCreated";
+            lblCreated.TabIndex = 3;
+            lblCreated.Text = "label4";
             // 
-            gbType.Controls.Add(cmbType);
-            gbType.Location = new Point(400, 133);
-            gbType.Margin = new Padding(3, 4, 3, 4);
-            gbType.Name = "gbType";
-            gbType.Padding = new Padding(3, 4, 3, 4);
-            gbType.Size = new Size(343, 80);
-            gbType.TabIndex = 6;
-            gbType.TabStop = false;
-            gbType.Text = "Type";
+            // label5 (Modified label)
             // 
-            // cmbType
+            label5.AutoSize = true;
+            label5.Location = new Point(17, 107);
+            label5.Name = "label5";
+            label5.TabIndex = 4;
+            label5.Text = "Modified:";
             // 
-            cmbType.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbType.FormattingEnabled = true;
-            cmbType.Location = new Point(17, 33);
-            cmbType.Margin = new Padding(3, 4, 3, 4);
-            cmbType.Name = "cmbType";
-            cmbType.Size = new Size(308, 28);
-            cmbType.TabIndex = 0;
+            // lblModified
             // 
-            // gbPriority
-            // 
-            gbPriority.Controls.Add(cmbPriority);
-            gbPriority.Location = new Point(400, 40);
-            gbPriority.Margin = new Padding(3, 4, 3, 4);
-            gbPriority.Name = "gbPriority";
-            gbPriority.Padding = new Padding(3, 4, 3, 4);
-            gbPriority.Size = new Size(343, 80);
-            gbPriority.TabIndex = 5;
-            gbPriority.TabStop = false;
-            gbPriority.Text = "Priority";
-            // 
-            // cmbPriority
-            // 
-            cmbPriority.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbPriority.FormattingEnabled = true;
-            cmbPriority.Location = new Point(17, 33);
-            cmbPriority.Margin = new Padding(3, 4, 3, 4);
-            cmbPriority.Name = "cmbPriority";
-            cmbPriority.Size = new Size(308, 28);
-            cmbPriority.TabIndex = 0;
-            // 
-            // gbCategory
-            // 
-            gbCategory.Controls.Add(cmbCategory);
-            gbCategory.Location = new Point(23, 320);  // Changed from 227 to 320
-            gbCategory.Margin = new Padding(3, 4, 3, 4);
-            gbCategory.Name = "gbCategory";
-            gbCategory.Padding = new Padding(3, 4, 3, 4);
-            gbCategory.Size = new Size(343, 80);
-            gbCategory.TabIndex = 4;
-            gbCategory.TabStop = false;
-            gbCategory.Text = "Category";
-            // 
-            // cmbCategory
-            // 
-            cmbCategory.DropDownStyle = ComboBoxStyle.DropDownList;
-            cmbCategory.FormattingEnabled = true;
-            cmbCategory.Location = new Point(17, 33);
-            cmbCategory.Margin = new Padding(3, 4, 3, 4);
-            cmbCategory.Name = "cmbCategory";
-            cmbCategory.Size = new Size(308, 28);
-            cmbCategory.TabIndex = 0;
-            // 
-            // txtDescription
-            // 
-            txtDescription.Location = new Point(23, 107);
-            txtDescription.Margin = new Padding(3, 4, 3, 4);
-            txtDescription.Multiline = true;
-            txtDescription.Name = "txtDescription";
-            txtDescription.ScrollBars = ScrollBars.Vertical;
-            txtDescription.Size = new Size(342, 200);
-            txtDescription.TabIndex = 3;
-            // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Location = new Point(23, 80);
-            label2.Name = "label2";
-            label2.Size = new Size(88, 20);
-            label2.TabIndex = 2;
-            label2.Text = "Description:";
-            // 
-            // txtTitle
-            // 
-            txtTitle.Location = new Point(23, 40);
-            txtTitle.Margin = new Padding(3, 4, 3, 4);
-            txtTitle.Name = "txtTitle";
-            txtTitle.Size = new Size(342, 27);
-            txtTitle.TabIndex = 1;
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(23, 13);
-            label1.Name = "label1";
-            label1.Size = new Size(41, 20);
-            label1.TabIndex = 0;
-            label1.Text = "Title:";
+            lblModified.AutoSize = true;
+            lblModified.Location = new Point(91, 107);
+            lblModified.Name = "lblModified";
+            lblModified.TabIndex = 5;
+            lblModified.Text = "label6";
             // 
             // tabPageSubtasks
             // 
@@ -748,6 +832,16 @@
             tabControl1.ResumeLayout(false);
             tabPageDetails.ResumeLayout(false);
             tabPageDetails.PerformLayout();
+            tblDetails.ResumeLayout(false);
+            pnlDetailsLeft.ResumeLayout(false);
+            pnlDetailsLeft.PerformLayout();
+            pnlDetailsRight.ResumeLayout(false);
+            tblDetailsRight.ResumeLayout(false);
+            pnlTitleTop.ResumeLayout(false);
+            pnlTitleTop.PerformLayout();
+            pnlCategoryBottom.ResumeLayout(false);
+            pnlDescriptionFill.ResumeLayout(false);
+            pnlDescriptionFill.PerformLayout();
             gbDates.ResumeLayout(false);
             gbDates.PerformLayout();
             gbStatus.ResumeLayout(false);
@@ -776,6 +870,13 @@
         private System.Windows.Forms.Button btnDelete;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPageDetails;
+        private System.Windows.Forms.TableLayoutPanel tblDetails;
+        private System.Windows.Forms.Panel pnlDetailsLeft;
+        private System.Windows.Forms.Panel pnlDetailsRight;
+        private System.Windows.Forms.TableLayoutPanel tblDetailsRight;
+        private System.Windows.Forms.Panel pnlTitleTop;
+        private System.Windows.Forms.Panel pnlCategoryBottom;
+        private System.Windows.Forms.Panel pnlDescriptionFill;
         private System.Windows.Forms.GroupBox gbDates;
         private System.Windows.Forms.Label lblModified;
         private System.Windows.Forms.Label label5;
