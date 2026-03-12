@@ -654,9 +654,9 @@
             // 
             // tabPageComments
             // 
-            tabPageComments.Controls.Add(pnlCommentBar);
-            tabPageComments.Controls.Add(pnlCommentPreview);
-            tabPageComments.Controls.Add(panel4);
+            tabPageComments.Controls.Add(panel4);           // Fill — added first so it gets remaining space
+            tabPageComments.Controls.Add(pnlCommentPreview); // Bottom — docked second
+            tabPageComments.Controls.Add(pnlCommentBar);     // Bottom — docked third
             tabPageComments.Location = new Point(4, 29);
             tabPageComments.Margin = new Padding(3, 4, 3, 4);
             tabPageComments.Name = "tabPageComments";
