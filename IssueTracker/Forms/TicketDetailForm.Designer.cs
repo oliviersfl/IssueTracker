@@ -320,7 +320,7 @@
             pnlDescriptionFill.Controls.Add(label2);
             pnlDescriptionFill.Dock = DockStyle.Fill;
             pnlDescriptionFill.Name = "pnlDescriptionFill";
-            pnlDescriptionFill.Padding = new Padding(0, 0, 0, 4);
+            pnlDescriptionFill.Padding = new Padding(0);
             //
             // label2
             //
@@ -332,13 +332,12 @@
             //
             // txtDescription
             //
-            txtDescription.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom;
+            txtDescription.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             txtDescription.Location = new Point(0, 22);
             txtDescription.Margin = new Padding(3, 4, 3, 4);
             txtDescription.Multiline = true;
             txtDescription.Name = "txtDescription";
             txtDescription.ScrollBars = ScrollBars.Vertical;
-            txtDescription.Size = new Size(340, 200);
             txtDescription.TabIndex = 3;
             //
             // pnlDetailsRight
