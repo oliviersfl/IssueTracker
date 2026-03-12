@@ -45,6 +45,7 @@
             pnlTitleTop = new Panel();
             pnlCategoryBottom = new Panel();
             pnlDescriptionFill = new Panel();
+            pnlDescBorder = new Panel();
             gbDates = new GroupBox();
             lblModified = new Label();
             label5 = new Label();
@@ -108,6 +109,7 @@
             pnlTitleTop.SuspendLayout();
             pnlCategoryBottom.SuspendLayout();
             pnlDescriptionFill.SuspendLayout();
+            pnlDescBorder.SuspendLayout();
             gbDates.SuspendLayout();
             gbStatus.SuspendLayout();
             gbType.SuspendLayout();
@@ -316,7 +318,7 @@
             //
             // pnlDescriptionFill  (fills remaining space, holds Description label + textbox)
             //
-            pnlDescriptionFill.Controls.Add(txtDescription);   // Fill — added first
+            pnlDescriptionFill.Controls.Add(pnlDescBorder);    // Fill — added first
             pnlDescriptionFill.Controls.Add(label2);           // Top — docked second
             pnlDescriptionFill.Dock = DockStyle.Fill;
             pnlDescriptionFill.Name = "pnlDescriptionFill";
@@ -331,12 +333,21 @@
             label2.TabIndex = 2;
             label2.Text = "Description:";
             //
+            // pnlDescBorder  (single-pixel border wrapper around the RichTextBox)
+            //
+            pnlDescBorder.Controls.Add(txtDescription);
+            pnlDescBorder.Dock = DockStyle.Fill;
+            pnlDescBorder.Padding = new Padding(1);
+            pnlDescBorder.BackColor = Color.FromArgb(122, 122, 122); // border colour
+            pnlDescBorder.Name = "pnlDescBorder";
+            //
             // txtDescription
             //
             txtDescription.Dock = DockStyle.Fill;
             txtDescription.Margin = new Padding(0);
             txtDescription.Name = "txtDescription";
             txtDescription.TabIndex = 3;
+            txtDescription.BorderStyle = BorderStyle.None;
             txtDescription.ScrollBars = RichTextBoxScrollBars.Vertical;
             txtDescription.WordWrap = true;
             //
@@ -905,6 +916,7 @@
             pnlCategoryBottom.ResumeLayout(false);
             pnlDescriptionFill.ResumeLayout(false);
             pnlDescriptionFill.PerformLayout();
+            pnlDescBorder.ResumeLayout(false);
             gbDates.ResumeLayout(false);
             gbDates.PerformLayout();
             gbStatus.ResumeLayout(false);
@@ -944,6 +956,7 @@
         private System.Windows.Forms.Panel pnlTitleTop;
         private System.Windows.Forms.Panel pnlCategoryBottom;
         private System.Windows.Forms.Panel pnlDescriptionFill;
+        private System.Windows.Forms.Panel pnlDescBorder;
         private System.Windows.Forms.GroupBox gbDates;
         private System.Windows.Forms.Label lblModified;
         private System.Windows.Forms.Label label5;
