@@ -534,9 +534,15 @@
             pnlSubtaskBar.Height = 54;
             pnlSubtaskBar.Name = "pnlSubtaskBar";
             pnlSubtaskBar.Padding = new Padding(10, 7, 10, 7);
-            // separator line on top
             pnlSubtaskBar.Paint += (s, e) =>
                 e.Graphics.DrawLine(new System.Drawing.Pen(Color.FromArgb(210, 210, 215), 1), 0, 0, ((Panel)s).Width, 0);
+            pnlSubtaskBar.Resize += (s, e) =>
+            {
+                int right = pnlSubtaskBar.ClientSize.Width - 10;
+                btnAddSubTask.Left = right - btnAddSubTask.Width;
+                btnToggleComplete.Left = btnAddSubTask.Left - btnToggleComplete.Width - 4;
+                btnEditSubTask.Left = btnToggleComplete.Left - btnEditSubTask.Width - 4;
+            };
             // 
             // chkShowOnlyActive  (left-anchored)
             // 
