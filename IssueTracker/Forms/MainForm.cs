@@ -146,24 +146,55 @@ namespace IssueTracker
             {
                 DataGridViewColumn column = dgvTickets.Columns[e.ColumnIndex];
 
-                if (_ticketsBindingSource.DataSource is List<Ticket> tickets)
+                // Get the current data source
+                if (_ticketsBindingSource.DataSource is List<Ticket> currentList)
                 {
-                    var sortedTickets = column.HeaderCell.SortGlyphDirection == SortOrder.Ascending
-                        ? tickets.OrderByDescending(t => GetPropertyValue(t, column.DataPropertyName)).ToList()
-                        : tickets.OrderBy(t => GetPropertyValue(t, column.DataPropertyName)).ToList();
+                    // Determine sort direction
+                    SortOrder newSortDirection;
 
+                    if (column.HeaderCell.SortGlyphDirection == SortOrder.None)
+                    {
+                        // First click on this column - sort ascending
+                        newSortDirection = SortOrder.Ascending;
+                    }
+                    else if (column.HeaderCell.SortGlyphDirection == SortOrder.Ascending)
+                    {
+                        // Second click - sort descending
+                        newSortDirection = SortOrder.Descending;
+                    }
+                    else
+                    {
+                        // Third click - back to ascending
+                        newSortDirection = SortOrder.Ascending;
+                    }
+
+                    // Sort the list
+                    List<Ticket> sortedTickets;
+
+                    if (newSortDirection == SortOrder.Ascending)
+                    {
+                        sortedTickets = currentList
+                            .OrderBy(t => GetPropertyValue(t, column.DataPropertyName))
+                            .ToList();
+                    }
+                    else
+                    {
+                        sortedTickets = currentList
+                            .OrderByDescending(t => GetPropertyValue(t, column.DataPropertyName))
+                            .ToList();
+                    }
+
+                    // Update the data source
                     _ticketsBindingSource.DataSource = sortedTickets;
 
                     // Update sort glyph
-                    column.HeaderCell.SortGlyphDirection =
-                        column.HeaderCell.SortGlyphDirection == SortOrder.Ascending
-                            ? SortOrder.Descending
-                            : SortOrder.Ascending;
+                    column.HeaderCell.SortGlyphDirection = newSortDirection;
 
                     // Clear other sort glyphs
                     foreach (DataGridViewColumn col in dgvTickets.Columns)
                     {
-                        if (col != column) col.HeaderCell.SortGlyphDirection = SortOrder.None;
+                        if (col != column)
+                            col.HeaderCell.SortGlyphDirection = SortOrder.None;
                     }
                 }
             };
