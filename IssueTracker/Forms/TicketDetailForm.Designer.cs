@@ -60,7 +60,7 @@
             cmbPriority = new ComboBox();
             gbCategory = new GroupBox();
             cmbCategory = new ComboBox();
-            txtDescription = new TextBox();
+            txtDescription = new RichTextBox();
             label2 = new Label();
             txtTitle = new TextBox();
             label1 = new Label();
@@ -279,7 +279,7 @@
             txtTitle.Location = new Point(0, 20);
             txtTitle.Margin = new Padding(3, 4, 3, 4);
             txtTitle.Name = "txtTitle";
-            txtTitle.Size = new Size(340, 27);
+            txtTitle.Size = new Size(450, 27);
             txtTitle.TabIndex = 1;
             //
             // pnlCategoryBottom  (docked bottom, holds Category groupbox)
@@ -316,8 +316,8 @@
             //
             // pnlDescriptionFill  (fills remaining space, holds Description label + textbox)
             //
-            pnlDescriptionFill.Controls.Add(txtDescription);
-            pnlDescriptionFill.Controls.Add(label2);
+            pnlDescriptionFill.Controls.Add(txtDescription);   // Fill — added first
+            pnlDescriptionFill.Controls.Add(label2);           // Top — docked second
             pnlDescriptionFill.Dock = DockStyle.Fill;
             pnlDescriptionFill.Name = "pnlDescriptionFill";
             pnlDescriptionFill.Padding = new Padding(0);
@@ -325,20 +325,20 @@
             // label2
             //
             label2.AutoSize = true;
-            label2.Location = new Point(0, 0);
+            label2.Dock = DockStyle.Top;
+            label2.Padding = new Padding(0, 0, 0, 4);
             label2.Name = "label2";
             label2.TabIndex = 2;
             label2.Text = "Description:";
             //
             // txtDescription
             //
-            txtDescription.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            txtDescription.Location = new Point(0, 22);
-            txtDescription.Margin = new Padding(3, 4, 3, 4);
-            txtDescription.Multiline = true;
+            txtDescription.Dock = DockStyle.Fill;
+            txtDescription.Margin = new Padding(0);
             txtDescription.Name = "txtDescription";
-            txtDescription.ScrollBars = ScrollBars.Vertical;
             txtDescription.TabIndex = 3;
+            txtDescription.ScrollBars = RichTextBoxScrollBars.Vertical;
+            txtDescription.WordWrap = true;
             //
             // pnlDetailsRight
             //
@@ -953,7 +953,7 @@
         private System.Windows.Forms.ComboBox cmbPriority;
         private System.Windows.Forms.GroupBox gbCategory;
         private System.Windows.Forms.ComboBox cmbCategory;
-        private System.Windows.Forms.TextBox txtDescription;
+        private System.Windows.Forms.RichTextBox txtDescription;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtTitle;
         private System.Windows.Forms.Label label1;

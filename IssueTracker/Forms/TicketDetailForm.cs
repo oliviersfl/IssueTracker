@@ -109,7 +109,7 @@ namespace IssueTracker
                 if (_isEditMode)
                 {
                     ticket.PreviousTitle = ticket.Title;
-                    ticket.PreviousDescription = ticket.Description.Replace("\n", Environment.NewLine);
+                    ticket.PreviousDescription = ticket.Description;
                     ticket.PreviousStatus = ticket.Status;
                     ticket.PreviousPriority = ticket.Priority;
                     ticket.PreviousCategory = ticket.Category;
