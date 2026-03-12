@@ -466,18 +466,48 @@ namespace IssueTracker
             var detailForm = new TicketDetailForm(_ticketService);
             if (detailForm.ShowDialog() == DialogResult.OK)
             {
-                await LoadTickets(); // Refresh the list
+                await LoadTickets();
+                ApplyFilterAndSearch(); // re-apply search on top of fresh data
             }
+        }
+
+        /// <summary>
+        /// Applies the current filter AND the current search box text together,
+        /// then refreshes the grid, count and dashboard.
+        /// Always call this instead of setting _ticketsBindingSource.DataSource directly.
+        /// </summary>
+        private void ApplyFilterAndSearch()
+        {
+            var tickets = _ticketService.FilterTickets(
+                _currentFilter.Status,
+                _currentFilter.CreatedFromDate,
+                _currentFilter.CreatedToDate,
+                _currentFilter.ModifiedFromDate,
+                _currentFilter.ModifiedToDate,
+                _currentFilter.Type,
+                _currentFilter.Category
+            );
+
+            string searchTerm = txtSearch.Text.Trim().ToLower();
+            if (!string.IsNullOrEmpty(searchTerm))
+            {
+                tickets = tickets
+                    .Where(t => t.Title.ToLower().Contains(searchTerm) ||
+                                (!string.IsNullOrEmpty(t.Description) && t.Description.ToLower().Contains(searchTerm)))
+                    .ToList();
+            }
+
+            _ticketsBindingSource.DataSource = tickets;
+            UpdateTicketCount();
+            UpdateDashboard();
         }
 
         private void btnFilter_Click(object sender, EventArgs e)
         {
-            // Pass the current category when opening the dialog
             var filterDialog = new FilterDialog(_ticketService, _currentFilter);
 
             if (filterDialog.ShowDialog() == DialogResult.OK)
             {
-                // Update the stored category
                 _currentFilter.Category = filterDialog.ResultFilter.Category;
                 _currentFilter.Type = filterDialog.ResultFilter.Type;
                 _currentFilter.Status = filterDialog.ResultFilter.Status;
@@ -486,20 +516,8 @@ namespace IssueTracker
                 _currentFilter.ModifiedFromDate = filterDialog.ResultFilter.ModifiedFromDate;
                 _currentFilter.ModifiedToDate = filterDialog.ResultFilter.ModifiedToDate;
 
-                var filteredTickets = _ticketService.FilterTickets(
-                    _currentFilter.Status,
-                    _currentFilter.CreatedFromDate,
-                    _currentFilter.CreatedToDate,
-                    _currentFilter.ModifiedFromDate,
-                    _currentFilter.ModifiedToDate,
-                    _currentFilter.Type,
-                    _currentFilter.Category // Use the updated value
-                );
-
-                _ticketsBindingSource.DataSource = filteredTickets;
+                ApplyFilterAndSearch(); // respects existing search box text
             }
-            UpdateTicketCount();
-            UpdateDashboard();
         }
         private async void btnClearFilter_Click(object sender, EventArgs e)
         {
@@ -590,18 +608,16 @@ namespace IssueTracker
 
                 var result = detailForm.ShowDialog();
 
-                // Refresh if the ticket was saved (OK) or deleted (Abort)
-                if (result == DialogResult.OK || result == DialogResult.Abort)
+                if (result == DialogResult.OK)
                 {
-                    await LoadTickets(); // Refresh the list
-
-                    // If the ticket was deleted, clear the selection
-                    if (result == DialogResult.Abort)
-                    {
-                        dgvTickets.ClearSelection();
-                    }
-
-                    txtSearch.Text = "";
+                    await LoadTickets();
+                    ApplyFilterAndSearch(); // preserve search text after save
+                }
+                else if (result == DialogResult.Abort)
+                {
+                    txtSearch.Text = ""; // ticket deleted — clear search and show full filtered list
+                    await LoadTickets();
+                    dgvTickets.ClearSelection();
                 }
             }
         }
@@ -666,39 +682,7 @@ namespace IssueTracker
         private void SearchTimer_Tick(object sender, EventArgs e)
         {
             _searchTimer.Stop();
-
-            // Get the search term and trim whitespace
-            string searchTerm = txtSearch.Text.Trim().ToLower();
-
-            // Get the current filtered tickets
-            var currentTickets = _ticketService.FilterTickets(
-                _currentFilter.Status,
-                _currentFilter.CreatedFromDate,
-                _currentFilter.CreatedToDate,
-                _currentFilter.ModifiedFromDate,
-                _currentFilter.ModifiedToDate,
-                _currentFilter.Type,
-                _currentFilter.Category
-            );
-
-            // If search term is empty, show all filtered tickets
-            if (string.IsNullOrEmpty(searchTerm))
-            {
-                _ticketsBindingSource.DataSource = currentTickets;
-            }
-            else
-            {
-                // Filter tickets by title or description containing the search term
-                var filteredTickets = currentTickets
-                    .Where(t => t.Title.ToLower().Contains(searchTerm) ||
-                                (!string.IsNullOrEmpty(t.Description) && t.Description.ToLower().Contains(searchTerm)))
-                    .ToList();
-
-                _ticketsBindingSource.DataSource = filteredTickets;
-            }
-
-            UpdateTicketCount();
-            UpdateDashboard();
+            ApplyFilterAndSearch();
         }
         #endregion
     }
