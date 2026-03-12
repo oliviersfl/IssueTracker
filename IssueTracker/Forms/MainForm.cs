@@ -1,7 +1,7 @@
-﻿using IssueTracker.Models;
+﻿using System.Diagnostics;
+using IssueTracker.Models;
 using IssueTracker.Services.Database.Repository.Interfaces;
 using IssueTracker.Services.Interfaces;
-using System.Diagnostics;
 
 namespace IssueTracker
 {
@@ -472,10 +472,25 @@ namespace IssueTracker
         }
         private async void btnClearFilter_Click(object sender, EventArgs e)
         {
-            // Reload all tickets without any filters
-            var allTickets = await _ticketService.GetAllTickets();
-            _ticketsBindingSource.DataSource = allTickets;
+            // Reset to default state — same as initial app load
             txtSearch.Text = "";
+
+            var defaultStatuses = await _ticketRepo.GetAllStatusesAsync();
+            var defaultStatusFilter = defaultStatuses
+                .Where(s => s.IsDefault == true)
+                .Select(s => s.Description)
+                .ToList();
+
+            _currentFilter.Status = defaultStatusFilter;
+            _currentFilter.Category = null;
+            _currentFilter.Type = null;
+            _currentFilter.CreatedFromDate = null;
+            _currentFilter.CreatedToDate = null;
+            _currentFilter.ModifiedFromDate = null;
+            _currentFilter.ModifiedToDate = null;
+
+            var tickets = _ticketService.FilterTickets(defaultStatusFilter, null, null, null, null, null, null);
+            _ticketsBindingSource.DataSource = tickets;
             UpdateTicketCount();
             UpdateDashboard();
         }

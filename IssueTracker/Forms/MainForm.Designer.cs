@@ -216,7 +216,7 @@
             this.btnClearFilter.Name = "btnClearFilter";
             this.btnClearFilter.Size = new System.Drawing.Size(120, 36);
             this.btnClearFilter.TabIndex = 4;
-            this.btnClearFilter.Text = "Clear Filters";
+            this.btnClearFilter.Text = "Reset Filters";
             this.btnClearFilter.UseVisualStyleBackColor = false;
             this.btnClearFilter.Click += new System.EventHandler(this.btnClearFilter_Click);
             // 
