@@ -264,6 +264,7 @@
             pnlTitleTop.Height = 70;
             pnlTitleTop.Name = "pnlTitleTop";
             pnlTitleTop.Padding = new Padding(0, 0, 0, 0);
+            pnlTitleTop.Resize += (s, e) => txtTitle.Width = pnlTitleTop.ClientSize.Width;
             //
             // label1
             //
@@ -275,7 +276,7 @@
             //
             // txtTitle
             //
-            txtTitle.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            txtTitle.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             txtTitle.Location = new Point(0, 20);
             txtTitle.Margin = new Padding(3, 4, 3, 4);
             txtTitle.Name = "txtTitle";
@@ -292,26 +293,25 @@
             //
             // gbCategory
             //
-            gbCategory.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            gbCategory.Dock = DockStyle.Fill;
             gbCategory.Controls.Add(cmbCategory);
-            gbCategory.Location = new Point(0, 10);
             gbCategory.Margin = new Padding(3, 4, 3, 4);
             gbCategory.Name = "gbCategory";
-            gbCategory.Padding = new Padding(3, 4, 3, 4);
-            gbCategory.Size = new Size(340, 80);
+            gbCategory.Padding = new Padding(10, 4, 10, 4);
             gbCategory.TabIndex = 4;
             gbCategory.TabStop = false;
             gbCategory.Text = "Category";
+            gbCategory.Resize += (s, e) => cmbCategory.Width = gbCategory.ClientSize.Width - 24;
             //
             // cmbCategory
             //
-            cmbCategory.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            cmbCategory.Anchor = AnchorStyles.Top | AnchorStyles.Left;
             cmbCategory.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbCategory.FormattingEnabled = true;
-            cmbCategory.Location = new Point(17, 33);
+            cmbCategory.Location = new Point(10, 28);
             cmbCategory.Margin = new Padding(3, 4, 3, 4);
             cmbCategory.Name = "cmbCategory";
-            cmbCategory.Size = new Size(308, 28);
+            cmbCategory.Size = new Size(200, 28);
             cmbCategory.TabIndex = 0;
             //
             // pnlDescriptionFill  (fills remaining space, holds Description label + textbox)
