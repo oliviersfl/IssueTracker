@@ -94,6 +94,8 @@
             tabPageHistory = new TabPage();
             panel5 = new Panel();
             lvHistory = new ListView();
+            pnlHistoryFilter = new Panel();
+            flpHistoryFilter = new FlowLayoutPanel();
             historyHeaderTimestamp = new ColumnHeader();
             historyHeaderChangeType = new ColumnHeader();
             historyHeaderOldValue = new ColumnHeader();
@@ -124,6 +126,7 @@
             panel4.SuspendLayout();
             tabPageHistory.SuspendLayout();
             panel5.SuspendLayout();
+            pnlHistoryFilter.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
@@ -832,7 +835,8 @@
             // 
             // tabPageHistory
             // 
-            tabPageHistory.Controls.Add(panel5);
+            tabPageHistory.Controls.Add(panel5);              // Fill — added first
+            tabPageHistory.Controls.Add(pnlHistoryFilter);    // Top — added second
             tabPageHistory.Location = new Point(4, 29);
             tabPageHistory.Margin = new Padding(3, 4, 3, 4);
             tabPageHistory.Name = "tabPageHistory";
@@ -841,6 +845,34 @@
             tabPageHistory.TabIndex = 3;
             tabPageHistory.Text = "History";
             tabPageHistory.UseVisualStyleBackColor = true;
+            //
+            // pnlHistoryFilter  (top bar holding filter checkboxes)
+            //
+            pnlHistoryFilter.Controls.Add(flpHistoryFilter);
+            pnlHistoryFilter.Dock = DockStyle.Top;
+            pnlHistoryFilter.AutoSize = false;
+            pnlHistoryFilter.Height = 38;
+            pnlHistoryFilter.MinimumSize = new Size(0, 38);
+            pnlHistoryFilter.Name = "pnlHistoryFilter";
+            pnlHistoryFilter.BackColor = Color.WhiteSmoke;
+            pnlHistoryFilter.Padding = new Padding(4, 6, 4, 4);
+            pnlHistoryFilter.Paint += (s, e) =>
+                e.Graphics.DrawLine(new System.Drawing.Pen(Color.FromArgb(210, 210, 215), 1),
+                    0, pnlHistoryFilter.Height - 1, pnlHistoryFilter.Width, pnlHistoryFilter.Height - 1);
+            pnlHistoryFilter.Resize += (s, e) =>
+            {
+                var preferred = flpHistoryFilter.GetPreferredSize(new Size(pnlHistoryFilter.ClientSize.Width, 0));
+                pnlHistoryFilter.Height = Math.Max(38, preferred.Height + pnlHistoryFilter.Padding.Vertical);
+            };
+            //
+            // flpHistoryFilter  (checkboxes added dynamically at runtime)
+            //
+            flpHistoryFilter.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            flpHistoryFilter.Location = new Point(0, 0);
+            flpHistoryFilter.Name = "flpHistoryFilter";
+            flpHistoryFilter.BackColor = Color.Transparent;
+            flpHistoryFilter.WrapContents = true;
+            flpHistoryFilter.AutoScroll = false;
             // 
             // panel5
             // 
@@ -936,6 +968,7 @@
             panel4.ResumeLayout(false);
             tabPageHistory.ResumeLayout(false);
             panel5.ResumeLayout(false);
+            pnlHistoryFilter.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -1006,6 +1039,8 @@
         private System.Windows.Forms.CheckBox chkShowOnlyActive;
         private System.Windows.Forms.TabPage tabPageHistory;
         private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.Panel pnlHistoryFilter;
+        private System.Windows.Forms.FlowLayoutPanel flpHistoryFilter;
         private System.Windows.Forms.ListView lvHistory;
         private System.Windows.Forms.ColumnHeader historyHeaderTimestamp;
         private System.Windows.Forms.ColumnHeader historyHeaderChangeType;

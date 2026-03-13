@@ -1,4 +1,5 @@
-﻿using IssueTracker.Models;
+﻿using ClosedXML.Excel;
+using IssueTracker.Models;
 using IssueTracker.Services.Interfaces;
 
 namespace IssueTracker
@@ -8,6 +9,30 @@ namespace IssueTracker
         private readonly ITicketService _ticketService;
         private Ticket _currentTicket;
         private bool _isEditMode;
+        private List<TicketAuditLog> _allAuditLogs = new();
+
+        // Refreshes lvHistory based on which event-type checkboxes are checked
+        private void LoadHistory()
+        {
+            var checkedTypes = flpHistoryFilter.Controls
+                .OfType<CheckBox>()
+                .Where(c => c.Checked)
+                .Select(c => c.Text)
+                .ToHashSet(StringComparer.OrdinalIgnoreCase);
+
+            lvHistory.Items.Clear();
+            foreach (var log in _allAuditLogs)
+            {
+                if (!checkedTypes.Any() || checkedTypes.Contains(log.ChangeType))
+                {
+                    var item = new ListViewItem(log.Timestamp.ToString("g"));
+                    item.SubItems.Add(log.ChangeType);
+                    item.SubItems.Add(log.OldValue ?? string.Empty);
+                    item.SubItems.Add(log.NewValue ?? string.Empty);
+                    lvHistory.Items.Add(item);
+                }
+            }
+        }
 
         public TicketDetailForm(ITicketService ticketService, Ticket ticket = null)
         {
@@ -74,15 +99,64 @@ namespace IssueTracker
                 }
 
                 // Load history
-                var auditLogs = await _ticketService.GetTicketAuditLogsByTicketId(_currentTicket.Id);
-                foreach (var log in auditLogs)
+                _allAuditLogs = await _ticketService.GetTicketAuditLogsByTicketId(_currentTicket.Id);
+
+                // Build one checkbox per distinct event type
+                var distinctTypes = _allAuditLogs
+                    .Select(l => l.ChangeType)
+                    .Distinct()
+                    .OrderBy(t => t)
+                    .ToList();
+
+                flpHistoryFilter.Controls.Clear();
+
+                // "All" master checkbox
+                bool _updatingAll = false;
+                var cbAll = new CheckBox
                 {
-                    var item = new ListViewItem(log.Timestamp.ToString("g"));
-                    item.SubItems.Add(log.ChangeType);
-                    item.SubItems.Add(log.OldValue ?? string.Empty);
-                    item.SubItems.Add(log.NewValue ?? string.Empty);
-                    lvHistory.Items.Add(item);
+                    Text = "All",
+                    Checked = true,
+                    AutoSize = true,
+                    Margin = new Padding(0, 0, 16, 0),
+                    Font = new Font("Segoe UI", 9f, FontStyle.Bold)
+                };
+                flpHistoryFilter.Controls.Add(cbAll);
+
+                foreach (var type in distinctTypes)
+                {
+                    var cb = new CheckBox
+                    {
+                        Text = type,
+                        Checked = true,
+                        AutoSize = true,
+                        Margin = new Padding(0, 0, 12, 0),
+                        Font = new Font("Segoe UI", 9f)
+                    };
+                    cb.CheckedChanged += (s, e) =>
+                    {
+                        if (_updatingAll) return; // suppress during batch update
+                        cbAll.CheckedChanged -= cbAll_CheckedChanged;
+                        cbAll.Checked = flpHistoryFilter.Controls
+                            .OfType<CheckBox>()
+                            .Where(c => c != cbAll)
+                            .All(c => c.Checked);
+                        cbAll.CheckedChanged += cbAll_CheckedChanged;
+                        LoadHistory();
+                    };
+                    flpHistoryFilter.Controls.Add(cb);
                 }
+
+                void cbAll_CheckedChanged(object s, EventArgs e)
+                {
+                    _updatingAll = true;
+                    foreach (var cb in flpHistoryFilter.Controls.OfType<CheckBox>().Where(c => c != cbAll))
+                        cb.Checked = cbAll.Checked;
+                    _updatingAll = false;
+                    LoadHistory();
+                }
+                cbAll.CheckedChanged += cbAll_CheckedChanged;
+
+                LoadHistory();
             }
             else
             {
