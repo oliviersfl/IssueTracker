@@ -9,6 +9,7 @@ namespace IssueTracker.Services
         private readonly List<Ticket> _tickets = new List<Ticket>();
         private ITicketRepository _ticketRepository;
         private readonly AppSettings _appSettings;
+        private static readonly TimeZoneInfo AppTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
 
         public TicketService(AppSettings appSettings, ITicketRepository ticketRepository)
         {
@@ -280,32 +281,29 @@ namespace IssueTracker.Services
             List<string> categories
 )
         {
-            // Handle null _tickets collection
             if (_tickets == null)
                 return new List<Ticket>();
 
             return _tickets
-                .Where(t => t != null) // Handle null tickets in the collection
+                .Where(t => t != null)
                 .Where(t => statuses == null || statuses.Count == 0 ||
                            (t.Status != null && statuses.Contains(t.Status)))
                 .Where(t => types == null || types.Count == 0 ||
                            (t.Type != null && types.Contains(t.Type)))
                 .Where(t => categories == null || categories.Count == 0 ||
                            (t.Category != null && categories.Contains(t.Category)))
-
-                // Compare only the date component for CreatedDate
-                .Where(t => !createdFromDate.HasValue || t.CreatedDate.Date >= createdFromDate.Value.Date)
-                .Where(t => !createdToDate.HasValue || t.CreatedDate.Date <= createdToDate.Value.Date)
-                // Modified date: match tickets that have ANY history entry within the range
+                .Where(t => !createdFromDate.HasValue || ToLocalDate(t.CreatedDate) >= createdFromDate.Value.Date)
+                .Where(t => !createdToDate.HasValue || ToLocalDate(t.CreatedDate) <= createdToDate.Value.Date)
                 .Where(t =>
                     (!modifiedFromDate.HasValue && !modifiedToDate.HasValue) ||
                     (t.ModificationDates != null && t.ModificationDates.Any(d =>
-                        (!modifiedFromDate.HasValue || d.Date >= modifiedFromDate.Value.Date) &&
-                        (!modifiedToDate.HasValue || d.Date <= modifiedToDate.Value.Date)))
+                        (!modifiedFromDate.HasValue || ToLocalDate(d) >= modifiedFromDate.Value.Date) &&
+                        (!modifiedToDate.HasValue || ToLocalDate(d) <= modifiedToDate.Value.Date)))
                 )
                 .ToList();
         }
         #endregion
+
         #region Add/Update/Delete
         public async Task AddTicket(Ticket ticket)
         {
@@ -546,5 +544,15 @@ namespace IssueTracker.Services
             return value.Length <= maxLength ? value : value[..maxLength] + "…";
         }
         #endregion
+
+        private static DateTime ToLocalDate(DateTime dbDateTime)
+        {
+            // SQLite drivers typically return Unspecified even though it's really UTC
+            var utc = dbDateTime.Kind == DateTimeKind.Utc
+                ? dbDateTime
+                : DateTime.SpecifyKind(dbDateTime, DateTimeKind.Utc);
+
+            return TimeZoneInfo.ConvertTimeFromUtc(utc, AppTimeZone).Date;
+        }
     }
 }
