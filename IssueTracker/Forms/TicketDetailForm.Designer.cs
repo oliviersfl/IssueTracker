@@ -1,4 +1,6 @@
-﻿namespace IssueTracker
+﻿using IssueTracker.Custom_Controls;
+
+namespace IssueTracker
 {
     partial class TicketDetailForm
     {
@@ -61,7 +63,7 @@
             cmbPriority = new ComboBox();
             gbCategory = new GroupBox();
             cmbCategory = new ComboBox();
-            txtDescription = new RichTextBox();
+            txtDescription = new PlainTextRichTextBox();
             label2 = new Label();
             txtTitle = new TextBox();
             label1 = new Label();
@@ -353,6 +355,7 @@
             txtDescription.BorderStyle = BorderStyle.None;
             txtDescription.ScrollBars = RichTextBoxScrollBars.Vertical;
             txtDescription.WordWrap = true;
+            txtDescription.DetectUrls = false;
             //
             // pnlDetailsRight
             //
@@ -1005,7 +1008,7 @@
         private System.Windows.Forms.ComboBox cmbPriority;
         private System.Windows.Forms.GroupBox gbCategory;
         private System.Windows.Forms.ComboBox cmbCategory;
-        private System.Windows.Forms.RichTextBox txtDescription;
+        private PlainTextRichTextBox txtDescription;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtTitle;
         private System.Windows.Forms.Label label1;
